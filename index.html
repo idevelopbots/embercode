@@ -15,6 +15,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
             display: flex;
+            flex-direction: column; /* Allows navbar at top and content to fill the rest */
             justify-content: center;
             align-items: center;
             background: #0a0a0a; /* Deep black background */
@@ -22,12 +23,63 @@
             position: relative;
         }
 
+        /* Top Navigation Bar Styling */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: rgba(18, 18, 18, 0.8); /* Semi-transparent dark gray */
+            backdrop-filter: blur(10px); /* Modern blur effect */
+            border-bottom: 1px solid rgba(255, 106, 0, 0.2); /* Subtle fiery orange border */
+            z-index: 100;
+        }
+
+        .nav-left .brand {
+            color: #ff6a00; /* Fiery orange title */
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .nav-middle .announcement {
+            color: #ffb703; /* Amber/Yellow tone for announcements */
+            font-size: 0.95rem;
+            background: rgba(255, 183, 3, 0.1);
+            padding: 6px 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 183, 3, 0.2);
+        }
+
+        .nav-right .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-right .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-right .nav-links a:hover {
+            color: #ff6a00; /* Turns orange on hover */
+        }
+
         /* Container for the content so it stays on top of the waves */
         .content {
             position: relative;
             z-index: 10;
             text-align: center;
-            color: #ffffff; /* Changed to white for readability on dark background */
+            color: #ffffff; 
+            margin-top: 60px; /* Prevents navbar from overlapping text */
         }
 
         .content h1 {
@@ -48,6 +100,7 @@
             height: 15vh;
             min-height: 100px;
             max-height: 150px;
+            z-index: 1;
         }
 
         /* Wave Animation */
@@ -82,6 +135,18 @@
 
         /* Mobile responsiveness */
         @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 10px;
+                padding: 10px;
+                text-align: center;
+            }
+            .nav-middle .announcement {
+                font-size: 0.8rem;
+            }
+            .content {
+                margin-top: 120px; /* Extra spacing for stacked mobile navbar */
+            }
             .waves {
                 height: 40px;
                 min-height: 40px;
@@ -90,6 +155,22 @@
     </style>
 </head>
 <body>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="#" class="brand">Ember</a>
+        </div>
+        
+        <div class="nav-middle">
+            <span class="announcement">📢 Announcement: Version 2.0 update coming later this week!</span>
+        </div>
+        
+        <div class="nav-right">
+            <ul class="nav-links">
+                <li><a href="commands.html">Commands</a></li>
+            </ul>
+        </div>
+    </nav>
 
     <div class="content">
         <h1>Welcome to Ember.</h1>
@@ -101,14 +182,12 @@
         <defs>
             <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
             
-            /* Fiery Orange Gradient definition */
             <linearGradient id="fireGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="#ff6a00" />  /* Bright orange/yellow tip */
-                <stop offset="100%" stop-color="#ee0979" /> /* Deep fiery red base */
+                <stop offset="0%" stop-color="#ff6a00" />
+                <stop offset="100%" stop-color="#ee0979" />
             </linearGradient>
         </defs>
         <g class="parallax">
-            /* Adjusted fills to utilize the gradient combined with opacity layers */
             <use xlink:href="#gentle-wave" x="48" y="0" fill="url(#fireGradient)" fill-opacity="0.3" />
             <use xlink:href="#gentle-wave" x="48" y="3" fill="url(#fireGradient)" fill-opacity="0.5" />
             <use xlink:href="#gentle-wave" x="48" y="5" fill="url(#fireGradient)" fill-opacity="0.7" />
