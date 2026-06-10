@@ -3,53 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invite Ember</title>
+    <title>Ember┃Home</title>
     <style>
-        /* Reset default margins and padding */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* Setup the body to cover the full viewport and center content */
         body {
-            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            
-            /* Replace the URL below with your actual GIF link */
-            background-image: url('https://i0.wp.com/media2.giphy.com/media/xTiTnkE9isjhcW6DMk/giphy.gif');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            background: linear-gradient(to bottom, #ffffff, #f0f4f8);
+            overflow: hidden;
+            position: relative;
         }
 
-        /* Style the button to make it pop */
-        .centered-button {
-            padding: 15px 30px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #ffffff;
-            background-color: #ff4757;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            transition: transform 0.2s, background-color 0.2s;
+        /* Container for the content so it stays on top of the waves */
+        .content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: #333;
         }
 
-        /* Add a slight hover effect */
-        .centered-button:hover {
-            background-color: #ff6b81;
-            transform: scale(1.05);
+        /* SVG Wave Styling */
+        .waves {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 15vh;
+            min-height: 100px;
+            max-height: 150px;
+        }
+
+        /* Wave Animation */
+        .parallax > use {
+            animation: move-forever 25s cubic-bezier(.55,.5,.45,.5) infinite;
+        }
+        .parallax > use:nth-child(1) {
+            animation-delay: -2s;
+            animation-duration: 7s;
+        }
+        .parallax > use:nth-child(2) {
+            animation-delay: -3s;
+            animation-duration: 10s;
+        }
+        .parallax > use:nth-child(3) {
+            animation-delay: -4s;
+            animation-duration: 13s;
+        }
+        .parallax > use:nth-child(4) {
+            animation-delay: -5s;
+            animation-duration: 20s;
+        }
+
+        @keyframes move-forever {
+            0% {
+                transform: translate3d(-90px,0,0);
+            }
+            100% {
+                transform: translate3d(85px,0,0);
+            }
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .waves {
+                height: 40px;
+                min-height: 40px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <button class="centered-button">Click Me</button>
+    <div class="content">
+        <h1>Welcome to EmberBot</h1>
+        <p>Your awesome project is officially live!</p>
+    </div>
+
+    <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+    viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+            <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+            <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
+            <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+            <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+            <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+        </g>
+    </svg>
 
 </body>
 </html>
