@@ -15,7 +15,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
             display: flex;
-            flex-direction: column; /* Allows navbar at top and content to fill the rest */
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             background: #0a0a0a; /* Deep black background */
@@ -33,14 +33,14 @@
             justify-content: space-between;
             align-items: center;
             padding: 15px 30px;
-            background: rgba(18, 18, 18, 0.8); /* Semi-transparent dark gray */
-            backdrop-filter: blur(10px); /* Modern blur effect */
-            border-bottom: 1px solid rgba(255, 106, 0, 0.2); /* Subtle fiery orange border */
+            background: rgba(18, 18, 18, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 106, 0, 0.2);
             z-index: 100;
         }
 
         .nav-left .brand {
-            color: #ff6a00; /* Fiery orange title */
+            color: #ff6a00;
             font-size: 1.5rem;
             font-weight: bold;
             text-decoration: none;
@@ -48,7 +48,7 @@
         }
 
         .nav-middle .announcement {
-            color: #ffb703; /* Amber/Yellow tone for announcements */
+            color: #ffb703;
             font-size: 0.95rem;
             background: rgba(255, 183, 3, 0.1);
             padding: 6px 15px;
@@ -70,7 +70,7 @@
         }
 
         .nav-right .nav-links a:hover {
-            color: #ff6a00; /* Turns orange on hover */
+            color: #ff6a00;
         }
 
         /* Container for the content so it stays on top of the waves */
@@ -79,17 +79,64 @@
             z-index: 10;
             text-align: center;
             color: #ffffff; 
-            margin-top: 60px; /* Prevents navbar from overlapping text */
+            margin-top: 60px;
+            max-width: 600px;
+            padding: 0 20px;
         }
 
         .content h1 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             margin-bottom: 10px;
             letter-spacing: 1px;
         }
 
         .content p {
-            color: #b3b3b3; /* Subtle light gray for the subtext */
+            color: #b3b3b3;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        /* Centered Buttons Styling */
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 12px 28px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        /* Primary Invite Button */
+        .btn-invite {
+            background: linear-gradient(45deg, #ff6a00, #ee0979);
+            color: #ffffff;
+            border: none;
+            box-shadow: 0 4px 15px rgba(255, 106, 0, 0.3);
+        }
+
+        .btn-invite:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 106, 0, 0.5);
+        }
+
+        /* Secondary Support Button */
+        .btn-support {
+            background: transparent;
+            color: #ff6a00;
+            border: 2px solid #ff6a00;
+        }
+
+        .btn-support:hover {
+            background: rgba(255, 106, 0, 0.1);
+            transform: translateY(-2px);
         }
 
         /* SVG Wave Styling */
@@ -145,7 +192,16 @@
                 font-size: 0.8rem;
             }
             .content {
-                margin-top: 120px; /* Extra spacing for stacked mobile navbar */
+                margin-top: 140px;
+            }
+            .button-group {
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+            }
+            .btn {
+                width: 100%;
+                max-width: 250px;
             }
             .waves {
                 height: 40px;
@@ -162,7 +218,7 @@
         </div>
         
         <div class="nav-middle">
-            <span class="announcement">📣 We will soon be introducing a new dashboard, exclusive to boosters! 📣</span>
+            <span class="announcement">📢 Announcement: Dashboard update coming later this week!</span>
         </div>
         
         <div class="nav-right">
@@ -175,6 +231,11 @@
     <div class="content">
         <h1>Welcome to Ember.</h1>
         <p>Project is under development, check back soon!</p>
+        
+        <div class="button-group">
+            <a href="https://discord.com/api/oauth2/authorize?client_id=1514000813704347870&permissions=0&scope=bot%20applications.commands" class="btn btn-invite">Invite Bot</a>
+            <a href="https://discord.com/invite/Nma5qb84g9" class="btn btn-support">Support Server</a>
+        </div>
     </div>
 
     <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
