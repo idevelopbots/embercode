@@ -17,7 +17,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(to bottom, #ffffff, #f0f4f8);
+            background: #0a0a0a; /* Deep black background */
             overflow: hidden;
             position: relative;
         }
@@ -27,7 +27,17 @@
             position: relative;
             z-index: 10;
             text-align: center;
-            color: #333;
+            color: #ffffff; /* Changed to white for readability on dark background */
+        }
+
+        .content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .content p {
+            color: #b3b3b3; /* Subtle light gray for the subtext */
         }
 
         /* SVG Wave Styling */
@@ -90,12 +100,19 @@
     viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
         <defs>
             <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+            
+            /* Fiery Orange Gradient definition */
+            <linearGradient id="fireGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#ff6a00" />  /* Bright orange/yellow tip */
+                <stop offset="100%" stop-color="#ee0979" /> /* Deep fiery red base */
+            </linearGradient>
         </defs>
         <g class="parallax">
-            <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
-            <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
-            <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
-            <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+            /* Adjusted fills to utilize the gradient combined with opacity layers */
+            <use xlink:href="#gentle-wave" x="48" y="0" fill="url(#fireGradient)" fill-opacity="0.3" />
+            <use xlink:href="#gentle-wave" x="48" y="3" fill="url(#fireGradient)" fill-opacity="0.5" />
+            <use xlink:href="#gentle-wave" x="48" y="5" fill="url(#fireGradient)" fill-opacity="0.7" />
+            <use xlink:href="#gentle-wave" x="48" y="7" fill="url(#fireGradient)" />
         </g>
     </svg>
 
