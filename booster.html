@@ -219,39 +219,62 @@
 </head>
 <body>
 
-    <nav class="navbar">
+  <nav class="navbar">
         <div class="nav-left">
             <a href="index.html" class="brand">🔥 Ember</a>
         </div>
         
-    <div class="nav-right">
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="commands.html">Commands</a></li>
-            <li><a href="booster.html">Booster Dashboard</a></li>
-        </ul>
-    </div>
+        <div class="nav-right">
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="commands.html">Commands</a></li>
+                <li><a href="booster.html" class="active">Booster Dashboard</a></li>
+            </ul>
+        </div>
     </nav>
 
     <div class="content">
         <h1>Booster Dashboard</h1>
         
-        <div class="dashboard-card">
-            <form action="#" method="POST" class="form-group">
-                <label for="discord-id" class="form-label">Discord ID</label>
+        <div class="dashboard-card" id="auth-card">
+            <form id="booster-form" class="form-group" onsubmit="verifyBooster(event)">
+                <label for="discord-id" class="form-label">Verify Booster Status</label>
                 <input 
                     type="text" 
                     id="discord-id" 
                     name="discordId" 
                     class="form-input" 
-                    placeholder="Enter your Discord ID (e.g. 4512345678901234)"
+                    placeholder="Enter your Discord ID"
                     required
                 >
-                <button type="submit" class="btn-submit">Submit ID</button>
+                <p id="error-msg" style="color: #ff3333; font-size: 0.9rem; display: none; margin-top: -5px; font-weight: 600;"></p>
+                <button type="submit" class="btn-submit">Verify & Enter</button>
             </form>
         </div>
     </div>
 
+    <script>
+        function verifyBooster(event) {
+            event.preventDefault(); // Stop page from reloading
+            
+            const input = document.getElementById('discord-id').value.trim();
+            const errorMsg = document.getElementById('error-msg');
+
+            // Regex checking if input is purely numbers and between 17 to 19 digits long
+            const discordIdRegex = /^\d{17,19}$/;
+
+            if (discordIdRegex.test(input)) {
+                errorMsg.style.display = 'none';
+                // Redirects the user directly to your secret file name
+                window.location.href = "eriuhgnijgeiuh23u8qdhp9dghpnh1p9pierwgpht43pi9hh34ht93h4.html";
+            } else {
+                // Display error message if the formatting doesn't look like a real Discord ID
+                errorMsg.innerText = "❌ User ID not found or hasn't boosted the server.";
+                errorMsg.style.display = 'block';
+            }
+        }
+    </script>
+    
     <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
     viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
         <defs>
