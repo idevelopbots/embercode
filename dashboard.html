@@ -278,18 +278,28 @@
         .player-item {
             background: rgba(255,255,255,0.05);
             border: 1px solid #2c0b0e;
-            padding: 12px 15px;
+            padding: 14px 18px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
+            font-size: 1.05rem;
             transition: all 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .player-item .player-id {
+            font-size: 0.9rem;
+            color: #aaaaaa;
+            font-weight: normal;
         }
 
         .player-item:hover {
             background: rgba(255, 106, 0, 0.15);
             border-color: #ff6a00;
             color: #ffc300;
-            padding-left: 20px;
+            padding-left: 22px;
         }
         
         .player-item.selected {
@@ -465,8 +475,8 @@
         let selectedPlayer = "";
         let globalPlayersCache = [];
 
-        // --- CONFIGURATION MANAGEMENT ---
-        // Change USE_PROXY to true if you route requests through a custom backend
+        // Note: Direct frontend calls to api.erlc.gg will encounter CORS blocks in regular browsers.
+        // If testing locally, use a browser extension proxy or flip this configuration flag to true.
         const CONFIG = {
             USE_PROXY: false,
             PROXY_URL: "https://your-backend-proxy.com/api" 
@@ -485,16 +495,16 @@
             document.getElementById('api-setup-card').style.display = 'none';
             document.getElementById('controls-panel').style.display = 'block';
             
-            // Prefetch active players right away to cache them for modal performance
             fetchActiveServerPlayers();
         }
 
         async function fetchActiveServerPlayers() {
+            // Updated directly to the dedicated ER:LC v1 player tracking endpoint
             const endpoint = CONFIG.USE_PROXY 
                 ? `${CONFIG.PROXY_URL}/players`
-                : `https://api.policeroleplay.community/v1/server`;
+                : `https://api.erlc.gg/v1/server/players`;
 
-            const requestHeaders = CONFIG.USE_PROXY ? {} : { 'Server-API-Key': apiKey };
+            const requestHeaders = CONFIG.USE_PROXY ? {} : { 'server-key': apiKey };
 
             try {
                 const response = await fetch(endpoint, {
@@ -506,11 +516,11 @@
                     throw new Error(`HTTP Error Status: ${response.status}`);
                 }
 
-                const serverData = await response.json();
+                const data = await response.json();
                 
-                // ER:LC returns an object with a "Players" array profile containing active users
-                if (serverData && Array.isArray(serverData.Players)) {
-                    globalPlayersCache = serverData.Players;
+                // ER:LC /players endpoint passes back a clean array of player objects containing keys: 'Player', 'Permission', and 'Team'
+                if (data && Array.isArray(data)) {
+                    globalPlayersCache = data;
                 } else {
                     globalPlayersCache = [];
                 }
@@ -536,7 +546,7 @@
 
             modal.classList.add('active');
 
-            // Pull fresh live player tracking states right as the modal initializes
+            // Fetch live layout states right as the modal popup initiates
             await fetchActiveServerPlayers();
             playerListDiv.innerHTML = "";
 
@@ -551,16 +561,24 @@
                 if (globalPlayersCache.length === 0) {
                     playerListDiv.innerHTML = "<div style='padding:10px; color:#ccc; font-style:italic;'>Empty server or connection failed. No active players found.</div>";
                 } else {
-                    // Inject real user strings mapped from live api values
-                    globalPlayersCache.forEach(player => {
-                        // ER:LC properties: 'Permission' can filter, 'Player' contains "Username:UserId" format split
-                        const playerIdentityString = player.Player || "Unknown User";
-                        const cleanUsername = playerIdentityString.split(':')[0] || playerIdentityString;
+                    // Match visual list layout matching the design screenshot wireframe context
+                    globalPlayersCache.forEach(playerData => {
+                        // ER:LC format combines username and user ID into the single 'Player' element string e.g. "Hyper_Velocity:4892019"
+                        const identificationRaw = playerData.Player || "Unknown:0";
+                        const splitData = identificationRaw.split(':');
+                        const username = splitData[0] || "Unknown Player";
+                        const userId = splitData[1] || "000000";
 
                         const div = document.createElement('div');
                         div.className = 'player-item';
-                        div.innerText = playerIdentityString;
-                        div.onclick = () => selectPlayerItem(div, cleanUsername);
+                        
+                        // Formatted cleanly to match your custom styling needs
+                        div.innerHTML = `
+                            <span>${username}</span>
+                            <span class="player-id">(ID: ${userId})</span>
+                        `;
+                        
+                        div.onclick = () => selectPlayerItem(div, username);
                         playerListDiv.appendChild(div);
                     });
                 }
@@ -613,14 +631,13 @@
                 }
             }
 
-            // Command target dispatch
             const commandEndpoint = CONFIG.USE_PROXY 
                 ? `${CONFIG.PROXY_URL}/command`
                 : `https://api.erlc.gg/v1/server/command`;
 
             const requestHeaders = CONFIG.USE_PROXY 
                 ? { 'Content-Type': 'application/json' } 
-                : { 'Server-API-Key': apiKey, 'Content-Type': 'application/json' };
+                : { 'server-key': apiKey, 'Content-Type': 'application/json' };
 
             try {
                 const response = await fetch(commandEndpoint, {
@@ -636,8 +653,7 @@
                 }
             } catch(e) {
                 console.error(e);
-                // Fallback indicator message alert if CORS blocks direct browser testing 
-                alert(`📡 Request generated locally:\n\nPayload: ${finalCommandPayload}\n\nNote: Direct browser api fetches can be restricted by CORS. Secure production operations should employ your backend proxy system.`);
+                alert(`📡 Request generated locally:\n\nPayload: ${finalCommandPayload}\n\nNote: Browsers block direct endpoints due to CORS policies. Implement a simple proxy handler in your backend production app.`);
             }
 
             closeTargetModal();
