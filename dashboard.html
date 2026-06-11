@@ -408,9 +408,6 @@
                 <label class="form-label" for="api-key">ER:LC Server API Key</label>
                 <input type="password" id="api-key" class="form-input" placeholder="Enter your server API key token...">
                 
-                <label class="form-label" for="server-id" style="margin-top: 5px;">Server ID / Guild ID</label>
-                <input type="text" id="server-id" class="form-input" placeholder="Enter ER:LC Server ID">
-                
                 <button class="btn-submit" onclick="initializeDashboard()">Connect API Terminal</button>
             </div>
         </div>
@@ -472,7 +469,6 @@
 
     <script>
         let apiKey = "";
-        let serverId = "";
         let activeCommand = "";
         let selectedPlayer = "";
 
@@ -487,15 +483,13 @@
 
         function initializeDashboard() {
             const keyInput = document.getElementById('api-key').value.trim();
-            const serverInput = document.getElementById('server-id').value.trim();
 
-            if (!keyInput || !serverInput) {
-                alert("⚠️ Please fill in both the API Key and Server ID components.");
+            if (!keyInput) {
+                alert("⚠️ Please fill in the API Key.");
                 return;
             }
 
             apiKey = keyInput;
-            serverId = serverInput;
 
             // Interface changes state to display operational layout modules
             document.getElementById('api-setup-card').style.display = 'none';
@@ -518,7 +512,6 @@
 
             // Conditional layout options for command exceptions
             if (commandType === 'unban') {
-                // Unban requires manual ID entry over server profile tracking lists
                 title.innerText = "Target Account Details";
                 extraContainer.innerHTML = `
                     <label class="form-label">User ID to Unban</label>
@@ -587,9 +580,9 @@
             }
 
             // Interface simulated success state block response
-            alert(`📡 Dispatching Request to ER:LC Server API (${serverId}):\n\nCommand Payload: ${finalCommandPayload}`);
+            alert(`📡 Dispatching Request to ER:LC Server API:\n\nCommand Payload: ${finalCommandPayload}`);
             
-            /* Real implementation would leverage a fetch structural component pattern:
+            /* Real implementation structural pattern:
                fetch(`https://api.policeroleplay.community/v1/server/command`, {
                    method: 'POST',
                    headers: {
