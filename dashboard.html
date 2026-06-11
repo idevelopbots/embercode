@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ember Booster Dashboard</title>
+    <title>Ember Admin Dashboard</title>
     <style>
         * {
             margin: 0;
@@ -16,14 +16,13 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
             background: #0a0a0a; /* Deep black background */
-            overflow: hidden;
             position: relative;
+            color: #ffffff;
+            padding-bottom: 15vh; /* Space for background waves */
         }
 
-        /* Top Navigation Bar Styling — Identical to index.html */
+        /* Top Navigation Bar Styling */
         .navbar {
             position: fixed;
             top: 0;
@@ -73,19 +72,17 @@
             text-shadow: 0 0 10px #ff6a00;
         }
 
-        /* Content Layout */
-        .content {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            color: #ffffff; 
-            margin-top: 40px;
+        /* Content Layout Container */
+        .container {
             width: 100%;
-            max-width: 500px;
+            max-width: 1200px;
+            margin: 120px auto 40px auto;
             padding: 0 20px;
+            z-index: 10;
         }
 
-        .content h1 {
+        .header-title {
+            text-align: center;
             font-size: 3rem;
             margin-bottom: 25px;
             letter-spacing: 1px;
@@ -93,7 +90,7 @@
             text-shadow: 0 0 15px #ff6a00, 0 0 30px #900c3f;
         }
 
-        /* Booster Card Wrapper styling */
+        /* Setup and configuration card components */
         .dashboard-card {
             background: linear-gradient(145deg, #2c0b0e, #1a0507);
             border: 2px solid #900c3f;
@@ -102,10 +99,9 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
             position: relative;
             overflow: hidden;
-            text-align: left;
+            margin-bottom: 30px;
         }
 
-        /* Glowing top border accent */
         .dashboard-card::before {
             content: '';
             position: absolute;
@@ -130,7 +126,6 @@
             letter-spacing: 1px;
         }
 
-        /* Text Input Styling */
         .form-input {
             width: 100%;
             padding: 14px;
@@ -148,7 +143,6 @@
             box-shadow: 0 0 10px rgba(255, 106, 0, 0.3);
         }
 
-        /* Submit Button Gradient Styling */
         .btn-submit {
             display: block;
             width: 100%;
@@ -172,15 +166,185 @@
             box-shadow: 0 6px 20px rgba(255, 106, 0, 0.5);
         }
 
-        /* SVG Wave Styling — Identical to index.html */
-        .waves {
-            position: absolute;
-            bottom: 0;
+        /* Commands Management Layout System */
+        .commands-panel {
+            display: none; /* Initially hidden until configuration matches */
+        }
+
+        .commands-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .btn-cmd {
+            background: rgba(44, 11, 14, 0.6);
+            border: 1px solid #900c3f;
+            color: #ffffff;
+            padding: 20px 15px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+
+        .btn-cmd span.syntax {
+            font-size: 0.8rem;
+            color: #ffc300;
+            font-weight: normal;
+            opacity: 0.8;
+        }
+
+        .btn-cmd:hover {
+            background: linear-gradient(135deg, #900c3f 0%, #ff6a00 100%);
+            border-color: #ffc300;
+            transform: scale(1.03);
+            box-shadow: 0 0 15px rgba(255, 106, 0, 0.4);
+        }
+
+        /* Target Selector Overlay System (Modal Windows) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 15vh;
-            min-height: 100px;
-            max-height: 150px;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: #160406;
+            border: 2px solid #ff6a00;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(255, 106, 0, 0.2);
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #ffc300;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            border-bottom: 1px solid #900c3f;
+            padding-bottom: 10px;
+        }
+
+        .player-list {
+            max-height: 250px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+            padding-right: 5px;
+        }
+
+        /* Custom Scrollbar for Player List */
+        .player-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .player-list::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.3);
+        }
+        .player-list::-webkit-scrollbar-thumb {
+            background: #900c3f;
+            border-radius: 3px;
+        }
+
+        .player-item {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid #2c0b0e;
+            padding: 12px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .player-item:hover {
+            background: rgba(255, 106, 0, 0.15);
+            border-color: #ff6a00;
+            color: #ffc300;
+            padding-left: 20px;
+        }
+        
+        .player-item.selected {
+            background: rgba(255, 106, 0, 0.25);
+            border-color: #ffc300;
+            color: #ffc300;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .btn-modal {
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-cancel {
+            background: #222;
+            color: #ccc;
+        }
+
+        .btn-cancel:hover {
+            background: #333;
+            color: #fff;
+        }
+
+        .btn-confirm {
+            background: linear-gradient(45deg, #ff6a00, #ee0979);
+            color: white;
+        }
+
+        /* SVG Wave Styling Bottom Component */
+        .waves {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 12vh;
+            min-height: 80px;
+            max-height: 120px;
             z-index: 1;
+            pointer-events: none;
         }
 
         .parallax > use {
@@ -196,7 +360,7 @@
             100% { transform: translate3d(85px,0,0); }
         }
 
-        /* Mobile responsiveness */
+        /* Responsiveness viewports */
         @media (max-width: 768px) {
             .navbar {
                 flex-direction: column;
@@ -204,26 +368,29 @@
                 padding: 15px;
                 text-align: center;
             }
-            .content {
-                margin-top: 140px;
+            .container {
+                margin-top: 160px;
             }
-            .content h1 {
+            .header-title {
                 font-size: 2.2rem;
             }
-            .waves {
-                height: 60px;
-                min-height: 60px;
+            .commands-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 12px;
+            }
+            .btn-cmd {
+                padding: 15px 10px;
+                font-size: 0.9rem;
             }
         }
     </style>
 </head>
 <body>
 
-  <nav class="navbar">
+    <nav class="navbar">
         <div class="nav-left">
             <a href="index.html" class="brand">🔥 Ember</a>
         </div>
-        
         <div class="nav-right">
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
@@ -233,48 +400,59 @@
         </div>
     </nav>
 
-    <div class="content">
-        <h1>Booster Dashboard</h1>
+    <div class="container">
+        <h1 class="header-title">Server Controller</h1>
         
-        <div class="dashboard-card" id="auth-card">
-            <form id="booster-form" class="form-group" onsubmit="verifyBooster(event)">
-                <label for="discord-id" class="form-label">Verify Booster Status</label>
-                <input 
-                    type="text" 
-                    id="discord-id" 
-                    name="discordId" 
-                    class="form-input" 
-                    placeholder="Enter your Discord ID"
-                    required
-                >
-                <p id="error-msg" style="color: #ff3333; font-size: 0.9rem; display: none; margin-top: -5px; font-weight: 600;"></p>
-                <button type="submit" class="btn-submit">Verify & Enter</button>
-            </form>
+        <div class="dashboard-card" id="api-setup-card">
+            <div class="form-group">
+                <label class="form-label" for="api-key">ER:LC Server API Key</label>
+                <input type="password" id="api-key" class="form-input" placeholder="Enter your server API key token...">
+                
+                <label class="form-label" for="server-id" style="margin-top: 5px;">Server ID / Guild ID</label>
+                <input type="text" id="server-id" class="form-input" placeholder="Enter ER:LC Server ID">
+                
+                <button class="btn-submit" onclick="initializeDashboard()">Connect API Terminal</button>
+            </div>
+        </div>
+
+        <div class="dashboard-card commands-panel" id="controls-panel">
+            <label class="form-label" style="display:block; margin-bottom:15px;">Active Server Directives</label>
+            <div class="commands-grid">
+                <button class="btn-cmd" onclick="openTargetModal('kill')">💀 Kill <span class="syntax">:kill [Player]</span></button>
+                <button class="btn-cmd" onclick="openTargetModal('down')">🩸 Down <span class="syntax">:down [Player]</span></button>
+                <button class="btn-cmd" onclick="openTargetModal('tp')">🌀 Teleport <span class="syntax">:tp [P1] [P2]</span></button>
+                <button class="btn-cmd" onclick="openTargetModal('refresh')">🔄 Refresh <span class="syntax">:refresh [Player]</span></button>
+                <button class="btn-cmd" onclick="openTargetModal('bring')">🧲 Bring <span class="syntax">:bring [Player]</span></button>
+                <button class="btn-cmd" onclick="openTargetModal('heal')">❤️ Heal <span class="syntax">:heal [Player]</span></button>
+                <button class="btn-cmd" onclick="openTargetModal('view')">👁️ View <span class="syntax">:view [Player]</span></button>
+                <button class="btn-cmd" onclick="openTargetModal('unwanted')">😇 Unwanted <span class="syntax">:unwanted [Player]</span></button>
+                <button class="btn-cmd" onclick="openTargetModal('wanted')">🚨 Wanted <span class="syntax">:wanted [Player]</span></button>
+                <button class="btn-cmd" onclick="openTargetModal('jail')">🔒 Jail <span class="syntax">:jail [Player]</span></button>
+                <button class="btn-cmd" onclick="openTargetModal('respawn')">✨ Respawn <span class="syntax">:respawn [Player]</span></button>
+                <button class="btn-cmd" onclick="openTargetModal('load')">📦 Load <span class="syntax">:load [Player]</span></button>
+                <button class="btn-cmd" onclick="openTargetModal('kick')">🥾 Kick <span class="syntax">:kick [Player] [Reason]</span></button>
+                <button class="btn-cmd" onclick="openTargetModal('ban')">🚫 Ban <span class="syntax">:ban [Player/ID]</span></button>
+                <button class="btn-cmd" onclick="openTargetModal('unban')">🔓 Unban <span class="syntax">:unban [Player/ID]</span></button>
+            </div>
         </div>
     </div>
 
-    <script>
-        function verifyBooster(event) {
-            event.preventDefault(); // Stop page from reloading
+    <div class="modal-overlay" id="target-modal">
+        <div class="modal-card">
+            <div class="modal-header" id="modal-title-text">Select Target Player</div>
             
-            const input = document.getElementById('discord-id').value.trim();
-            const errorMsg = document.getElementById('error-msg');
+            <div id="extra-fields-container" class="form-group" style="margin-bottom:15px; display:none;"></div>
+            
+            <div class="player-list" id="modal-player-list">
+                </div>
+            
+            <div class="modal-actions">
+                <button class="btn-modal btn-cancel" onclick="closeTargetModal()">Cancel</button>
+                <button class="btn-modal btn-confirm" onclick="processActionExecution()">Execute Command</button>
+            </div>
+        </div>
+    </div>
 
-            // Regex checking if input is purely numbers and between 17 to 19 digits long
-            const discordIdRegex = /^\d{17,19}$/;
-
-            if (discordIdRegex.test(input)) {
-                errorMsg.style.display = 'none';
-                // Redirects the user directly to your secret file name
-                window.location.href = "eriuhgnijgeiuh23u8qdhp9dghpnh1p9pierwgpht43pi9hh34ht93h4.html";
-            } else {
-                // Display error message if the formatting doesn't look like a real Discord ID
-                errorMsg.innerText = "❌ User ID not found or hasn't boosted the server.";
-                errorMsg.style.display = 'block';
-            }
-        }
-    </script>
-    
     <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
     viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
         <defs>
@@ -292,5 +470,138 @@
         </g>
     </svg>
 
+    <script>
+        let apiKey = "";
+        let serverId = "";
+        let activeCommand = "";
+        let selectedPlayer = "";
+
+        // Mock Sandbox Data representative of real ER:LC Server responses
+        const mockPlayersArray = [
+            { username: "Hyper_Velocity", userId: 4892019 },
+            { username: "Ember_Dev", userId: 1294811 },
+            { username: "Robloxian992", userId: 9948102 },
+            { username: "ShadowRunner", userId: 3349102 },
+            { username: "Officer_Blazek", userId: 5543192 }
+        ];
+
+        function initializeDashboard() {
+            const keyInput = document.getElementById('api-key').value.trim();
+            const serverInput = document.getElementById('server-id').value.trim();
+
+            if (!keyInput || !serverInput) {
+                alert("⚠️ Please fill in both the API Key and Server ID components.");
+                return;
+            }
+
+            apiKey = keyInput;
+            serverId = serverInput;
+
+            // Interface changes state to display operational layout modules
+            document.getElementById('api-setup-card').style.display = 'none';
+            document.getElementById('controls-panel').style.display = 'block';
+        }
+
+        function openTargetModal(commandType) {
+            activeCommand = commandType;
+            selectedPlayer = "";
+            
+            const modal = document.getElementById('target-modal');
+            const title = document.getElementById('modal-title-text');
+            const playerListDiv = document.getElementById('modal-player-list');
+            const extraContainer = document.getElementById('extra-fields-container');
+            
+            title.innerText = `Target Options: :${commandType}`;
+            playerListDiv.innerHTML = "";
+            extraContainer.innerHTML = "";
+            extraContainer.style.display = "none";
+
+            // Conditional layout options for command exceptions
+            if (commandType === 'unban') {
+                // Unban requires manual ID entry over server profile tracking lists
+                title.innerText = "Target Account Details";
+                extraContainer.innerHTML = `
+                    <label class="form-label">User ID to Unban</label>
+                    <input type="text" id="target-unban-id" class="form-input" placeholder="e.g. 4892019">
+                `;
+                extraContainer.style.display = "flex";
+            } else {
+                // Generate tracking list items for standard active command sets
+                mockPlayersArray.forEach(player => {
+                    const div = document.createElement('div');
+                    div.className = 'player-item';
+                    div.innerText = `${player.username} (ID: ${player.userId})`;
+                    div.onclick = () => selectPlayerItem(div, player.username);
+                    playerListDiv.appendChild(div);
+                });
+
+                // Inject supplemental multi-target inputs
+                if (commandType === 'tp') {
+                    extraContainer.innerHTML = `
+                        <label class="form-label">Destination Player (Bring To)</label>
+                        <input type="text" id="target-destination" class="form-input" placeholder="Enter target player name">
+                    `;
+                    extraContainer.style.display = "flex";
+                } else if (commandType === 'kick') {
+                    extraContainer.innerHTML = `
+                        <label class="form-label">Kick Violation Reason</label>
+                        <input type="text" id="target-reason" class="form-input" placeholder="e.g. Failure to comply with staff">
+                    `;
+                    extraContainer.style.display = "flex";
+                }
+            }
+
+            modal.classList.add('active');
+        }
+
+        function selectPlayerItem(element, username) {
+            const items = document.querySelectorAll('.player-item');
+            items.forEach(i => i.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedPlayer = username;
+        }
+
+        function closeTargetModal() {
+            document.getElementById('target-modal').classList.remove('active');
+        }
+
+        function processActionExecution() {
+            let finalCommandPayload = `:${activeCommand}`;
+
+            if (activeCommand === 'unban') {
+                const unbanId = document.getElementById('target-unban-id').value.trim();
+                if(!unbanId) return alert("Please specify a valid User ID.");
+                finalCommandPayload += ` ${unbanId}`;
+            } else {
+                if (!selectedPlayer) return alert("Please select an active target player item.");
+                finalCommandPayload += ` "${selectedPlayer}"`;
+
+                if (activeCommand === 'tp') {
+                    const dest = document.getElementById('target-destination').value.trim();
+                    if(!dest) return alert("Please specify a destination user.");
+                    finalCommandPayload += ` "${dest}"`;
+                } else if (activeCommand === 'kick') {
+                    const reason = document.getElementById('target-reason').value.trim() || "No context specified.";
+                    finalCommandPayload += ` "${reason}"`;
+                }
+            }
+
+            // Interface simulated success state block response
+            alert(`📡 Dispatching Request to ER:LC Server API (${serverId}):\n\nCommand Payload: ${finalCommandPayload}`);
+            
+            /* Real implementation would leverage a fetch structural component pattern:
+               fetch(`https://api.policeroleplay.community/v1/server/command`, {
+                   method: 'POST',
+                   headers: {
+                       'Server-API-Key': apiKey,
+                       'Content-Type': 'application/json'
+                   },
+                   body: JSON.stringify({ command: finalCommandPayload })
+               });
+            */
+
+            closeTargetModal();
+        }
+    </script>
 </body>
 </html>
