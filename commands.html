@@ -14,29 +14,37 @@
             --text-light: #f5f5f5;
         }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--fire-dark);
             color: var(--text-light);
-            margin: 0;
-            padding: 0;
             background-image: linear-gradient(180deg, var(--fire-dark) 0%, #000000 100%);
             min-height: 100vh;
         }
 
-        /* Navigation Bar Styles */
-        nav {
+        /* Top Navigation Bar Styling — Exactly matching index.html */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 40px;
-            background-color: rgba(21, 5, 5, 0.85);
-            border-bottom: 2px solid var(--fire-red);
-            backdrop-filter: blur(5px);
+            padding: 15px 30px;
+            background: rgba(18, 18, 18, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid #900c3f;
+            z-index: 100;
         }
 
-        /* Match the brand styling from index.html */
-        .brand {
+        .nav-left .brand {
             color: #ff6a00;
             font-size: 1.5rem;
             font-weight: bold;
@@ -48,19 +56,13 @@
             gap: 5px;
         }
 
-        .nav-right {
-            display: flex;
-        }
-
-        .nav-links {
+        .nav-right .nav-links {
             list-style: none;
             display: flex;
-            gap: 30px;
-            margin: 0;
-            padding: 0;
+            gap: 25px;
         }
 
-        .nav-links li a {
+        .nav-right .nav-links a {
             color: #d0d0d0;
             text-decoration: none;
             font-size: 1rem;
@@ -70,15 +72,16 @@
             transition: color 0.3s ease, text-shadow 0.3s ease;
         }
 
-        .nav-links li a:hover, .nav-links li a.active {
-            color: var(--fire-orange);
-            text-shadow: 0 0 10px var(--fire-orange);
+        .nav-right .nav-links a:hover, 
+        .nav-right .nav-links a.active {
+            color: #ff6a00;
+            text-shadow: 0 0 10px #ff6a00;
         }
 
-        /* Main Content Layout */
+        /* Main Content Layout Adjustments */
         header {
             text-align: center;
-            padding: 40px 0 20px 0;
+            padding: 120px 0 20px 0; /* Increased top padding to avoid getting trapped behind fixed navbar */
         }
 
         header h1 {
@@ -183,12 +186,28 @@
             border: 1px solid var(--fire-orange);
             color: #ffb09c;
         }
+
+        /* Mobile layout fixes for Navigation alignment */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 12px;
+                padding: 15px;
+                text-align: center;
+                position: static;
+            }
+            header {
+                padding: 40px 0 20px 0;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <nav>
-        <a href="index.html" class="nav-logo">Ember</a>
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="index.html" class="brand">🔥 Ember</a>
+        </div>
         <div class="nav-right">
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
@@ -216,7 +235,7 @@
             </div>
         </div>
 
-                <div class="card">
+        <div class="card">
             <div class="command-name">/community-ad</div>
             <div class="field">
                 <span class="label">What it does:</span>
