@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EmberBot</title>
+    <title>Ember Home</title>
     <style>
         * {
             margin: 0;
@@ -33,9 +33,9 @@
             justify-content: space-between;
             align-items: center;
             padding: 15px 30px;
-            background: rgba(18, 18, 18, 0.8);
+            background: rgba(18, 18, 18, 0.85);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 106, 0, 0.2);
+            border-bottom: 2px solid #900c3f; /* Deep fiery red border */
             z-index: 100;
         }
 
@@ -45,6 +45,10 @@
             font-weight: bold;
             text-decoration: none;
             letter-spacing: 1px;
+            text-shadow: 0 0 8px #ff6a00;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .nav-middle .announcement {
@@ -59,18 +63,23 @@
         .nav-right .nav-links {
             list-style: none;
             display: flex;
-            gap: 20px;
+            gap: 25px;
         }
 
         .nav-right .nav-links a {
-            color: #ffffff;
+            color: #d0d0d0;
             text-decoration: none;
             font-size: 1rem;
-            transition: color 0.3s ease;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
         }
 
-        .nav-right .nav-links a:hover {
+        .nav-right .nav-links a:hover, 
+        .nav-right .nav-links a.active {
             color: #ff6a00;
+            text-shadow: 0 0 10px #ff6a00;
         }
 
         /* Container for the content so it stays on top of the waves */
@@ -85,15 +94,18 @@
         }
 
         .content h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
+            font-size: 3.5rem;
+            margin-bottom: 15px;
             letter-spacing: 1px;
+            color: #ffc300; /* Ember yellow */
+            text-shadow: 0 0 15px #ff6a00, 0 0 30px #900c3f;
         }
 
         .content p {
             color: #b3b3b3;
-            font-size: 1.1rem;
-            margin-bottom: 30px;
+            font-size: 1.2rem;
+            margin-bottom: 35px;
+            line-height: 1.6;
         }
 
         /* Centered Buttons Styling */
@@ -108,7 +120,7 @@
             text-decoration: none;
             font-size: 1rem;
             font-weight: 600;
-            padding: 12px 28px;
+            padding: 14px 32px;
             border-radius: 8px;
             transition: all 0.3s ease;
             cursor: pointer;
@@ -184,15 +196,18 @@
         @media (max-width: 768px) {
             .navbar {
                 flex-direction: column;
-                gap: 10px;
-                padding: 10px;
+                gap: 12px;
+                padding: 15px;
                 text-align: center;
             }
             .nav-middle .announcement {
                 font-size: 0.8rem;
             }
             .content {
-                margin-top: 140px;
+                margin-top: 160px;
+            }
+            .content h1 {
+                font-size: 2.5rem;
             }
             .button-group {
                 flex-direction: column;
@@ -204,8 +219,8 @@
                 max-width: 250px;
             }
             .waves {
-                height: 40px;
-                min-height: 40px;
+                height: 60px;
+                min-height: 60px;
             }
         }
     </style>
@@ -214,7 +229,7 @@
 
     <nav class="navbar">
         <div class="nav-left">
-            <a href="#" class="brand">Ember</a>
+            <a href="index.html" class="brand">🔥 Ember</a>
         </div>
         
         <div class="nav-middle">
@@ -223,6 +238,7 @@
         
         <div class="nav-right">
             <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
                 <li><a href="commands.html">Commands</a></li>
             </ul>
         </div>
