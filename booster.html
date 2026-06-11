@@ -1,1 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ember Booster Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #0a0a0a; /* Deep black background */
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Top Navigation Bar Styling — Identical to index.html */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: rgba(18, 18, 18, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid #900c3f; /* Deep fiery red border */
+            z-index: 100;
+        }
+
+        .nav-left .brand {
+            color: #ff6a00;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px #ff6a00;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-right .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-right .nav-links a {
+            color: #d0d0d0;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .nav-right .nav-links a:hover, 
+        .nav-right .nav-links a.active {
+            color: #ff6a00;
+            text-shadow: 0 0 10px #ff6a00;
+        }
+
+        /* Content Layout */
+        .content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: #ffffff; 
+            margin-top: 40px;
+            width: 100%;
+            max-width: 500px;
+            padding: 0 20px;
+        }
+
+        .content h1 {
+            font-size: 3rem;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+            color: #ffc300; /* Ember yellow */
+            text-shadow: 0 0 15px #ff6a00, 0 0 30px #900c3f;
+        }
+
+        /* Booster Card Wrapper styling */
+        .dashboard-card {
+            background: linear-gradient(145deg, #2c0b0e, #1a0507);
+            border: 2px solid #900c3f;
+            border-radius: 12px;
+            padding: 35px 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+            position: relative;
+            overflow: hidden;
+            text-align: left;
+        }
+
+        /* Glowing top border accent */
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #900c3f, #ff6a00, #ffc300);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .form-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ff5733; /* Fire orange */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Text Input Styling */
+        .form-input {
+            width: 100%;
+            padding: 14px;
+            background: rgba(10, 10, 10, 0.8);
+            border: 1px solid #900c3f;
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            border-color: #ff6a00;
+            box-shadow: 0 0 10px rgba(255, 106, 0, 0.3);
+        }
+
+        /* Submit Button Gradient Styling */
+        .btn-submit {
+            display: block;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 14px;
+            margin-top: 10px;
+            border-radius: 6px;
+            border: none;
+            background: linear-gradient(45deg, #ff6a00, #ee0979);
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(255, 106, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 106, 0, 0.5);
+        }
+
+        /* SVG Wave Styling — Identical to index.html */
+        .waves {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 15vh;
+            min-height: 100px;
+            max-height: 150px;
+            z-index: 1;
+        }
+
+        .parallax > use {
+            animation: move-forever 25s cubic-bezier(.55,.5,.45,.5) infinite;
+        }
+        .parallax > use:nth-child(1) { animation-delay: -2s; animation-duration: 7s; }
+        .parallax > use:nth-child(2) { animation-delay: -3s; animation-duration: 10s; }
+        .parallax > use:nth-child(3) { animation-delay: -4s; animation-duration: 13s; }
+        .parallax > use:nth-child(4) { animation-delay: -5s; animation-duration: 20s; }
+
+        @keyframes move-forever {
+            0% { transform: translate3d(-90px,0,0); }
+            100% { transform: translate3d(85px,0,0); }
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 12px;
+                padding: 15px;
+                text-align: center;
+            }
+            .content {
+                margin-top: 140px;
+            }
+            .content h1 {
+                font-size: 2.2rem;
+            }
+            .waves {
+                height: 60px;
+                min-height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="index.html" class="brand">🔥 Ember</a>
+        </div>
+        
+        <div class="nav-right">
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="commands.html">Commands</a></li>
+                <li><a href="booster.html" class="active">Booster Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="content">
+        <h1>Booster Dashboard</h1>
+        
+        <div class="dashboard-card">
+            <form action="#" method="POST" class="form-group">
+                <label for="discord-id" class="form-label">Discord ID</label>
+                <input 
+                    type="text" 
+                    id="discord-id" 
+                    name="discordId" 
+                    class="form-input" 
+                    placeholder="Enter your Discord ID (e.g. 4512345678901234)"
+                    required
+                >
+                <button type="submit" class="btn-submit">Submit ID</button>
+            </form>
+        </div>
+    </div>
+
+    <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+    viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+            <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+            <linearGradient id="fireGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#ff6a00" />
+                <stop offset="100%" stop-color="#ee0979" />
+            </linearGradient>
+        </defs>
+        <g class="parallax">
+            <use xlink:href="#gentle-wave" x="48" y="0" fill="url(#fireGradient)" fill-opacity="0.3" />
+            <use xlink:href="#gentle-wave" x="48" y="3" fill="url(#fireGradient)" fill-opacity="0.5" />
+            <use xlink:href="#gentle-wave" x="48" y="5" fill="url(#fireGradient)" fill-opacity="0.7" />
+            <use xlink:href="#gentle-wave" x="48" y="7" fill="url(#fireGradient)" />
+        </g>
+    </svg>
+
+</body>
+</html>
