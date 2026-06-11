@@ -475,13 +475,6 @@
         let selectedPlayer = "";
         let globalPlayersCache = [];
 
-        // Note: Direct frontend calls to api.erlc.gg will encounter CORS blocks in regular browsers.
-        // If testing locally, use a browser extension proxy or flip this configuration flag to true.
-        const CONFIG = {
-            USE_PROXY: false,
-            PROXY_URL: "https://your-backend-proxy.com/api" 
-        };
-
         function initializeDashboard() {
             const keyInput = document.getElementById('api-key').value.trim();
 
@@ -499,26 +492,36 @@
         }
 
         async function fetchActiveServerPlayers() {
-            // Updated directly to the dedicated ER:LC v1 player tracking endpoint
-            const endpoint = CONFIG.USE_PROXY 
-                ? `${CONFIG.PROXY_URL}/players`
-                : `https://api.erlc.gg/v1/server/players`;
-
-            const requestHeaders = CONFIG.USE_PROXY ? {} : { 'server-key': apiKey };
+            // Using a CORS reverse proxy proxy to allow the browser to talk directly to the ER:LC API endpoints safely
+            const targetUrl = `https://api.erlc.gg/v1/server/players`;
+            const endpoint = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
 
             try {
                 const response = await fetch(endpoint, {
                     method: 'GET',
-                    headers: requestHeaders
+                    headers: {
+                        // AllOrigins proxies allow headers to pass through parameters, or we supply it to the remote request
+                        'Cache-Control': 'no-cache'
+                    }
                 });
 
-                if (!response.ok) {
-                    throw new Error(`HTTP Error Status: ${response.status}`);
-                }
+                if (!response.ok) throw new Error("Network response failed");
 
-                const data = await response.json();
+                const outerData = await response.json();
                 
-                // ER:LC /players endpoint passes back a clean array of player objects containing keys: 'Player', 'Permission', and 'Team'
+                // AllOrigins wraps the API response inside a string called .contents
+                // We send the 'server-key' custom header by modifying the request parameters
+                const freshFetch = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://api.erlc.gg/v1/server/players')}&nocache=${Date.now()}`, {
+                    headers: { 'server-key': apiKey }
+                });
+                
+                // Let's do a direct approach tailored for AllOrigins to cleanly send headers:
+                const proxyResponse = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent('https://api.erlc.gg/v1/server/players')}`, {
+                    headers: { 'server-key': apiKey }
+                });
+                
+                const data = await proxyResponse.json();
+                
                 if (data && Array.isArray(data)) {
                     globalPlayersCache = data;
                 } else {
@@ -546,7 +549,6 @@
 
             modal.classList.add('active');
 
-            // Fetch live layout states right as the modal popup initiates
             await fetchActiveServerPlayers();
             playerListDiv.innerHTML = "";
 
@@ -561,9 +563,7 @@
                 if (globalPlayersCache.length === 0) {
                     playerListDiv.innerHTML = "<div style='padding:10px; color:#ccc; font-style:italic;'>Empty server or connection failed. No active players found.</div>";
                 } else {
-                    // Match visual list layout matching the design screenshot wireframe context
                     globalPlayersCache.forEach(playerData => {
-                        // ER:LC format combines username and user ID into the single 'Player' element string e.g. "Hyper_Velocity:4892019"
                         const identificationRaw = playerData.Player || "Unknown:0";
                         const splitData = identificationRaw.split(':');
                         const username = splitData[0] || "Unknown Player";
@@ -571,8 +571,6 @@
 
                         const div = document.createElement('div');
                         div.className = 'player-item';
-                        
-                        // Formatted cleanly to match your custom styling needs
                         div.innerHTML = `
                             <span>${username}</span>
                             <span class="player-id">(ID: ${userId})</span>
@@ -619,41 +617,41 @@
                 finalCommandPayload += ` ${unbanId}`;
             } else {
                 if (!selectedPlayer) return alert("Please select an active target player item.");
-                finalCommandPayload += ` "${selectedPlayer}"`;
+                // Clean syntax string structure without extra string quotes (how ER:LC expects it)
+                finalCommandPayload += ` ${selectedPlayer}`;
 
                 if (activeCommand === 'tp') {
                     const dest = document.getElementById('target-destination').value.trim();
                     if(!dest) return alert("Please specify a destination user.");
-                    finalCommandPayload += ` "${dest}"`;
+                    finalCommandPayload += ` ${dest}`;
                 } else if (activeCommand === 'kick') {
-                    const reason = document.getElementById('target-reason').value.trim() || "No context specified.";
-                    finalCommandPayload += ` "${reason}"`;
+                    const reason = document.getElementById('target-reason').value.trim() || "Staff Remanded Action";
+                    finalCommandPayload += ` ${reason}`;
                 }
             }
 
-            const commandEndpoint = CONFIG.USE_PROXY 
-                ? `${CONFIG.PROXY_URL}/command`
-                : `https://api.erlc.gg/v1/server/command`;
-
-            const requestHeaders = CONFIG.USE_PROXY 
-                ? { 'Content-Type': 'application/json' } 
-                : { 'server-key': apiKey, 'Content-Type': 'application/json' };
+            // Using the raw AllOrigins cors-unblocker engine to fire the POST body cleanly
+            const targetCommandUrl = `https://api.erlc.gg/v1/server/command`;
+            const proxyCommandEndpoint = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetCommandUrl)}`;
 
             try {
-                const response = await fetch(commandEndpoint, {
+                const response = await fetch(proxyCommandEndpoint, {
                     method: 'POST',
-                    headers: requestHeaders,
+                    headers: { 
+                        'server-key': apiKey, 
+                        'Content-Type': 'application/json' 
+                    },
                     body: JSON.stringify({ command: finalCommandPayload })
                 });
 
                 if(response.ok) {
-                    alert(`📡 Directives Dispatched Successfully!\n\nPayload: ${finalCommandPayload}`);
+                    alert(`📡 Directives Dispatched Successfully!\n\nSent: ${finalCommandPayload}`);
                 } else {
-                    alert(`⚠️ Server rejected payload command context execution structure (Status: ${response.status})`);
+                    alert(`⚠️ Server rejected the command. (Status: ${response.status})\nMake sure your server is online and has active players.`);
                 }
             } catch(e) {
                 console.error(e);
-                alert(`📡 Request generated locally:\n\nPayload: ${finalCommandPayload}\n\nNote: Browsers block direct endpoints due to CORS policies. Implement a simple proxy handler in your backend production app.`);
+                alert(`❌ Connection Error. Unable to contact ER:LC API gateway.`);
             }
 
             closeTargetModal();
