@@ -35,12 +35,17 @@
             backdrop-filter: blur(5px);
         }
 
-        .nav-logo {
+        /* Match the brand styling from index.html */
+        .brand {
+            color: #ff6a00;
+            font-size: 1.5rem;
             font-weight: bold;
-            font-size: 1.3rem;
-            color: var(--fire-yellow);
-            text-shadow: 0 0 8px var(--fire-orange);
             text-decoration: none;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px #ff6a00;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .nav-right {
@@ -173,7 +178,6 @@
             border: 1px solid var(--fire-red);
             color: #ff9e9e;
         }
-
         .badge.admin {
             background-color: rgba(255, 87, 51, 0.2);
             border: 1px solid var(--fire-orange);
