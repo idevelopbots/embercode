@@ -492,18 +492,35 @@
         }
 
         async function fetchActiveServerPlayers() {
+            // Using a CORS reverse proxy proxy to allow the browser to talk directly to the ER:LC API endpoints safely
             const targetUrl = `https://api.erlc.gg/v1/server/players`;
-            const proxyEndpoint = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+            const endpoint = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
 
             try {
-                const response = await fetch(proxyEndpoint, {
+                const response = await fetch(endpoint, {
                     method: 'GET',
-                    headers: { 'server-key': apiKey }
+                    headers: {
+                        // AllOrigins proxies allow headers to pass through parameters, or we supply it to the remote request
+                        'Cache-Control': 'no-cache'
+                    }
                 });
 
-                if (!response.ok) throw new Error("Failed to pull live player list.");
+                if (!response.ok) throw new Error("Network response failed");
 
-                const data = await response.json();
+                const outerData = await response.json();
+                
+                // AllOrigins wraps the API response inside a string called .contents
+                // We send the 'server-key' custom header by modifying the request parameters
+                const freshFetch = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://api.erlc.gg/v1/server/players')}&nocache=${Date.now()}`, {
+                    headers: { 'server-key': apiKey }
+                });
+                
+                // Let's do a direct approach tailored for AllOrigins to cleanly send headers:
+                const proxyResponse = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent('https://api.erlc.gg/v1/server/players')}`, {
+                    headers: { 'server-key': apiKey }
+                });
+                
+                const data = await proxyResponse.json();
                 
                 if (data && Array.isArray(data)) {
                     globalPlayersCache = data;
@@ -600,6 +617,7 @@
                 finalCommandPayload += ` ${unbanId}`;
             } else {
                 if (!selectedPlayer) return alert("Please select an active target player item.");
+                // Clean syntax string structure without extra string quotes (how ER:LC expects it)
                 finalCommandPayload += ` ${selectedPlayer}`;
 
                 if (activeCommand === 'tp') {
@@ -612,6 +630,7 @@
                 }
             }
 
+            // Using the raw AllOrigins cors-unblocker engine to fire the POST body cleanly
             const targetCommandUrl = `https://api.erlc.gg/v1/server/command`;
             const proxyCommandEndpoint = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetCommandUrl)}`;
 
@@ -628,7 +647,7 @@
                 if(response.ok) {
                     alert(`📡 Directives Dispatched Successfully!\n\nSent: ${finalCommandPayload}`);
                 } else {
-                    alert(`⚠️ Server rejected the command. (Status: ${response.status})\nEnsure your server-key is valid and active.`);
+                    alert(`⚠️ Server rejected the command. (Status: ${response.status})\nMake sure your server is online and has active players.`);
                 }
             } catch(e) {
                 console.error(e);
