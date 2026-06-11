@@ -16,13 +16,12 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            background: #0a0a0a; /* Deep black background */
+            background: #0a0a0a;
             position: relative;
             color: #ffffff;
-            padding-bottom: 15vh; /* Space for background waves */
+            padding-bottom: 15vh;
         }
 
-        /* Top Navigation Bar Styling */
         .navbar {
             position: fixed;
             top: 0;
@@ -34,7 +33,7 @@
             padding: 15px 30px;
             background: rgba(18, 18, 18, 0.85);
             backdrop-filter: blur(10px);
-            border-bottom: 2px solid #900c3f; /* Deep fiery red border */
+            border-bottom: 2px solid #900c3f;
             z-index: 100;
         }
 
@@ -72,7 +71,6 @@
             text-shadow: 0 0 10px #ff6a00;
         }
 
-        /* Content Layout Container */
         .container {
             width: 100%;
             max-width: 1200px;
@@ -86,11 +84,10 @@
             font-size: 3rem;
             margin-bottom: 25px;
             letter-spacing: 1px;
-            color: #ffc300; /* Ember yellow */
+            color: #ffc300;
             text-shadow: 0 0 15px #ff6a00, 0 0 30px #900c3f;
         }
 
-        /* Setup and configuration card components */
         .dashboard-card {
             background: linear-gradient(145deg, #2c0b0e, #1a0507);
             border: 2px solid #900c3f;
@@ -121,7 +118,7 @@
         .form-label {
             font-size: 1.1rem;
             font-weight: 600;
-            color: #ff5733; /* Fire orange */
+            color: #ff5733;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
@@ -166,9 +163,8 @@
             box-shadow: 0 6px 20px rgba(255, 106, 0, 0.5);
         }
 
-        /* Commands Management Layout System */
         .commands-panel {
-            display: none; /* Initially hidden until configuration matches */
+            display: none;
         }
 
         .commands-grid {
@@ -210,7 +206,6 @@
             box-shadow: 0 0 15px rgba(255, 106, 0, 0.4);
         }
 
-        /* Target Selector Overlay System (Modal Windows) */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -269,7 +264,6 @@
             padding-right: 5px;
         }
 
-        /* Custom Scrollbar for Player List */
         .player-list::-webkit-scrollbar {
             width: 6px;
         }
@@ -334,7 +328,6 @@
             color: white;
         }
 
-        /* SVG Wave Styling Bottom Component */
         .waves {
             position: fixed;
             bottom: 0;
@@ -360,7 +353,6 @@
             100% { transform: translate3d(85px,0,0); }
         }
 
-        /* Responsiveness viewports */
         @media (max-width: 768px) {
             .navbar {
                 flex-direction: column;
@@ -471,15 +463,14 @@
         let apiKey = "";
         let activeCommand = "";
         let selectedPlayer = "";
+        let globalPlayersCache = [];
 
-        // Mock Sandbox Data representative of real ER:LC Server responses
-        const mockPlayersArray = [
-            { username: "Hyper_Velocity", userId: 4892019 },
-            { username: "Ember_Dev", userId: 1294811 },
-            { username: "Robloxian992", userId: 9948102 },
-            { username: "ShadowRunner", userId: 3349102 },
-            { username: "Officer_Blazek", userId: 5543192 }
-        ];
+        // --- CONFIGURATION MANAGEMENT ---
+        // Change USE_PROXY to true if you route requests through a custom backend
+        const CONFIG = {
+            USE_PROXY: false,
+            PROXY_URL: "https://your-backend-proxy.com/api" 
+        };
 
         function initializeDashboard() {
             const keyInput = document.getElementById('api-key').value.trim();
@@ -491,12 +482,45 @@
 
             apiKey = keyInput;
 
-            // Interface changes state to display operational layout modules
             document.getElementById('api-setup-card').style.display = 'none';
             document.getElementById('controls-panel').style.display = 'block';
+            
+            // Prefetch active players right away to cache them for modal performance
+            fetchActiveServerPlayers();
         }
 
-        function openTargetModal(commandType) {
+        async function fetchActiveServerPlayers() {
+            const endpoint = CONFIG.USE_PROXY 
+                ? `${CONFIG.PROXY_URL}/players`
+                : `https://api.policeroleplay.community/v1/server`;
+
+            const requestHeaders = CONFIG.USE_PROXY ? {} : { 'Server-API-Key': apiKey };
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'GET',
+                    headers: requestHeaders
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP Error Status: ${response.status}`);
+                }
+
+                const serverData = await response.json();
+                
+                // ER:LC returns an object with a "Players" array profile containing active users
+                if (serverData && Array.isArray(serverData.Players)) {
+                    globalPlayersCache = serverData.Players;
+                } else {
+                    globalPlayersCache = [];
+                }
+            } catch (error) {
+                console.error("Failed fetching live player roster profile from ER:LC API:", error);
+                globalPlayersCache = [];
+            }
+        }
+
+        async function openTargetModal(commandType) {
             activeCommand = commandType;
             selectedPlayer = "";
             
@@ -506,11 +530,16 @@
             const extraContainer = document.getElementById('extra-fields-container');
             
             title.innerText = `Target Options: :${commandType}`;
-            playerListDiv.innerHTML = "";
+            playerListDiv.innerHTML = "<div style='padding:10px; color:#ff6a00;'>🔄 Synchronizing live server roster...</div>";
             extraContainer.innerHTML = "";
             extraContainer.style.display = "none";
 
-            // Conditional layout options for command exceptions
+            modal.classList.add('active');
+
+            // Pull fresh live player tracking states right as the modal initializes
+            await fetchActiveServerPlayers();
+            playerListDiv.innerHTML = "";
+
             if (commandType === 'unban') {
                 title.innerText = "Target Account Details";
                 extraContainer.innerHTML = `
@@ -519,16 +548,23 @@
                 `;
                 extraContainer.style.display = "flex";
             } else {
-                // Generate tracking list items for standard active command sets
-                mockPlayersArray.forEach(player => {
-                    const div = document.createElement('div');
-                    div.className = 'player-item';
-                    div.innerText = `${player.username} (ID: ${player.userId})`;
-                    div.onclick = () => selectPlayerItem(div, player.username);
-                    playerListDiv.appendChild(div);
-                });
+                if (globalPlayersCache.length === 0) {
+                    playerListDiv.innerHTML = "<div style='padding:10px; color:#ccc; font-style:italic;'>Empty server or connection failed. No active players found.</div>";
+                } else {
+                    // Inject real user strings mapped from live api values
+                    globalPlayersCache.forEach(player => {
+                        // ER:LC properties: 'Permission' can filter, 'Player' contains "Username:UserId" format split
+                        const playerIdentityString = player.Player || "Unknown User";
+                        const cleanUsername = playerIdentityString.split(':')[0] || playerIdentityString;
 
-                // Inject supplemental multi-target inputs
+                        const div = document.createElement('div');
+                        div.className = 'player-item';
+                        div.innerText = playerIdentityString;
+                        div.onclick = () => selectPlayerItem(div, cleanUsername);
+                        playerListDiv.appendChild(div);
+                    });
+                }
+
                 if (commandType === 'tp') {
                     extraContainer.innerHTML = `
                         <label class="form-label">Destination Player (Bring To)</label>
@@ -543,8 +579,6 @@
                     extraContainer.style.display = "flex";
                 }
             }
-
-            modal.classList.add('active');
         }
 
         function selectPlayerItem(element, username) {
@@ -558,7 +592,7 @@
             document.getElementById('target-modal').classList.remove('active');
         }
 
-        function processActionExecution() {
+        async function processActionExecution() {
             let finalCommandPayload = `:${activeCommand}`;
 
             if (activeCommand === 'unban') {
@@ -579,19 +613,32 @@
                 }
             }
 
-            // Interface simulated success state block response
-            alert(`📡 Dispatching Request to ER:LC Server API:\n\nCommand Payload: ${finalCommandPayload}`);
-            
-            /* Real implementation structural pattern:
-               fetch(`https://api.policeroleplay.community/v1/server/command`, {
-                   method: 'POST',
-                   headers: {
-                       'Server-API-Key': apiKey,
-                       'Content-Type': 'application/json'
-                   },
-                   body: JSON.stringify({ command: finalCommandPayload })
-               });
-            */
+            // Command target dispatch
+            const commandEndpoint = CONFIG.USE_PROXY 
+                ? `${CONFIG.PROXY_URL}/command`
+                : `https://api.erlc.gg/v1/server/command`;
+
+            const requestHeaders = CONFIG.USE_PROXY 
+                ? { 'Content-Type': 'application/json' } 
+                : { 'Server-API-Key': apiKey, 'Content-Type': 'application/json' };
+
+            try {
+                const response = await fetch(commandEndpoint, {
+                    method: 'POST',
+                    headers: requestHeaders,
+                    body: JSON.stringify({ command: finalCommandPayload })
+                });
+
+                if(response.ok) {
+                    alert(`📡 Directives Dispatched Successfully!\n\nPayload: ${finalCommandPayload}`);
+                } else {
+                    alert(`⚠️ Server rejected payload command context execution structure (Status: ${response.status})`);
+                }
+            } catch(e) {
+                console.error(e);
+                // Fallback indicator message alert if CORS blocks direct browser testing 
+                alert(`📡 Request generated locally:\n\nPayload: ${finalCommandPayload}\n\nNote: Direct browser api fetches can be restricted by CORS. Secure production operations should employ your backend proxy system.`);
+            }
 
             closeTargetModal();
         }
