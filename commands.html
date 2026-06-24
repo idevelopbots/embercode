@@ -1,1 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New York City - Commands</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #0a0a0a url("https://media.discordapp.net/attachments/1445869801368191100/1497633166528348321/image.png?ex=6a3cac53&is=6a3b5ad3&hm=59cec288768ef6a533a5a2d6b9026734e5b7da8e3e3c196f8fa8929b2d831482&=&format=webp&quality=lossless&width=1331&height=749");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            position: relative;
+            padding-bottom: 20vh; /* Space so content doesn't get hidden behind waves */
+        }
+
+        /* Top Navigation Bar Styling (Matches index.html) */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: rgba(18, 18, 18, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid #900c3f; 
+            z-index: 100;
+        }
+
+        .nav-left .brand {
+            color: #ff6a00;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px #ff6a00;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-middle .announcement {
+            color: #ffb703;
+            font-size: 0.95rem;
+            background: rgba(255, 183, 3, 0.1);
+            padding: 6px 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 183, 3, 0.2);
+        }
+
+        .nav-right .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-right .nav-links a {
+            color: #d0d0d0;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .nav-right .nav-links a:hover, 
+        .nav-right .nav-links a.active {
+            color: #ff6a00;
+            text-shadow: 0 0 10px #ff6a00;
+        }
+
+        /* Commands Layout Container */
+        .commands-container {
+            position: relative;
+            z-index: 10;
+            margin-top: 120px;
+            width: 100%;
+            max-width: 900px;
+            padding: 0 20px;
+        }
+
+        /* Section Category Titles */
+        .category-title {
+            font-size: 1.6rem;
+            margin: 35px 0 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #ffffff 30%, #00d2ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 8px rgba(0, 210, 255, 0.4));
+        }
+
+        /* Box surrounding all items in a group */
+        .category-group {
+            background: rgba(18, 18, 18, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Individual Command Blocks */
+        .command-card {
+            background: rgba(10, 10, 10, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 16px 20px;
+            color: #e0e0e0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            letter-spacing: 0.5px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .command-card:hover {
+            transform: translateX(4px);
+            border-color: rgba(0, 210, 255, 0.3);
+        }
+
+        /* SVG Wave Styling (Matches index.html) */
+        .waves {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 15vh;
+            min-height: 100px;
+            max-height: 150px;
+            z-index: 1;
+            pointer-events: none; /* Allows clicking through waves if needed */
+        }
+
+        /* Wave Animation */
+        .parallax > use {
+            animation: move-forever 25s cubic-bezier(.55,.5,.45,.5) infinite;
+        }
+        .parallax > use:nth-child(1) {
+            animation-delay: -2s;
+            animation-duration: 7s;
+        }
+        .parallax > use:nth-child(2) {
+            animation-delay: -3s;
+            animation-duration: 10s;
+        }
+        .parallax > use:nth-child(3) {
+            animation-delay: -4s;
+            animation-duration: 13s;
+        }
+        .parallax > use:nth-child(4) {
+            animation-delay: -5s;
+            animation-duration: 20s;
+        }
+
+        @keyframes move-forever {
+            0% {
+                transform: translate3d(-90px,0,0);
+            }
+            100% {
+                transform: translate3d(85px,0,0);
+            }
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 12px;
+                padding: 15px;
+                text-align: center;
+            }
+            .nav-middle .announcement {
+                font-size: 0.8rem;
+            }
+            .commands-container {
+                margin-top: 180px;
+            }
+            .category-title {
+                font-size: 1.3rem;
+            }
+            .command-card {
+                font-size: 0.85rem;
+                padding: 12px 15px;
+            }
+            .waves {
+                height: 60px;
+                min-height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="index.html" class="brand">Ember</a>
+        </div>
+        
+        <div class="nav-middle">
+            <span class="announcement">Join our Discord!</span>
+        </div>
+        
+        <div class="nav-right">
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="commands.html" class="active">Commands</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="commands-container">
+
+        <h2 class="category-title">📢 Discord Related Announcements</h2>
+        <div class="category-group">
+            <div class="command-card">
+                :m We will now be doing VC checks. If you are not detected in a voice channel you will be kicked. Comms: orgcounty
+            </div>
+            <div class="command-card">
+                :m We are a VC only server meaning you must be in a voice channel at all times. We do not operate off Roblox VC. You must be in our comms & actively in a VC. Code: orgcounty
+            </div>
+            <div class="command-card">
+                :H If you are currently not in a voice channel, join one or you will be faced with a kick! Code: orgcounty
+            </div>
+        </div>
+
+        <h2 class="category-title">🚗 Driving</h2>
+        <div class="category-group">
+            <div class="command-card">
+                :h Ensure you are driving with fear, and not breaking multiple traffic rules with no reasoning. You must have a valid reason to break traffic laws, example - Having a priority.
+            </div>
+            <div class="command-card">
+                :H Running red lights or stop signs requires proper justification. Blindly ignoring traffic laws is unrealistic and will be punished.
+            </div>
+            <div class="command-card">
+                :H All driving must remain roleplay-based. If you wouldn't do it in real life, don't do it in-game without a solid RP reason.
+            </div>
+            <div class="command-card">
+                :H Intentional collisions, brake-checking, or ramming vehicles without RP justification is prohibited.
+            </div>
+            <div class="command-card">
+                :H Failure to yield to emergency vehicles is punishable. Pull over safely and realistically when required.
+            </div>
+        </div>
+
+    </div>
+
+    <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+    viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+            <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+            <linearGradient id="blueWaveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#0a2540" />
+                <stop offset="100%" stop-color="#001020" />
+            </linearGradient>
+        </defs>
+        <g class="parallax">
+            <use xlink:href="#gentle-wave" x="48" y="0" fill="url(#blueWaveGradient)" fill-opacity="0.3" />
+            <use xlink:href="#gentle-wave" x="48" y="3" fill="url(#blueWaveGradient)" fill-opacity="0.5" />
+            <use xlink:href="#gentle-wave" x="48" y="5" fill="url(#blueWaveGradient)" fill-opacity="0.7" />
+            <use xlink:href="#gentle-wave" x="48" y="7" fill="url(#blueWaveGradient)" />
+        </g>
+    </svg>
+
+</body>
+</html>
