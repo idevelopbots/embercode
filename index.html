@@ -101,8 +101,13 @@
             font-size: 3.5rem;
             margin-bottom: 15px;
             letter-spacing: 1px;
-            color: #ffc300; /* Ember yellow */
-            text-shadow: 0 0 15px #ff6a00, 0 0 30px #900c3f;
+            /* Blue and white gradient text style */
+            background: linear-gradient(135deg, #ffffff 30%, #00d2ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(0, 210, 255, 0.5));
         }
 
         .content p {
@@ -237,7 +242,7 @@
         </div>
         
         <div class="nav-middle">
-            <span class="announcement">Join our Discord! (discord.gg/Nma5qb84g9)</span>
+            <span class="announcement">Join our Discord!</span>
         </div>
         
         <div class="nav-right">
