@@ -38,7 +38,7 @@
             padding: 15px 30px;
             background: rgba(18, 18, 18, 0.85);
             backdrop-filter: blur(10px);
-            border-bottom: 2px solid #900c3f; 
+            border-bottom: 2px solid #900c3f; /* Deep fiery red border */
             z-index: 100;
         }
 
@@ -95,7 +95,7 @@
             padding: 0 20px;
         }
 
-        /* Section Category Titles */
+        /* Section Category Titles with Blue and White Gradient */
         .category-title {
             font-size: 1.6rem;
             margin: 35px 0 15px 0;
@@ -123,7 +123,7 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
         }
 
-        /* Individual Command Blocks */
+        /* Individual Command Blocks with subtle blue interaction */
         .command-card {
             background: rgba(10, 10, 10, 0.7);
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -134,12 +134,13 @@
             font-size: 0.95rem;
             line-height: 1.5;
             letter-spacing: 0.5px;
-            transition: transform 0.2s ease, border-color 0.2s ease;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .command-card:hover {
             transform: translateX(4px);
-            border-color: rgba(0, 210, 255, 0.3);
+            border-color: rgba(0, 210, 255, 0.4);
+            box-shadow: 0 0 10px rgba(0, 210, 255, 0.1);
         }
 
         /* SVG Wave Styling (Matches index.html) */
@@ -152,7 +153,7 @@
             min-height: 100px;
             max-height: 150px;
             z-index: 1;
-            pointer-events: none; /* Allows clicking through waves if needed */
+            pointer-events: none;
         }
 
         /* Wave Animation */
@@ -217,11 +218,11 @@
 
     <nav class="navbar">
         <div class="nav-left">
-            <a href="index.html" class="brand">New York City</a>
+            <a href="index.html" class="brand">Ember</a>
         </div>
         
         <div class="nav-middle">
-            <span class="announcement">Do not share this information!</span>
+            <span class="announcement">Join our Discord!</span>
         </div>
         
         <div class="nav-right">
