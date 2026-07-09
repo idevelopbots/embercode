@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom Background Page</title>
+    <title>Management Portal</title>
     <style>
         /* Reset margins and ensure full height */
         * {
@@ -15,7 +15,6 @@
         body, html {
             height: 100%;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            position: relative;
         }
 
         /* Fullscreen background styling */
@@ -41,40 +40,41 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
             max-width: 500px;
             width: 90%;
-            position: relative;
-            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Logo positioned inside the card at the top center */
+        .center-top-logo {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 15px;
         }
 
         h1 {
             color: #333;
-            margin-bottom: 15px;
+            margin-bottom: 5px;
+            font-size: 2rem;
         }
 
         p {
             color: #666;
             line-height: 1.6;
-        }
-
-        /* Logo positioned in the top right corner */
-        .top-right-logo {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            object-fit: contain;
-            z-index: 10;
+            font-size: 1.1rem;
         }
     </style>
 </head>
 <body>
 
-    <img class="top-right-logo" src="https://media.discordapp.net/attachments/1524884039184679092/1524913925911482388/7c8b57e10015b77642067173e7460e4b.png?ex=6a517a43&is=6a5028c3&hm=bb0fad28473c42ba4b64f6f4b912b048d7616cbdcf6eedbe50ebc720fb8c7117&=" alt="Logo">
-
     <div class="bg-background">
         <div class="content-card">
-            <h1>Welcome to My Page</h1>
-            <p>This is a starter template using your requested image as a full-screen background. You can replace this text and build your project right inside this card!</p>
+            <img class="center-top-logo" src="https://media.discordapp.net/attachments/1524884039184679092/1524913925911482388/7c8b57e10015b77642067173e7460e4b.png?ex=6a517a43&is=6a5028c3&hm=bb0fad28473c42ba4b64f6f4b912b048d7616cbdcf6eedbe50ebc720fb8c7117&=" alt="Logo">
+            
+            <h1>Los Angeles</h1>
+            
+            <p>Management Portal</p>
         </div>
     </div>
 
