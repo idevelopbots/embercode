@@ -111,6 +111,7 @@
             display: none;
             font-size: 0.9rem;
             text-align: center;
+            word-break: break-all;
         }
 
         .success { background-color: rgba(6, 95, 70, 0.8); color: #34d399; border: 1px solid #059669; }
@@ -154,6 +155,7 @@
             return;
         }
 
+        // Standard ERLC command structure format
         let fullCommand = commandText;
         if (playerText) {
             fullCommand = `${commandText} ${playerText}`;
@@ -164,11 +166,12 @@
         };
 
         try {
-            const response = await fetch('https://api.erlc.gg/command', {
+            // Updated to the correct v2 ERLC API endpoint
+            const response = await fetch('https://api.erlc.gg/v2/server/command', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Server-API-Key': apiKey
+                    'server-key': apiKey // Corrected header key
                 },
                 body: JSON.stringify(payload)
             });
@@ -180,6 +183,7 @@
                 showStatus(`Failed: ${response.status} - ${errorData || 'Check Key/Permissions'}`, 'error');
             }
         } catch (error) {
+            // Note: If you encounter a CORS block, you will need a backend proxy server to forward this request.
             showStatus(`Error: Network issue or CORS block.`, 'error');
             console.error('Fetch error:', error);
         }
