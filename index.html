@@ -75,36 +75,6 @@
     text-transform: uppercase;
   }
 
-  .brand .badge-dot {
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background: var(--green);
-    box-shadow: 0 0 8px var(--green);
-    animation: pulse 2s infinite ease-in-out;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-
-  .topnav {
-    display: flex;
-    gap: 2.2rem;
-  }
-
-  .topnav a {
-    color: var(--ink-dim);
-    text-decoration: none;
-    font-size: 0.82rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    transition: color 0.2s ease;
-  }
-
-  .topnav a:hover { color: var(--gold); }
-
   /* ---- hero ---- */
   .hero {
     text-align: center;
@@ -229,189 +199,85 @@
     letter-spacing: 0.05em;
   }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  th, td {
-    text-align: left;
-    padding: 0.8rem 1.5rem;
-    font-size: 0.85rem;
-  }
-
-  th {
-    color: var(--ink-faint);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-weight: 500;
-    border-bottom: 1px solid var(--panel-border);
-  }
-
-  tbody tr:not(:last-child) td {
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-  }
-
-  .pill {
-    display: inline-block;
-    padding: 0.22rem 0.7rem;
-    border-radius: 20px;
-    font-size: 0.72rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    font-family: 'JetBrains Mono', monospace;
-  }
-
-  .pill.on-duty { background: rgba(76,175,110,0.15); color: var(--green); border: 1px solid rgba(76,175,110,0.35); }
-  .pill.en-route { background: rgba(212,175,55,0.15); color: var(--gold); border: 1px solid rgba(212,175,55,0.35); }
-  .pill.busy { background: rgba(193,39,45,0.15); color: var(--red); border: 1px solid rgba(193,39,45,0.35); }
-
-  /* ---- plate lookup ---- */
-  .lookup-body {
+  /* ---- ERLC command board (Jeopardy layout) ---- */
+  .board-body {
     padding: 1.4rem 1.5rem 1.6rem;
   }
 
-  .search-row {
-    display: flex;
-    gap: 0.7rem;
+  .jeopardy-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
   }
 
-  .search-row input {
-    flex: 1;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--panel-border);
-    border-radius: 3px;
-    padding: 0.75rem 1rem;
-    color: var(--ink);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.9rem;
+  .board-category {
+    background: rgba(212, 175, 55, 0.08);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 4px;
+    padding: 0.8rem 0.6rem;
+    text-align: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    outline: none;
-    transition: border-color 0.2s ease;
+    color: var(--gold);
   }
 
-  .search-row input::placeholder {
-    color: var(--ink-faint);
-    text-transform: none;
-    letter-spacing: normal;
-  }
-
-  .search-row input:focus {
-    border-color: var(--gold);
-  }
-
-  .search-row .btn {
-    padding: 0.75rem 1.6rem;
-    white-space: nowrap;
-  }
-
-  .lookup-state {
-    margin-top: 1.2rem;
-    font-size: 0.85rem;
-    color: var(--ink-faint);
-    font-family: 'JetBrains Mono', monospace;
-  }
-
-  .lookup-result {
-    display: flex;
-    gap: 1.4rem;
-    margin-top: 1.4rem;
-    align-items: stretch;
-  }
-
-  .car-image {
-    width: 220px;
-    height: 140px;
-    object-fit: cover;
-    border-radius: 5px;
-    border: 1px solid var(--panel-border);
-    background: rgba(255,255,255,0.03);
-    flex-shrink: 0;
-  }
-
-  .lookup-details {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.55rem;
-    flex: 1;
-  }
-
-  .lookup-plate {
-    font-family: 'Oswald', sans-serif;
-    font-size: 1.4rem;
-    letter-spacing: 0.08em;
-    margin-bottom: 0.2rem;
-  }
-
-  .lookup-row {
-    display: flex;
-    gap: 0.6rem;
-    font-size: 0.88rem;
-    align-items: center;
-  }
-
-  .lookup-label {
-    color: var(--ink-faint);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    width: 70px;
-    flex-shrink: 0;
-  }
-
-  .lookup-value {
+  .board-card {
+    background: rgba(61, 111, 180, 0.16);
+    border: 1px solid rgba(61, 111, 180, 0.4);
+    border-radius: 4px;
+    padding: 1.1rem 0.6rem;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.84rem;
+    font-weight: 600;
     color: var(--ink);
+    cursor: pointer;
+    transition: all 0.18s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 64px;
   }
 
-  .pill.wanted { background: rgba(193,39,45,0.15); color: var(--red); border: 1px solid rgba(193,39,45,0.35); }
-  .pill.clear { background: rgba(76,175,110,0.15); color: var(--green); border: 1px solid rgba(76,175,110,0.35); }
+  .board-card:hover {
+    background: rgba(61, 111, 180, 0.32);
+    border-color: var(--blue);
+    transform: translateY(-1px);
+  }
+
+  .board-card:active {
+    transform: translateY(0);
+  }
+
+  .board-card.sending {
+    opacity: 0.5;
+    cursor: wait;
+    pointer-events: none;
+  }
+
+  .board-card.danger:hover {
+    background: rgba(193, 39, 45, 0.2);
+    border-color: var(--red);
+  }
+
+  .command-status {
+    margin-top: 1.2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+  }
+
+  .command-status.ok { color: var(--green); }
+  .command-status.error { color: var(--red); }
 
   .hidden { display: none !important; }
 
   @media (max-width: 640px) {
-    .search-row { flex-direction: column; }
-    .lookup-result { flex-direction: column; }
-    .car-image { width: 100%; height: 160px; }
+    .jeopardy-board { grid-template-columns: repeat(2, 1fr); }
   }
-
-  .actions {
-    display: flex;
-    gap: 0.9rem;
-    justify-content: center;
-    margin-top: 2.2rem;
-  }
-
-  .btn {
-    padding: 0.85rem 1.9rem;
-    font-size: 0.8rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    text-decoration: none;
-    border-radius: 3px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    transition: all 0.2s ease;
-  }
-
-  .btn-primary {
-    background: var(--gold);
-    color: #14110c;
-    border: 1px solid var(--gold);
-  }
-
-  .btn-primary:hover { background: transparent; color: var(--gold); }
-
-  .btn-ghost {
-    color: var(--ink);
-    border: 1px solid rgba(238,241,245,0.25);
-  }
-
-  .btn-ghost:hover { border-color: var(--ink); }
 
   footer {
     text-align: center;
@@ -424,9 +290,6 @@
 
   @media (max-width: 800px) {
     .stat-grid { grid-template-columns: 1fr; }
-    .topnav { display: none; }
-    table { font-size: 0.78rem; }
-    th, td { padding: 0.7rem 0.9rem; }
   }
 </style>
 </head>
@@ -437,15 +300,8 @@
 
   <div class="topbar">
     <div class="brand">
-      <span class="badge-dot"></span>
-      LA Portal Dispatch
+      Los Angeles Management
     </div>
-    <nav class="topnav">
-      <a href="#">Roster</a>
-      <a href="#">Applications</a>
-      <a href="#">Rules</a>
-      <a href="#">Discord</a>
-    </nav>
   </div>
 
   <section class="hero">
@@ -466,37 +322,12 @@
 
     <div class="panel">
       <div class="panel-header">
-        <h2>Plate Lookup</h2>
-        <span class="tag" id="lookupTag">Mock data · API pending</span>
+        <h2>ERLC Command Board</h2>
+        <span class="tag">Live · Executes via API</span>
       </div>
-      <div class="lookup-body">
-        <div class="search-row">
-          <input type="text" id="plateInput" placeholder="Enter plate number, e.g. 7LAX214" maxlength="12" autocomplete="off">
-          <button id="plateSearchBtn" class="btn btn-primary">Search</button>
-        </div>
-
-        <div id="lookupEmpty" class="lookup-state">Enter a plate above to pull vehicle, owner, and wanted status.</div>
-        <div id="lookupLoading" class="lookup-state hidden">Searching records…</div>
-        <div id="lookupNotFound" class="lookup-state hidden">No record found for that plate.</div>
-
-        <div id="lookupResult" class="lookup-result hidden">
-          <img id="carImage" class="car-image" src="" alt="Vehicle photo">
-          <div class="lookup-details">
-            <div class="lookup-plate" id="resultPlate"></div>
-            <div class="lookup-row">
-              <span class="lookup-label">Driver</span>
-              <span class="lookup-value" id="resultDriver"></span>
-            </div>
-            <div class="lookup-row">
-              <span class="lookup-label">Vehicle</span>
-              <span class="lookup-value" id="resultVehicle"></span>
-            </div>
-            <div class="lookup-row">
-              <span class="lookup-label">Status</span>
-              <span class="pill" id="wantedPill"></span>
-            </div>
-          </div>
-        </div>
+      <div class="board-body">
+        <div id="commandBoard" class="jeopardy-board"></div>
+        <div id="commandStatus" class="command-status">Select a command tile to run it on your server.</div>
       </div>
     </div>
 
@@ -509,20 +340,24 @@
 
   <script>
     // ---------------------------------------------------------------
-    // ER:LC / PRC SERVER STATUS — live player count
     // ⚠️ SECURITY NOTE: this key is visible to anyone who views this
     // page's source (browser devtools > Sources/Network). PRC's own
     // docs warn that a leaked server key can be used to attack/raid
-    // your server. This is fine for local testing, but for a real
-    // deployment you should route this through a small backend/proxy
-    // that holds the key server-side instead of embedding it here.
+    // your server — and this key can also RUN COMMANDS on your server
+    // (kick, ban, announce, etc.), so exposure here is higher-stakes
+    // than the read-only player count. Fine for local testing; for a
+    // real deployment, route both of these through a small backend/
+    // proxy that holds the key server-side instead of embedding it.
     // ---------------------------------------------------------------
     const ERLC_SERVER_KEY = 'uupNgrOZhpdCgwStivKZ-WiDezheWTtqIXLQIlLmoICWddCjlpumqMyjkJfaJ';
+    const ERLC_BASE = 'https://api.erlc.gg/v2/server';
+
+    // --- Live player count ---
     const playerCountEl = document.getElementById('playerCount');
 
     async function fetchServerStatus() {
       try {
-        const res = await fetch('https://api.erlc.gg/v2/server', {
+        const res = await fetch(ERLC_BASE, {
           headers: { 'server-key': ERLC_SERVER_KEY }
         });
 
@@ -538,102 +373,113 @@
 
     fetchServerStatus();
     setInterval(fetchServerStatus, 30000); // refresh every 30s
-  </script>
 
-  <script>
     // ---------------------------------------------------------------
-    // PLATE LOOKUP
-    // Right now this reads from MOCK_RECORDS below. Once you give me
-    // your API, replace the body of lookupPlate() with a fetch() call
-    // to your endpoint — everything else (rendering, states) stays put.
+    // ERLC COMMAND BOARD — Jeopardy-style grid, executes real commands
+    // via POST https://api.erlc.gg/v2/server/command
     // ---------------------------------------------------------------
-
-    const MOCK_RECORDS = {
-      "7LAX214": {
-        driver: "Marcus Whitfield",
-        vehicle: "2023 Cypress Charger — Black",
-        wanted: true,
-        image: "https://placehold.co/440x280/1a1d24/8a92a3?text=Vehicle+Photo"
+    const COMMAND_BOARD = [
+      {
+        category: 'Announcements',
+        commands: [
+          { label: 'Send Hint', promptText: 'Hint text (shown briefly on screen):', build: v => `:h ${v}` },
+          { label: 'Send Message', promptText: 'Message text (persistent banner):', build: v => `:m ${v}` },
+          { label: 'Announce', promptText: 'Announcement text:', build: v => `:announce ${v}` },
+          { label: 'PM Player', promptText: 'Format: PlayerName Message', build: v => `:pm ${v}` }
+        ]
       },
-      "LA-9302": {
-        driver: "Elena Reyes",
-        vehicle: "2022 Falcon GT — Silver",
-        wanted: false,
-        image: "https://placehold.co/440x280/1a1d24/8a92a3?text=Vehicle+Photo"
+      {
+        category: 'Weather',
+        commands: [
+          { label: 'Clear', build: () => ':weather clear' },
+          { label: 'Rain', build: () => ':weather rain' },
+          { label: 'Fog', build: () => ':weather fog' },
+          { label: 'Snow', build: () => ':weather snow' }
+        ]
       },
-      "SHR001": {
-        driver: "Capt. D. Alvarez",
-        vehicle: "2024 Interceptor Utility — White/Black",
-        wanted: false,
-        image: "https://placehold.co/440x280/1a1d24/8a92a3?text=Vehicle+Photo"
+      {
+        category: 'Time',
+        commands: [
+          { label: 'Day', build: () => ':time 12' },
+          { label: 'Dusk', build: () => ':time 18' },
+          { label: 'Night', build: () => ':time 0' },
+          { label: 'Dawn', build: () => ':time 6' }
+        ]
+      },
+      {
+        category: 'Player Actions',
+        commands: [
+          { label: 'Bring', promptText: 'Player name to bring:', build: v => `:bring ${v}` },
+          { label: 'Kick', promptText: 'Player name to kick:', danger: true, build: v => `:kick ${v}` },
+          { label: 'Ban', promptText: 'Player name to ban:', danger: true, build: v => `:ban ${v}` },
+          { label: 'Unban', promptText: 'Player name to unban:', build: v => `:unban ${v}` }
+        ]
       }
-    };
+    ];
 
-    async function lookupPlate(plate) {
-      // --- MOCK MODE (current) ---
-      await new Promise(r => setTimeout(r, 500)); // simulate network delay
-      const record = MOCK_RECORDS[plate.toUpperCase()];
-      return record || null;
+    const boardEl = document.getElementById('commandBoard');
+    const statusEl = document.getElementById('commandStatus');
+    const rowCount = Math.max(...COMMAND_BOARD.map(c => c.commands.length));
 
-      // --- REAL API MODE (swap in later) ---
-      // const res = await fetch(`https://your-api.example.com/plates/${encodeURIComponent(plate)}`);
-      // if (!res.ok) return null;
-      // return await res.json(); // expects { driver, vehicle, wanted, image }
-    }
-
-    const plateInput = document.getElementById('plateInput');
-    const plateSearchBtn = document.getElementById('plateSearchBtn');
-    const lookupEmpty = document.getElementById('lookupEmpty');
-    const lookupLoading = document.getElementById('lookupLoading');
-    const lookupNotFound = document.getElementById('lookupNotFound');
-    const lookupResult = document.getElementById('lookupResult');
-    const carImage = document.getElementById('carImage');
-    const resultPlate = document.getElementById('resultPlate');
-    const resultDriver = document.getElementById('resultDriver');
-    const resultVehicle = document.getElementById('resultVehicle');
-    const wantedPill = document.getElementById('wantedPill');
-
-    function showState(state) {
-      [lookupEmpty, lookupLoading, lookupNotFound, lookupResult].forEach(el => el.classList.add('hidden'));
-      if (state) state.classList.remove('hidden');
-    }
-
-    async function runSearch() {
-      const plate = plateInput.value.trim();
-      if (!plate) {
-        showState(lookupEmpty);
-        return;
-      }
-
-      showState(lookupLoading);
-      const record = await lookupPlate(plate);
-
-      if (!record) {
-        showState(lookupNotFound);
-        return;
-      }
-
-      carImage.src = record.image;
-      carImage.alt = record.vehicle;
-      resultPlate.textContent = plate.toUpperCase();
-      resultDriver.textContent = record.driver;
-      resultVehicle.textContent = record.vehicle;
-
-      if (record.wanted) {
-        wantedPill.textContent = 'Wanted';
-        wantedPill.className = 'pill wanted';
-      } else {
-        wantedPill.textContent = 'Clear';
-        wantedPill.className = 'pill clear';
-      }
-
-      showState(lookupResult);
-    }
-
-    plateSearchBtn.addEventListener('click', runSearch);
-    plateInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') runSearch();
+    // Header row — category names
+    COMMAND_BOARD.forEach(cat => {
+      const header = document.createElement('div');
+      header.className = 'board-category';
+      header.textContent = cat.category;
+      boardEl.appendChild(header);
     });
+
+    // Card rows, aligned under their category column
+    for (let row = 0; row < rowCount; row++) {
+      COMMAND_BOARD.forEach(cat => {
+        const cmd = cat.commands[row];
+        const card = document.createElement('div');
+        card.className = 'board-card' + (cmd && cmd.danger ? ' danger' : '');
+        card.textContent = cmd ? cmd.label : '';
+        if (cmd) card.addEventListener('click', () => handleCardClick(card, cmd));
+        boardEl.appendChild(card);
+      });
+    }
+
+    function setStatus(message, type) {
+      statusEl.textContent = message;
+      statusEl.className = 'command-status' + (type ? ' ' + type : '');
+    }
+
+    async function handleCardClick(card, cmd) {
+      let value = '';
+      if (cmd.promptText) {
+        value = window.prompt(cmd.promptText);
+        if (value === null || value.trim() === '') return; // cancelled or empty
+      }
+      if (cmd.danger) {
+        const ok = window.confirm(`Run "${cmd.build(value)}" on your server?`);
+        if (!ok) return;
+      }
+
+      const commandString = cmd.build(value);
+      card.classList.add('sending');
+      setStatus(`Sending: ${commandString}…`);
+
+      try {
+        const res = await fetch(`${ERLC_BASE}/command`, {
+          method: 'POST',
+          headers: {
+            'server-key': ERLC_SERVER_KEY,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ command: commandString })
+        });
+
+        if (!res.ok) throw new Error(`API responded ${res.status}`);
+        setStatus(`✓ Sent: ${commandString}`, 'ok');
+      } catch (err) {
+        console.error('ER:LC command failed:', err);
+        setStatus(`✗ Failed to send "${commandString}" — ${err.message}`, 'error');
+      } finally {
+        card.classList.remove('sending');
+      }
+    }
   </script>
 
 </body>
