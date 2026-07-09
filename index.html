@@ -1,285 +1,640 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New York City</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Los Angeles Portal — SHR Exclusive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #eef1f5;
+    --ink-dim: #9aa4b2;
+    --ink-faint: #6b7382;
+    --panel: rgba(18, 22, 30, 0.72);
+    --panel-border: rgba(255, 255, 255, 0.08);
+    --gold: #d4af37;
+    --red: #c1272d;
+    --blue: #3d6fb4;
+    --green: #4caf6e;
+    --bg-black-1: rgba(6, 8, 12, 0.86);
+    --bg-black-2: rgba(6, 8, 12, 0.94);
+  }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            /* Updated background with your Discord media link */
-            background: #0a0a0a url("https://media.discordapp.net/attachments/1445869801368191100/1497633166528348321/image.png?ex=6a3cac53&is=6a3b5ad3&hm=59cec288768ef6a533a5a2d6b9026734e5b7da8e3e3c196f8fa8929b2d831482&=&format=webp&quality=lossless&width=1331&height=749");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            overflow: hidden;
-            position: relative;
-        }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* Top Navigation Bar Styling */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 30px;
-            background: rgba(18, 18, 18, 0.85);
-            backdrop-filter: blur(10px);
-            border-bottom: 2px solid #900c3f; /* Deep fiery red border */
-            z-index: 100;
-        }
+  html, body { height: 100%; }
 
-        .nav-left .brand {
-            color: #ff6a00;
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-decoration: none;
-            letter-spacing: 1px;
-            text-shadow: 0 0 8px #ff6a00;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    position: relative;
+  }
 
-        .nav-middle .announcement {
-            color: #ffb703;
-            font-size: 0.95rem;
-            background: rgba(255, 183, 3, 0.1);
-            padding: 6px 15px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 183, 3, 0.2);
-        }
+  /* ---- background image + black covering ---- */
+  .bg-image {
+    position: fixed;
+    inset: -20px;
+    z-index: -2;
+    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdM7xpdhNRKYY_OEdQKxIPc1pAcQldBJBrBFODchAOkJ0wJmgucYnlMTvs&s=10');
+    background-size: cover;
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    filter: blur(6px) saturate(0.7) contrast(1.02);
+    transform: scale(1.05);
+  }
 
-        .nav-right .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 25px;
-        }
+  .bg-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(180deg, rgba(6,8,12,0.78) 0%, rgba(6,8,12,0.88) 55%, rgba(6,8,12,0.78) 100%);
+  }
 
-        .nav-right .nav-links a {
-            color: #d0d0d0;
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: color 0.3s ease, text-shadow 0.3s ease;
-        }
+  /* subtle scanline / dispatch texture removed per request */
 
-        .nav-right .nav-links a:hover, 
-        .nav-right .nav-links a.active {
-            color: #ff6a00;
-            text-shadow: 0 0 10px #ff6a00;
-        }
+  /* ---- top bar ---- */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 5vw;
+    border-bottom: 1px solid var(--panel-border);
+  }
 
-        /* Container for the content so it stays on top of the waves */
-        .content {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            color: #ffffff; 
-            margin-top: 60px;
-            max-width: 600px;
-            padding: 0 20px;
-        }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
 
-        .content h1 {
-            font-size: 3.5rem;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-            /* Blue and white gradient text style */
-            background: linear-gradient(135deg, #ffffff 30%, #00d2ff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-            filter: drop-shadow(0 0 10px rgba(0, 210, 255, 0.5));
-        }
+  .brand .badge-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    animation: pulse 2s infinite ease-in-out;
+  }
 
-        .content p {
-            color: #b3b3b3;
-            font-size: 1.2rem;
-            margin-bottom: 35px;
-            line-height: 1.6;
-        }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
 
-        /* Centered Buttons Styling */
-        .button-group {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
+  .topnav {
+    display: flex;
+    gap: 2.2rem;
+  }
 
-        .btn {
-            display: inline-block;
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: 700;
-            padding: 14px 32px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: none;
-        }
+  .topnav a {
+    color: var(--ink-dim);
+    text-decoration: none;
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: color 0.2s ease;
+  }
 
-        /* Blue and White Gradient for Primary Button */
-        .btn-invite {
-            background: linear-gradient(45deg, #00d2ff, #ffffff);
-            color: #003366;
-            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
-        }
+  .topnav a:hover { color: var(--gold); }
 
-        .btn-invite:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 210, 255, 0.6);
-        }
+  /* ---- hero ---- */
+  .hero {
+    text-align: center;
+    padding: 7rem 5vw 4rem;
+    position: relative;
+  }
 
-        /* Blue and White Gradient for Support Button */
-        .btn-support {
-            background: linear-gradient(45deg, #ffffff, #00d2ff);
-            color: #003366;
-            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
-        }
+  .hero .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.4rem;
+  }
 
-        .btn-support:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 210, 255, 0.6);
-        }
+  .hero h1 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    font-size: clamp(2.6rem, 7vw, 5.2rem);
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    line-height: 1;
+    color: var(--ink);
+    text-shadow: 0 4px 30px rgba(0,0,0,0.6);
+  }
 
-        /* SVG Wave Styling */
-        .waves {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 15vh;
-            min-height: 100px;
-            max-height: 150px;
-            z-index: 1;
-        }
+  .hero .subtitle {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-family: 'JetBrains Mono', monospace;
+  }
 
-        /* Wave Animation */
-        .parallax > use {
-            animation: move-forever 25s cubic-bezier(.55,.5,.45,.5) infinite;
-        }
-        .parallax > use:nth-child(1) {
-            animation-delay: -2s;
-            animation-duration: 7s;
-        }
-        .parallax > use:nth-child(2) {
-            animation-delay: -3s;
-            animation-duration: 10s;
-        }
-        .parallax > use:nth-child(3) {
-            animation-delay: -4s;
-            animation-duration: 13s;
-        }
-        .parallax > use:nth-child(4) {
-            animation-delay: -5s;
-            animation-duration: 20s;
-        }
+  .hero .subtitle strong {
+    color: var(--gold);
+    font-weight: 500;
+  }
 
-        @keyframes move-forever {
-            0% {
-                transform: translate3d(-90px,0,0);
-            }
-            100% {
-                transform: translate3d(85px,0,0);
-            }
-        }
+  .hero .divider {
+    width: 70%;
+    max-width: 70%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.18);
+    margin: 1.8rem auto 0;
+  }
 
-        /* Mobile responsiveness */
-        @media (max-width: 768px) {
-            .navbar {
-                flex-direction: column;
-                gap: 12px;
-                padding: 15px;
-                text-align: center;
-            }
-            .nav-middle .announcement {
-                font-size: 0.8rem;
-            }
-            .content {
-                margin-top: 160px;
-            }
-            .content h1 {
-                font-size: 2.5rem;
-            }
-            .button-group {
-                flex-direction: column;
-                gap: 15px;
-                align-items: center;
-            }
-            .btn {
-                width: 100%;
-                max-width: 250px;
-            }
-            .waves {
-                height: 60px;
-                min-height: 60px;
-            }
-        }
-    </style>
+  /* ---- dashboard grid ---- */
+  .dashboard {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 5vw 5rem;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: minmax(180px, 220px);
+    gap: 1rem;
+    margin: 0 auto 2.4rem;
+    justify-content: center;
+  }
+
+  .stat-card {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 6px;
+    padding: 1.4rem 1.5rem;
+    backdrop-filter: blur(6px);
+    text-align: center;
+  }
+
+  .stat-card .label {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.6rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .stat-card .value {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.9rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .stat-card .value.status-online { color: var(--green); }
+  .stat-card .value.status-red { color: var(--red); }
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 1.4rem;
+    backdrop-filter: blur(6px);
+  }
+
+  .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--panel-border);
+  }
+
+  .panel-header h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .panel-header .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.05em;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 0.8rem 1.5rem;
+    font-size: 0.85rem;
+  }
+
+  th {
+    color: var(--ink-faint);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+    border-bottom: 1px solid var(--panel-border);
+  }
+
+  tbody tr:not(:last-child) td {
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .pill {
+    display: inline-block;
+    padding: 0.22rem 0.7rem;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .pill.on-duty { background: rgba(76,175,110,0.15); color: var(--green); border: 1px solid rgba(76,175,110,0.35); }
+  .pill.en-route { background: rgba(212,175,55,0.15); color: var(--gold); border: 1px solid rgba(212,175,55,0.35); }
+  .pill.busy { background: rgba(193,39,45,0.15); color: var(--red); border: 1px solid rgba(193,39,45,0.35); }
+
+  /* ---- plate lookup ---- */
+  .lookup-body {
+    padding: 1.4rem 1.5rem 1.6rem;
+  }
+
+  .search-row {
+    display: flex;
+    gap: 0.7rem;
+  }
+
+  .search-row input {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--panel-border);
+    border-radius: 3px;
+    padding: 0.75rem 1rem;
+    color: var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+
+  .search-row input::placeholder {
+    color: var(--ink-faint);
+    text-transform: none;
+    letter-spacing: normal;
+  }
+
+  .search-row input:focus {
+    border-color: var(--gold);
+  }
+
+  .search-row .btn {
+    padding: 0.75rem 1.6rem;
+    white-space: nowrap;
+  }
+
+  .lookup-state {
+    margin-top: 1.2rem;
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .lookup-result {
+    display: flex;
+    gap: 1.4rem;
+    margin-top: 1.4rem;
+    align-items: stretch;
+  }
+
+  .car-image {
+    width: 220px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid var(--panel-border);
+    background: rgba(255,255,255,0.03);
+    flex-shrink: 0;
+  }
+
+  .lookup-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.55rem;
+    flex: 1;
+  }
+
+  .lookup-plate {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.2rem;
+  }
+
+  .lookup-row {
+    display: flex;
+    gap: 0.6rem;
+    font-size: 0.88rem;
+    align-items: center;
+  }
+
+  .lookup-label {
+    color: var(--ink-faint);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    width: 70px;
+    flex-shrink: 0;
+  }
+
+  .lookup-value {
+    color: var(--ink);
+  }
+
+  .pill.wanted { background: rgba(193,39,45,0.15); color: var(--red); border: 1px solid rgba(193,39,45,0.35); }
+  .pill.clear { background: rgba(76,175,110,0.15); color: var(--green); border: 1px solid rgba(76,175,110,0.35); }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 640px) {
+    .search-row { flex-direction: column; }
+    .lookup-result { flex-direction: column; }
+    .car-image { width: 100%; height: 160px; }
+  }
+
+  .actions {
+    display: flex;
+    gap: 0.9rem;
+    justify-content: center;
+    margin-top: 2.2rem;
+  }
+
+  .btn {
+    padding: 0.85rem 1.9rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 3px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: #14110c;
+    border: 1px solid var(--gold);
+  }
+
+  .btn-primary:hover { background: transparent; color: var(--gold); }
+
+  .btn-ghost {
+    color: var(--ink);
+    border: 1px solid rgba(238,241,245,0.25);
+  }
+
+  .btn-ghost:hover { border-color: var(--ink); }
+
+  footer {
+    text-align: center;
+    padding: 2rem 5vw;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    border-top: 1px solid var(--panel-border);
+  }
+
+  @media (max-width: 800px) {
+    .stat-grid { grid-template-columns: 1fr; }
+    .topnav { display: none; }
+    table { font-size: 0.78rem; }
+    th, td { padding: 0.7rem 0.9rem; }
+  }
+</style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="nav-left">
-            <a href="index.html" class="brand">New York City</a>
-        </div>
-        
-        <div class="nav-middle">
-            <span class="announcement">Do not share this information.</span>
-        </div>
-        
-        <div class="nav-right">
-            <ul class="nav-links">
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="commands.html">Commands</a></li>
-            </ul>
-        </div>
-    </nav>
+  <div class="bg-image"></div>
+  <div class="bg-overlay"></div>
 
-    <div class="content">
-        <h1>New York City Roleplay</h1>
-        <p>Do not share any information.</p>
-        
-        <div class="button-group">
-            <a href="https://erlc.gg/join/playnyrp" class="btn btn-invite">Join Server</a>
-            <a href="https://melon.ly/join/RWZELM" class="btn btn-support">Join Melonly</a>
-        </div>
+  <div class="topbar">
+    <div class="brand">
+      <span class="badge-dot"></span>
+      LA Portal Dispatch
+    </div>
+    <nav class="topnav">
+      <a href="#">Roster</a>
+      <a href="#">Applications</a>
+      <a href="#">Rules</a>
+      <a href="#">Discord</a>
+    </nav>
+  </div>
+
+  <section class="hero">
+    <div class="eyebrow">ER:LC · Community Server</div>
+    <h1>Los Angeles Portal</h1>
+    <div class="subtitle"><strong>SHR</strong> Exclusive</div>
+    <div class="divider"></div>
+  </section>
+
+  <div class="dashboard">
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="label">Players</div>
+        <div class="value" id="playerCount">— / —</div>
+      </div>
     </div>
 
-    <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-    viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
-        <defs>
-            <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
-            
-            <linearGradient id="blueWaveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="#0a2540" />
-                <stop offset="100%" stop-color="#001020" />
-            </linearGradient>
-        </defs>
-        <g class="parallax">
-            <use xlink:href="#gentle-wave" x="48" y="0" fill="url(#blueWaveGradient)" fill-opacity="0.3" />
-            <use xlink:href="#gentle-wave" x="48" y="3" fill="url(#blueWaveGradient)" fill-opacity="0.5" />
-            <use xlink:href="#gentle-wave" x="48" y="5" fill="url(#blueWaveGradient)" fill-opacity="0.7" />
-            <use xlink:href="#gentle-wave" x="48" y="7" fill="url(#blueWaveGradient)" />
-        </g>
-    </svg>
+    <div class="panel">
+      <div class="panel-header">
+        <h2>Plate Lookup</h2>
+        <span class="tag" id="lookupTag">Mock data · API pending</span>
+      </div>
+      <div class="lookup-body">
+        <div class="search-row">
+          <input type="text" id="plateInput" placeholder="Enter plate number, e.g. 7LAX214" maxlength="12" autocomplete="off">
+          <button id="plateSearchBtn" class="btn btn-primary">Search</button>
+        </div>
+
+        <div id="lookupEmpty" class="lookup-state">Enter a plate above to pull vehicle, owner, and wanted status.</div>
+        <div id="lookupLoading" class="lookup-state hidden">Searching records…</div>
+        <div id="lookupNotFound" class="lookup-state hidden">No record found for that plate.</div>
+
+        <div id="lookupResult" class="lookup-result hidden">
+          <img id="carImage" class="car-image" src="" alt="Vehicle photo">
+          <div class="lookup-details">
+            <div class="lookup-plate" id="resultPlate"></div>
+            <div class="lookup-row">
+              <span class="lookup-label">Driver</span>
+              <span class="lookup-value" id="resultDriver"></span>
+            </div>
+            <div class="lookup-row">
+              <span class="lookup-label">Vehicle</span>
+              <span class="lookup-value" id="resultVehicle"></span>
+            </div>
+            <div class="lookup-row">
+              <span class="lookup-label">Status</span>
+              <span class="pill" id="wantedPill"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <footer>
+    LOS ANGELES PORTAL · SHR EXCLUSIVE COMMUNITY · NOT AFFILIATED WITH ER:LC OR ROBLOX CORPORATION
+  </footer>
+
+  <script>
+    // ---------------------------------------------------------------
+    // ER:LC / PRC SERVER STATUS — live player count
+    // ⚠️ SECURITY NOTE: this key is visible to anyone who views this
+    // page's source (browser devtools > Sources/Network). PRC's own
+    // docs warn that a leaked server key can be used to attack/raid
+    // your server. This is fine for local testing, but for a real
+    // deployment you should route this through a small backend/proxy
+    // that holds the key server-side instead of embedding it here.
+    // ---------------------------------------------------------------
+    const ERLC_SERVER_KEY = 'uupNgrOZhpdCgwStivKZ-WiDezheWTtqIXLQIlLmoICWddCjlpumqMyjkJfaJ';
+    const playerCountEl = document.getElementById('playerCount');
+
+    async function fetchServerStatus() {
+      try {
+        const res = await fetch('https://api.erlc.gg/v2/server', {
+          headers: { 'server-key': ERLC_SERVER_KEY }
+        });
+
+        if (!res.ok) throw new Error(`API responded ${res.status}`);
+
+        const data = await res.json();
+        playerCountEl.textContent = `${data.CurrentPlayers} / ${data.MaxPlayers}`;
+      } catch (err) {
+        console.error('ER:LC status fetch failed:', err);
+        playerCountEl.textContent = 'Offline';
+      }
+    }
+
+    fetchServerStatus();
+    setInterval(fetchServerStatus, 30000); // refresh every 30s
+  </script>
+
+  <script>
+    // ---------------------------------------------------------------
+    // PLATE LOOKUP
+    // Right now this reads from MOCK_RECORDS below. Once you give me
+    // your API, replace the body of lookupPlate() with a fetch() call
+    // to your endpoint — everything else (rendering, states) stays put.
+    // ---------------------------------------------------------------
+
+    const MOCK_RECORDS = {
+      "7LAX214": {
+        driver: "Marcus Whitfield",
+        vehicle: "2023 Cypress Charger — Black",
+        wanted: true,
+        image: "https://placehold.co/440x280/1a1d24/8a92a3?text=Vehicle+Photo"
+      },
+      "LA-9302": {
+        driver: "Elena Reyes",
+        vehicle: "2022 Falcon GT — Silver",
+        wanted: false,
+        image: "https://placehold.co/440x280/1a1d24/8a92a3?text=Vehicle+Photo"
+      },
+      "SHR001": {
+        driver: "Capt. D. Alvarez",
+        vehicle: "2024 Interceptor Utility — White/Black",
+        wanted: false,
+        image: "https://placehold.co/440x280/1a1d24/8a92a3?text=Vehicle+Photo"
+      }
+    };
+
+    async function lookupPlate(plate) {
+      // --- MOCK MODE (current) ---
+      await new Promise(r => setTimeout(r, 500)); // simulate network delay
+      const record = MOCK_RECORDS[plate.toUpperCase()];
+      return record || null;
+
+      // --- REAL API MODE (swap in later) ---
+      // const res = await fetch(`https://your-api.example.com/plates/${encodeURIComponent(plate)}`);
+      // if (!res.ok) return null;
+      // return await res.json(); // expects { driver, vehicle, wanted, image }
+    }
+
+    const plateInput = document.getElementById('plateInput');
+    const plateSearchBtn = document.getElementById('plateSearchBtn');
+    const lookupEmpty = document.getElementById('lookupEmpty');
+    const lookupLoading = document.getElementById('lookupLoading');
+    const lookupNotFound = document.getElementById('lookupNotFound');
+    const lookupResult = document.getElementById('lookupResult');
+    const carImage = document.getElementById('carImage');
+    const resultPlate = document.getElementById('resultPlate');
+    const resultDriver = document.getElementById('resultDriver');
+    const resultVehicle = document.getElementById('resultVehicle');
+    const wantedPill = document.getElementById('wantedPill');
+
+    function showState(state) {
+      [lookupEmpty, lookupLoading, lookupNotFound, lookupResult].forEach(el => el.classList.add('hidden'));
+      if (state) state.classList.remove('hidden');
+    }
+
+    async function runSearch() {
+      const plate = plateInput.value.trim();
+      if (!plate) {
+        showState(lookupEmpty);
+        return;
+      }
+
+      showState(lookupLoading);
+      const record = await lookupPlate(plate);
+
+      if (!record) {
+        showState(lookupNotFound);
+        return;
+      }
+
+      carImage.src = record.image;
+      carImage.alt = record.vehicle;
+      resultPlate.textContent = plate.toUpperCase();
+      resultDriver.textContent = record.driver;
+      resultVehicle.textContent = record.vehicle;
+
+      if (record.wanted) {
+        wantedPill.textContent = 'Wanted';
+        wantedPill.className = 'pill wanted';
+      } else {
+        wantedPill.textContent = 'Clear';
+        wantedPill.className = 'pill clear';
+      }
+
+      showState(lookupResult);
+    }
+
+    plateSearchBtn.addEventListener('click', runSearch);
+    plateInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') runSearch();
+    });
+  </script>
 
 </body>
 </html>
