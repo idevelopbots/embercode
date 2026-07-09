@@ -15,20 +15,24 @@ export default async function handler(req, res) {
             {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
-                    "server-key": "uupNgrOZhpdCgwStivKZ-WiDezheWTtqIXLQIlLmoICWddCjlpumqMyjkJfaJ"
+                    "server-key": "uupNgrOZhpdCgwStivKZ-WiDezheWTtqIXLQIlLmoICWddCjlpumqMyjkJfaJ",
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    command: command
+                    Command: command
                 })
             }
         );
 
-        const data = await response.json();
+        const text = await response.text();
 
-        return res.status(200).json(data);
+        console.log("ERLC Response:", text);
+
+        return res.status(response.status).send(text);
 
     } catch (error) {
+
+        console.error(error);
 
         return res.status(500).json({
             success: false,
@@ -36,4 +40,5 @@ export default async function handler(req, res) {
         });
 
     }
+
 }
