@@ -7,84 +7,120 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #121214;
+            /* Animated gradient background */
+            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #111827, #0f172a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            overflow: hidden;
         }
+
+        /* Background gradient animation */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .panel-container {
-            background-color: #1a1a1e;
+            background-color: rgba(26, 26, 30, 0.85);
+            backdrop-filter: blur(8px); /* Subtle glass effect */
             padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
             width: 100%;
             max-width: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            
+            /* Smooth floating animation */
+            animation: floatCard 4s ease-in-out infinite;
         }
+
+        /* Floating card animation */
+        @keyframes floatCard {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
         h2 {
             margin-top: 0;
             text-align: center;
             color: #3b82f6;
+            letter-spacing: 0.5px;
         }
+
         .form-group {
             margin-bottom: 15px;
         }
+
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             font-size: 0.9rem;
             color: #a1a1aa;
         }
-        input[type="text"], input[type="password"] {
+
+        input[type="text"] {
             width: 100%;
             padding: 10px;
             border: 1px solid #3f3f46;
-            background-color: #27272a;
+            background-color: rgba(39, 39, 42, 0.8);
             color: #ffffff;
-            border-radius: 4px;
+            border-radius: 6px;
             box-sizing: border-box;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
-        input[type="text"]:focus, input[type="password"]:focus {
+
+        input[type="text"]:focus {
             outline: none;
             border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
         }
+
         button {
             width: 100%;
             padding: 12px;
             background-color: #3b82f6;
             color: #ffffff;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             font-weight: bold;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background 0.2s, transform 0.1s;
+            margin-top: 5px;
         }
+
         button:hover {
             background-color: #2563eb;
         }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
         #statusMessage {
             margin-top: 15px;
             padding: 10px;
-            border-radius: 4px;
+            border-radius: 6px;
             display: none;
             font-size: 0.9rem;
             text-align: center;
         }
-        .success { background-color: #065f46; color: #34d399; }
-        .error { background-color: #991b1b; color: #f87171; }
+
+        .success { background-color: rgba(6, 95, 70, 0.8); color: #34d399; border: 1px solid #059669; }
+        .error { background-color: rgba(153, 27, 27, 0.8); color: #f87171; border: 1px solid #dc2626; }
     </style>
 </head>
 <body>
 
 <div class="panel-container">
     <h2>ERLC Command Panel</h2>
-    
-    <div class="form-group">
-        <label for="apiKey">ERLC API Server Key:</label>
-        <input type="password" id="apiKey" placeholder="Server-API-Key-Here">
-    </div>
 
     <div class="form-group">
         <label for="command">Command:</label>
@@ -102,23 +138,22 @@
 </div>
 
 <script>
+    // Hardcoded API Key embedded directly into the script execution
+    const apiKey = "uupNgrOZhpdCgwStivKZ-WiDezheWTtqIXLQIlLmoICWddCjlpumqMyjkJfaJ";
+
     async function sendCommand() {
-        const apiKey = document.getElementById('apiKey').value;
         const commandText = document.getElementById('command').value;
         const playerText = document.getElementById('player').value;
         const statusDiv = document.getElementById('statusMessage');
 
-        // Reset status message
         statusDiv.style.display = 'none';
         statusDiv.className = '';
 
-        if (!apiKey || !commandText) {
-            showStatus('Please provide both the API Key and a Command.', 'error');
+        if (!commandText) {
+            showStatus('Please provide a Command.', 'error');
             return;
         }
 
-        // Build the payload expected by the ERLC API
-        // Format: "command": ":kick PlayerName" or just ":h Hello"
         let fullCommand = commandText;
         if (playerText) {
             fullCommand = `${commandText} ${playerText}`;
@@ -142,7 +177,7 @@
                 showStatus('Command sent successfully!', 'success');
             } else {
                 const errorData = await response.text();
-                showStatus(`Failed: ${response.status} - ${errorData || 'Check API Key/Permissions'}`, 'error');
+                showStatus(`Failed: ${response.status} - ${errorData || 'Check Key/Permissions'}`, 'error');
             }
         } catch (error) {
             showStatus(`Error: Network issue or CORS block.`, 'error');
