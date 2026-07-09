@@ -3,201 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ERLC Server Command Panel</title>
+    <title>Custom Background Page</title>
     <style>
-        body {
+        /* Reset margins and ensure full height */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            height: 100%;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            /* Animated gradient background */
-            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #111827, #0f172a);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            color: #ffffff;
+        }
+
+        /* Fullscreen background styling */
+        .bg-background {
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdM7xpdhNRKYY_OEdQKxIPc1pAcQldBJBrBFODchAOkJ0wJmgucYnlMTvs&s=10');
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            
+            /* Center the content container vertically and horizontally */
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
         }
 
-        /* Background gradient animation */
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .panel-container {
-            background-color: rgba(26, 26, 30, 0.85);
-            backdrop-filter: blur(8px); /* Subtle glass effect */
-            padding: 30px;
+        /* Translucent card to make text readable over the background */
+        .content-card {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 40px;
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-            width: 100%;
-            max-width: 400px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            
-            /* Smooth floating animation */
-            animation: floatCard 4s ease-in-out infinite;
-        }
-
-        /* Floating card animation */
-        @keyframes floatCard {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-
-        h2 {
-            margin-top: 0;
             text-align: center;
-            color: #3b82f6;
-            letter-spacing: 0.5px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 90%;
         }
 
-        .form-group {
+        h1 {
+            color: #333;
             margin-bottom: 15px;
         }
 
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-size: 0.9rem;
-            color: #a1a1aa;
+        p {
+            color: #666;
+            line-height: 1.6;
         }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #3f3f46;
-            background-color: rgba(39, 39, 42, 0.8);
-            color: #ffffff;
-            border-radius: 6px;
-            box-sizing: border-box;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        input[type="text"]:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #3b82f6;
-            color: #ffffff;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
-            margin-top: 5px;
-        }
-
-        button:hover {
-            background-color: #2563eb;
-        }
-
-        button:active {
-            transform: scale(0.98);
-        }
-
-        #statusMessage {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 6px;
-            display: none;
-            font-size: 0.9rem;
-            text-align: center;
-            word-break: break-all;
-        }
-
-        .success { background-color: rgba(6, 95, 70, 0.8); color: #34d399; border: 1px solid #059669; }
-        .error { background-color: rgba(153, 27, 27, 0.8); color: #f87171; border: 1px solid #dc2626; }
     </style>
 </head>
 <body>
 
-<div class="panel-container">
-    <h2>ERLC Command Panel</h2>
-
-    <div class="form-group">
-        <label for="command">Command:</label>
-        <input type="text" id="command" placeholder="e.g., :h, :kick, :slay">
+    <div class="bg-background">
+        <div class="content-card">
+            <h1>Welcome to My Page</h1>
+            <p>This is a starter template using your requested image as a full-screen background. You can replace this text and build your project right inside this card!</p>
+        </div>
     </div>
-
-    <div class="form-group">
-        <label for="player">Player (Optional):</label>
-        <input type="text" id="player" placeholder="Username or UserId">
-    </div>
-
-    <button onclick="sendCommand()">Send Command</button>
-
-    <div id="statusMessage"></div>
-</div>
-
-<script>
-    // Hardcoded API Key embedded directly into the script execution
-    const apiKey = "uupNgrOZhpdCgwStivKZ-WiDezheWTtqIXLQIlLmoICWddCjlpumqMyjkJfaJ";
-
-    async function sendCommand() {
-        const commandText = document.getElementById('command').value;
-        const playerText = document.getElementById('player').value;
-        const statusDiv = document.getElementById('statusMessage');
-
-        statusDiv.style.display = 'none';
-        statusDiv.className = '';
-
-        if (!commandText) {
-            showStatus('Please provide a Command.', 'error');
-            return;
-        }
-
-        let fullCommand = commandText;
-        if (playerText) {
-            fullCommand = `${commandText} ${playerText}`;
-        }
-
-        const payload = {
-            command: fullCommand
-        };
-
-        try {
-            // Appended the cors-anywhere proxy URL to bypass the browser CORS block
-            const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-            const targetUrl = 'https://api.erlc.gg/v2/server/command';
-
-            const response = await fetch(proxyUrl + targetUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'server-key': apiKey
-                },
-                body: JSON.stringify(payload)
-            });
-
-            if (response.ok) {
-                showStatus('Command sent successfully!', 'success');
-            } else {
-                const errorData = await response.text();
-                showStatus(`Failed: ${response.status} - ${errorData || 'Check Key/Permissions'}`, 'error');
-            }
-        } catch (error) {
-            showStatus(`Error: Network issue. Did you activate the proxy at cors-anywhere.herokuapp.com/corsdemo ?`, 'error');
-            console.error('Fetch error:', error);
-        }
-    }
-
-    // Status display function
-    function showStatus(message, type) {
-        const statusDiv = document.getElementById('statusMessage');
-        statusDiv.innerText = message;
-        statusDiv.className = type;
-        statusDiv.style.display = 'block';
-    }
-</script>
 
 </body>
 </html>
