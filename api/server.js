@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
   try {
     const response = await fetch(
-      "https://api.erlc.gg/v2/server?Players=true",
+      "https://api.erlc.gg/v2/server",
       {
         headers: {
           "server-key": "uupNgrOZhpdCgwStivKZ-WiDezheWTtqIXLQIlLmoICWddCjlpumqMyjkJfaJ"
