@@ -1,13 +1,14 @@
 export default async function handler(req, res) {
 
-    console.log("REQUEST METHOD:", req.method);
-    console.log("REQUEST BODY:", req.body);
+    if (req.method !== "POST") {
+        return res.status(405).json({
+            error: "Method not allowed"
+        });
+    }
 
     try {
 
-        const command = req.body?.command;
-
-        console.log("COMMAND:", command);
+        const command = req.body.command;
 
         const response = await fetch(
             "https://api.erlc.gg/v2/server/command",
@@ -18,27 +19,22 @@ export default async function handler(req, res) {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    command
+                    command: command
                 })
             }
         );
 
-        const responseText = await response.text();
-
-        console.log("ERLC STATUS:", response.status);
-        console.log("ERLC RESPONSE:", responseText);
+        const text = await response.text();
 
         return res.status(200).json({
             status: response.status,
-            response: responseText
+            response: text
         });
 
-    } catch (err) {
-
-        console.error("ERROR:", err);
+    } catch (error) {
 
         return res.status(500).json({
-            error: err.message
+            error: error.message
         });
 
     }
