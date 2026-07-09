@@ -1,10 +1,13 @@
 export default async function handler(req, res) {
 
+    console.log("REQUEST METHOD:", req.method);
+    console.log("REQUEST BODY:", req.body);
+
     try {
 
-        const { command } = req.body;
+        const command = req.body?.command;
 
-        console.log("Received command:", command);
+        console.log("COMMAND:", command);
 
         const response = await fetch(
             "https://api.erlc.gg/v2/server/command",
@@ -15,27 +18,27 @@ export default async function handler(req, res) {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    command: command
+                    command
                 })
             }
         );
 
-        const text = await response.text();
+        const responseText = await response.text();
 
-        console.log("ERLC Status:", response.status);
-        console.log("ERLC Response:", text);
+        console.log("ERLC STATUS:", response.status);
+        console.log("ERLC RESPONSE:", responseText);
 
         return res.status(200).json({
-            erlcStatus: response.status,
-            erlcResponse: text
+            status: response.status,
+            response: responseText
         });
 
-    } catch (error) {
+    } catch (err) {
 
-        console.error(error);
+        console.error("ERROR:", err);
 
         return res.status(500).json({
-            error: error.message
+            error: err.message
         });
 
     }
