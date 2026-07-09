@@ -15,6 +15,7 @@
         body, html {
             height: 100%;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
         }
 
         /* Fullscreen background styling */
@@ -40,6 +41,8 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
             max-width: 500px;
             width: 90%;
+            position: relative;
+            z-index: 1;
         }
 
         h1 {
@@ -51,9 +54,22 @@
             color: #666;
             line-height: 1.6;
         }
+
+        /* Logo positioned in the top right corner */
+        .top-right-logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
+
+    <img class="top-right-logo" src="https://media.discordapp.net/attachments/1524884039184679092/1524913925911482388/7c8b57e10015b77642067173e7460e4b.png?ex=6a517a43&is=6a5028c3&hm=bb0fad28473c42ba4b64f6f4b912b048d7616cbdcf6eedbe50ebc720fb8c7117&=" alt="Logo">
 
     <div class="bg-background">
         <div class="content-card">
