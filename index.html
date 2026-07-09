@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom Background Page</title>
+    <title>Los Angeles Management</title>
 
     <style>
         /* Reset */
@@ -15,15 +15,17 @@
 
         html,
         body {
+            width: 100%;
             height: 100%;
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* Full-screen background */
+        /* Fullscreen background */
         .bg-background {
-            height: 100vh;
             width: 100%;
+            height: 100vh;
+
             background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdM7xpdhNRKYY_OEdQKxIPc1pAcQldBJBrBFODchAOkJ0wJmgucYnlMTvs&s=10");
             background-position: center;
             background-repeat: no-repeat;
@@ -47,30 +49,70 @@
             z-index: 10;
         }
 
-        /* Content card */
-        .content-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-
-            padding: 40px;
-            border-radius: 12px;
+        /* Blurred text container */
+        .hero-text {
             text-align: center;
+            max-width: 850px;
+            padding: 30px 40px;
 
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.05);
 
-            max-width: 500px;
-            width: 90%;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
         }
 
-        .content-card h1 {
-            color: #333;
-            margin-bottom: 15px;
+        .hero-text h1 {
+            font-size: 4rem;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+
+            text-shadow:
+                0 0 8px rgba(255,255,255,0.5),
+                0 0 20px rgba(255,255,255,0.25),
+                -1px -1px 0 #000,
+                 1px -1px 0 #000,
+                -1px  1px 0 #000,
+                 1px  1px 0 #000;
         }
 
-        .content-card p {
-            color: #666;
+        .hero-text p {
+            font-size: 1.3rem;
+            color: white;
             line-height: 1.6;
+
+            text-shadow:
+                -1px -1px 0 #000,
+                 1px -1px 0 #000,
+                -1px  1px 0 #000,
+                 1px  1px 0 #000;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .hero-text {
+                width: 90%;
+                padding: 25px;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-text p {
+                font-size: 1rem;
+            }
+
+            .top-right-logo {
+                width: 50px;
+                height: 50px;
+            }
         }
     </style>
 </head>
@@ -86,14 +128,14 @@
             alt="Logo"
         >
 
-        <!-- Main Content -->
-        <div class="content-card">
+        <!-- Main Text -->
+        <div class="hero-text">
             <h1>Welcome to My Page</h1>
 
             <p>
                 This is a starter template using your requested image as a
                 full-screen background. You can replace this text and build
-                your project right inside this card.
+                your project right inside this page.
             </p>
         </div>
 
