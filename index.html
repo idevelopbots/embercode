@@ -64,61 +64,6 @@ body{
     margin-top:8px;
 }
 
-.command-box{
-    position:absolute;
-    left:50%;
-    bottom:30px;
-    transform:translateX(-50%);
-    width:700px;
-    max-width:90%;
-    background:rgba(0,0,0,.45);
-    backdrop-filter:blur(12px);
-    border-radius:16px;
-    border:1px solid rgba(255,255,255,.15);
-    padding:15px;
-}
-
-.command-title{
-    color:white;
-    margin-bottom:10px;
-    font-weight:600;
-}
-
-.command-row{
-    display:flex;
-    gap:10px;
-}
-
-#commandInput{
-    flex:1;
-    border:none;
-    outline:none;
-    padding:12px;
-    border-radius:10px;
-    background:rgba(255,255,255,.1);
-    color:white;
-}
-
-#sendCommand{
-    border:none;
-    background:#0e639c;
-    color:white;
-    padding:12px 18px;
-    border-radius:10px;
-    cursor:pointer;
-}
-
-#sendCommand:hover{
-    background:#1177bb;
-}
-
-#commandStatus{
-    color:#84ff84;
-    margin-top:10px;
-    font-size:14px;
-    word-break:break-word;
-}
-
 .player-panel{
     width:350px;
     background:rgba(0,0,0,.55);
@@ -200,30 +145,6 @@ body{
 
         </div>
 
-        <div class="command-box">
-
-            <div class="command-title">
-                ERLC Command Console
-            </div>
-
-            <div class="command-row">
-
-                <input
-                    id="commandInput"
-                    type="text"
-                    placeholder="Enter command..."
-                >
-
-                <button id="sendCommand">
-                    Send
-                </button>
-
-            </div>
-
-            <div id="commandStatus"></div>
-
-        </div>
-
     </div>
 
     <div class="player-panel">
@@ -277,7 +198,8 @@ async function loadServerData() {
         document.getElementById("playerCount").textContent =
             `${players.length} Players Online`;
 
-        const playerList = document.getElementById("playerList");
+        const playerList =
+            document.getElementById("playerList");
 
         playerList.innerHTML = "";
 
@@ -287,6 +209,7 @@ async function loadServerData() {
                 '<div class="loading">No players online.</div>';
 
             return;
+
         }
 
         players.forEach(player => {
@@ -300,6 +223,7 @@ async function loadServerData() {
                 <div class="player-name">
                     ${player.Player || "Unknown"}
                 </div>
+
                 <div class="player-team">
                     ${player.Team || "Civilian"}
                 </div>
@@ -319,64 +243,11 @@ async function loadServerData() {
         document.getElementById("joinCode").textContent =
             "Unable to contact API";
     }
+
 }
 
-document
-.getElementById("sendCommand")
-.addEventListener("click", async () => {
-
-    const command =
-        document.getElementById("commandInput").value.trim();
-
-    if(!command){
-        alert("Enter a command first.");
-        return;
-    }
-
-    try {
-
-        document.getElementById("commandStatus")
-            .textContent = "Sending...";
-
-        const response = await fetch(
-            "/api/command",
-            {
-                method:"POST",
-                headers:{
-                    "Content-Type":"application/json"
-                },
-                body: JSON.stringify({
-                    command: command
-                })
-            }
-        );
-
-        const data = await response.json();
-
-        console.log("COMMAND RESPONSE:", data);
-
-        alert(JSON.stringify(data, null, 2));
-
-        document.getElementById("commandStatus")
-            .textContent =
-            JSON.stringify(data);
-
-    } catch(err){
-
-        console.error(err);
-
-        alert(
-            "ERROR: " + err.message
-        );
-
-        document.getElementById("commandStatus")
-            .textContent =
-            "Failed: " + err.message;
-    }
-
-});
-
 loadServerData();
+
 setInterval(loadServerData, 5000);
 
 </script>
