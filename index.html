@@ -420,9 +420,16 @@ body {
             </div>
 
             <div class="glass-panel">
-                <h2>Moderation</h2>
+                <h2>Moderators</h2>
                 <div id="modList" class="scrollable-list">
                     <div class="loading">Fetching moderator data...</div>
+                </div>
+            </div>
+
+            <div class="glass-panel">
+                <h2>Helpers</h2>
+                <div id="helperList" class="scrollable-list">
+                    <div class="loading">Fetching helper data...</div>
                 </div>
             </div>
         </div>
@@ -522,15 +529,19 @@ async function loadServerData() {
         const modList = document.getElementById("modList");
         modList.innerHTML = "";
 
+        // Update Helper List
+        const helperList = document.getElementById("helperList");
+        helperList.innerHTML = "";
+
         const admins = staff?.Staff?.Admins || {};
         const mods = staff?.Staff?.Mods || {};
         const helpers = staff?.Staff?.Helpers || {};
 
         let hasAdmin = false;
         let hasMod = false;
+        let hasHelper = false;
 
-        const addAdmin = (name, roleClass, roleName, icon) => {
-            hasAdmin = true;
+        const addStaffMember = (listElement, name, roleClass, roleName, icon) => {
             const item = document.createElement("div");
             item.className = "list-item";
             item.innerHTML = `
@@ -539,32 +550,17 @@ async function loadServerData() {
                     <span class="badge ${roleClass}">${roleName}</span>
                 </div>
             `;
-            staffList.appendChild(item);
+            listElement.appendChild(item);
+            return true;
         };
 
-        const addMod = (name, roleClass, roleName, icon) => {
-            hasMod = true;
-            const item = document.createElement("div");
-            item.className = "list-item";
-            item.innerHTML = `
-                <div class="item-title">
-                    <span>${icon} ${name}</span>
-                    <span class="badge ${roleClass}">${roleName}</span>
-                </div>
-            `;
-            modList.appendChild(item);
-        };
+        Object.values(admins).forEach(admin => { hasAdmin = addStaffMember(staffList, admin, "badge-admin", "Admin", "👑"); });
+        Object.values(mods).forEach(mod => { hasMod = addStaffMember(modList, mod, "badge-mod", "Moderator", "🔨"); });
+        Object.values(helpers).forEach(helper => { hasHelper = addStaffMember(helperList, helper, "badge-helper", "Helper", "⭐"); });
 
-        Object.values(admins).forEach(admin => addAdmin(admin, "badge-admin", "Admin", "👑"));
-        Object.values(mods).forEach(mod => addMod(mod, "badge-mod", "Moderator", "🔨"));
-        Object.values(helpers).forEach(helper => addMod(helper, "badge-helper", "Helper", "⭐"));
-
-        if (!hasAdmin) {
-            staffList.innerHTML = '<div class="loading">No admins active.</div>';
-        }
-        if (!hasMod) {
-            modList.innerHTML = '<div class="loading">No moderators active.</div>';
-        }
+        if (!hasAdmin) staffList.innerHTML = '<div class="loading">No admins active.</div>';
+        if (!hasMod) modList.innerHTML = '<div class="loading">No moderators active.</div>';
+        if (!hasHelper) helperList.innerHTML = '<div class="loading">No helpers active.</div>';
 
     } catch(error){
         console.error("Dashboard Update Error:", error);
