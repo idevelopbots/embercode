@@ -75,7 +75,7 @@ body {
     font-size: 15px;
 }
 
-/* Plate / Vehicle Card */
+/* Vehicle List Card */
 .plate-card {
     width: 360px;
     background: rgba(15, 17, 23, 0.6);
@@ -100,7 +100,6 @@ body {
 #vehicleList {
     flex: 1;
     overflow-y: auto;
-    margin-bottom: 15px;
     padding-right: 5px;
 }
 
@@ -136,57 +135,6 @@ body {
     font-size: 13px;
     color: #94a3b8;
     margin-top: 4px;
-}
-
-#plateSearch {
-    width: 100%;
-    padding: 12px 16px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    outline: none;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.05);
-    color: white;
-    margin-bottom: 12px;
-    font-size: 15px;
-    transition: all 0.2s ease;
-}
-
-#plateSearch:focus {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: #0e639c;
-    box-shadow: 0 0 0 3px rgba(14, 99, 156, 0.3);
-}
-
-#searchPlate {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 10px;
-    background: #0e639c;
-    color: white;
-    font-weight: 600;
-    font-size: 15px;
-    cursor: pointer;
-    transition: background 0.2s ease, transform 0.1s ease;
-}
-
-#searchPlate:hover {
-    background: #1177bb;
-}
-
-#searchPlate:active {
-    transform: scale(0.98);
-}
-
-#plateResult {
-    color: #cbd5e1;
-    margin-top: 15px;
-    font-size: 14px;
-    line-height: 1.5;
-    background: rgba(0, 0, 0, 0.2);
-    padding: 12px;
-    border-radius: 8px;
-    border-left: 3px solid #0e639c;
 }
 
 /* Player Panel Sidebar */
@@ -283,9 +231,6 @@ body {
             <div id="vehicleList">
                 <div class="loading">Loading vehicles...</div>
             </div>
-            <input type="text" id="plateSearch" placeholder="Enter License Plate...">
-            <button id="searchPlate">Search Plate</button>
-            <div id="plateResult"></div>
         </div>
 
     </div>
@@ -306,9 +251,6 @@ body {
 </div>
 
 <script>
-// Cache vehicles globally to support instant filtering/searching
-let cachedVehicles = [];
-
 async function loadServerData() {
     try {
         const [serverResponse, playersResponse, vehiclesResponse] =
@@ -320,7 +262,7 @@ async function loadServerData() {
 
         const serverData = await serverResponse.json();
         const players = await playersResponse.json();
-        cachedVehicles = await vehiclesResponse.json();
+        const vehicles = await vehiclesResponse.json();
 
         // Update Server Stats
         document.getElementById("serverName").textContent =
@@ -357,10 +299,10 @@ async function loadServerData() {
         const vehicleList = document.getElementById("vehicleList");
         vehicleList.innerHTML = "";
 
-        if(!cachedVehicles || cachedVehicles.length === 0){
+        if(!vehicles || vehicles.length === 0){
             vehicleList.innerHTML = '<div class="loading">No active vehicles.</div>';
         } else {
-            cachedVehicles.forEach(veh => {
+            vehicles.forEach(veh => {
                 const item = document.createElement("div");
                 item.className = "vehicle-item";
                 item.innerHTML = `
@@ -377,29 +319,6 @@ async function loadServerData() {
         document.getElementById("joinCode").textContent = "Unable to contact API";
     }
 }
-
-document.getElementById("searchPlate").addEventListener("click", () => {
-    const plate = document.getElementById("plateSearch").value.trim().toUpperCase();
-    const resultDiv = document.getElementById("plateResult");
-
-    const vehicle = cachedVehicles.find(v =>
-        v.Plate && v.Plate.toUpperCase() === plate
-    );
-
-    if (vehicle) {
-        resultDiv.innerHTML = `
-            <strong>Vehicle Found</strong><br>
-            Model: ${vehicle.Name}<br>
-            Plate: ${vehicle.Plate}<br>
-            Owner: ${vehicle.Owner}
-        `;
-    } else {
-        resultDiv.innerHTML = `
-            <strong>No Match Found</strong><br>
-            ${plate}
-        `;
-    }
-});
 
 loadServerData();
 setInterval(loadServerData, 5000);
