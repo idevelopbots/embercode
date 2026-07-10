@@ -17,8 +17,11 @@ body {
     height: 100vh;
     overflow: hidden;
     background: #090a0f;
-    background-image: radial-gradient(circle at 10% 20%, rgba(14, 99, 156, 0.15) 0%, transparent 45%),
-                      radial-gradient(circle at 90% 80%, rgba(158, 207, 255, 0.08) 0%, transparent 50%);
+    /* Added your background image properties here */
+    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdM7xpdhNRKYY_OEdQKxIPc1pAcQldBJBrBFODchAOkJ0wJmgucYnlMTvs&s=10');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .overlay {
@@ -27,6 +30,7 @@ body {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     display: flex;
+    background: rgba(9, 10, 15, 0.4); /* Subtle overlay to make cards pop more */
 }
 
 .main {
@@ -345,82 +349,58 @@ async function loadServerData() {
         }
 
         // Update Staff List
-const staffList = document.getElementById("staffList");
+        const staffList = document.getElementById("staffList");
+        staffList.innerHTML = "";
 
-staffList.innerHTML = "";
+        const admins = staff?.Staff?.Admins || {};
+        const mods = staff?.Staff?.Mods || {};
+        const helpers = staff?.Staff?.Helpers || {};
 
-const admins = staff?.Staff?.Admins || {};
-const mods = staff?.Staff?.Mods || {};
-const helpers = staff?.Staff?.Helpers || {};
+        let hasStaff = false;
 
-let hasStaff = false;
+        Object.values(admins).forEach(admin => {
+            hasStaff = true;
+            const item = document.createElement("div");
+            item.className = "staff-item";
+            item.innerHTML = `
+                <strong>👑 ${admin}</strong>
+                <div>
+                    <span class="staff-role">Administrator</span>
+                </div>
+            `;
+            staffList.appendChild(item);
+        });
 
-Object.values(admins).forEach(admin => {
+        Object.values(mods).forEach(mod => {
+            hasStaff = true;
+            const item = document.createElement("div");
+            item.className = "staff-item";
+            item.innerHTML = `
+                <strong>🔨 ${mod}</strong>
+                <div>
+                    <span class="staff-role">Moderator</span>
+                </div>
+            `;
+            staffList.appendChild(item);
+        });
 
-    hasStaff = true;
+        Object.values(helpers).forEach(helper => {
+            hasStaff = true;
+            const item = document.createElement("div");
+            item.className = "staff-item";
+            item.innerHTML = `
+                <strong>⭐ ${helper}</strong>
+                <div>
+                    <span class="staff-role">Helper</span>
+                </div>
+            `;
+            staffList.appendChild(item);
+        });
 
-    const item = document.createElement("div");
+        if (!hasStaff) {
+            staffList.innerHTML = '<div class="loading">No staff active.</div>';
+        }
 
-    item.className = "staff-item";
-
-    item.innerHTML = `
-        <strong>👑 ${admin}</strong>
-        <div>
-            <span class="staff-role">
-                Administrator
-            </span>
-        </div>
-    `;
-
-    staffList.appendChild(item);
-
-});
-
-Object.values(mods).forEach(mod => {
-
-    hasStaff = true;
-
-    const item = document.createElement("div");
-
-    item.className = "staff-item";
-
-    item.innerHTML = `
-        <strong>🔨 ${mod}</strong>
-        <div>
-            <span class="staff-role">
-                Moderator
-            </span>
-        </div>
-    `;
-
-    staffList.appendChild(item);
-
-});
-
-Object.values(helpers).forEach(helper => {
-
-    hasStaff = true;
-
-    const item = document.createElement("div");
-
-    item.className = "staff-item";
-
-    item.innerHTML = `
-        <strong>⭐ ${helper}</strong>
-        <div>
-            <span class="staff-role">
-                Helper
-            </span>
-        </div>
-    `;
-
-    staffList.appendChild(item);
-
-});
-
-if (!hasStaff) {
-
-    
     } catch(error){
         console.error(error);
         document.getElementById("serverName").textContent = "Connection Failed";
