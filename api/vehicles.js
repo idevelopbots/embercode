@@ -8,7 +8,7 @@ export default async function handler(req, res) {
             "https://api.erlc.gg/v2/server?Vehicles=true",
             {
                 headers: {
-                    "server-key": "uupNgrOZhpdCgwStivKZ-WiDezheWTtqIXLQIlLmoICWddCjlpumqMyjkJfaJ"
+                    "server-key": "wMDKuHwQrVEWEvyCEynF-WiDezheWTtqIXLQIlLmoICWddCjlpumqMyjkJfaJ"
                 }
             }
         );
