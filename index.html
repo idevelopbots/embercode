@@ -17,7 +17,6 @@ body {
     height: 100vh;
     overflow: hidden;
     background: #090a0f;
-    /* Clean abstract background vibe */
     background-image: radial-gradient(circle at 10% 20%, rgba(14, 99, 156, 0.15) 0%, transparent 45%),
                       radial-gradient(circle at 90% 80%, rgba(158, 207, 255, 0.08) 0%, transparent 50%);
 }
@@ -86,6 +85,9 @@ body {
     border-radius: 16px;
     padding: 24px;
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    max-height: 70vh;
 }
 
 .plate-card h2 {
@@ -93,9 +95,48 @@ body {
     margin-bottom: 18px;
     font-size: 20px;
     font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+}
+
+#vehicleList {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    padding-right: 5px;
+}
+
+/* Custom Scrollbars */
+#vehicleList::-webkit-scrollbar,
+.player-list::-webkit-scrollbar {
+    width: 6px;
+}
+#vehicleList::-webkit-scrollbar-track,
+.player-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+#vehicleList::-webkit-scrollbar-thumb,
+.player-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+#vehicleList::-webkit-scrollbar-thumb:hover,
+.player-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Reusing player card styling tokens cleanly for generated vehicles if needed */
+.vehicle-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.vehicle-owner {
+    font-size: 13px;
+    color: #94a3b8;
+    margin-top: 4px;
 }
 
 #plateSearch {
@@ -185,21 +226,6 @@ body {
     padding: 20px;
 }
 
-/* Custom Scrollbar for Player List */
-.player-list::-webkit-scrollbar {
-    width: 6px;
-}
-.player-list::-webkit-scrollbar-track {
-    background: transparent;
-}
-.player-list::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
-}
-.player-list::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
 .player-card {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.06);
@@ -283,15 +309,18 @@ body {
 <script>
 async function loadServerData() {
     try {
-        const [serverResponse, playersResponse] =
+        const [serverResponse, playersResponse, vehiclesResponse] =
             await Promise.all([
                 fetch("/api/server"),
-                fetch("/api/players")
+                fetch("/api/players"),
+                fetch("/api/vehicles")
             ]);
 
         const serverData = await serverResponse.json();
         const players = await playersResponse.json();
+        const vehicles = await vehiclesResponse.json();
 
+        // Update Server Stats
         document.getElementById("serverName").textContent =
             serverData.Name || "Unknown Server";
 
@@ -304,50 +333,51 @@ async function loadServerData() {
         document.getElementById("playerCount").textContent =
             `${players.length} Players Online`;
 
-        const playerList =
-            document.getElementById("playerList");
-
+        // Update Player List
+        const playerList = document.getElementById("playerList");
         playerList.innerHTML = "";
 
         if(players.length === 0){
-            playerList.innerHTML =
-                '<div class="loading">No players online.</div>';
-            return;
+            playerList.innerHTML = '<div class="loading">No players online.</div>';
+        } else {
+            players.forEach(player => {
+                const card = document.createElement("div");
+                card.className = "player-card";
+                card.innerHTML = `
+                    <div class="player-name">${player.Player || "Unknown"}</div>
+                    <div class="player-team">${player.Team || "Civilian"}</div>
+                `;
+                playerList.appendChild(card);
+            });
         }
 
-        players.forEach(player => {
-            const card =
-                document.createElement("div");
+        // Update Vehicles List
+        const vehicleList = document.getElementById("vehicleList");
+        vehicleList.innerHTML = "";
 
-            card.className = "player-card";
-
-            card.innerHTML = `
-                <div class="player-name">
-                    ${player.Player || "Unknown"}
-                </div>
-                <div class="player-team">
-                    ${player.Team || "Civilian"}
-                </div>
-            `;
-
-            playerList.appendChild(card);
-        });
+        if(!vehicles || vehicles.length === 0){
+            vehicleList.innerHTML = '<div class="loading">No active vehicles.</div>';
+        } else {
+            vehicles.forEach(veh => {
+                const item = document.createElement("div");
+                item.className = "vehicle-item";
+                item.innerHTML = `
+                    <strong>${veh.Name || "Unknown Vehicle"}</strong>
+                    <div class="vehicle-owner">Plate: ${veh.LicensePlate || "N/A"} • Owner: ${veh.Owner || "Unknown"}</div>
+                `;
+                vehicleList.appendChild(item);
+            });
+        }
 
     } catch(error){
         console.error(error);
-        document.getElementById("serverName").textContent =
-            "Connection Failed";
-        document.getElementById("joinCode").textContent =
-            "Unable to contact API";
+        document.getElementById("serverName").textContent = "Connection Failed";
+        document.getElementById("joinCode").textContent = "Unable to contact API";
     }
 }
 
-document
-.getElementById("searchPlate")
-.addEventListener("click", () => {
-    const plate =
-        document.getElementById("plateSearch").value;
-
+document.getElementById("searchPlate").addEventListener("click", () => {
+    const plate = document.getElementById("plateSearch").value;
     document.getElementById("plateResult").innerHTML = `
         <strong>Searched Plate:</strong> ${plate}<br>
         Vehicle lookup not connected yet.
