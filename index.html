@@ -123,7 +123,6 @@ body {
     background: rgba(255, 255, 255, 0.2);
 }
 
-/* Reusing player card styling tokens cleanly for generated vehicles if needed */
 .vehicle-item {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.06);
@@ -307,6 +306,9 @@ body {
 </div>
 
 <script>
+// Cache vehicles globally to support instant filtering/searching
+let cachedVehicles = [];
+
 async function loadServerData() {
     try {
         const [serverResponse, playersResponse, vehiclesResponse] =
@@ -318,7 +320,7 @@ async function loadServerData() {
 
         const serverData = await serverResponse.json();
         const players = await playersResponse.json();
-        const vehicles = await vehiclesResponse.json();
+        cachedVehicles = await vehiclesResponse.json();
 
         // Update Server Stats
         document.getElementById("serverName").textContent =
@@ -355,10 +357,10 @@ async function loadServerData() {
         const vehicleList = document.getElementById("vehicleList");
         vehicleList.innerHTML = "";
 
-        if(!vehicles || vehicles.length === 0){
+        if(!cachedVehicles || cachedVehicles.length === 0){
             vehicleList.innerHTML = '<div class="loading">No active vehicles.</div>';
         } else {
-            vehicles.forEach(veh => {
+            cachedVehicles.forEach(veh => {
                 const item = document.createElement("div");
                 item.className = "vehicle-item";
                 item.innerHTML = `
@@ -377,11 +379,32 @@ async function loadServerData() {
 }
 
 document.getElementById("searchPlate").addEventListener("click", () => {
-    const plate = document.getElementById("plateSearch").value;
-    document.getElementById("plateResult").innerHTML = `
-        <strong>Searched Plate:</strong> ${plate}<br>
-        Vehicle lookup not connected yet.
-    `;
+    const inputPlate = document.getElementById("plateSearch").value.trim().toUpperCase();
+    const resultDiv = document.getElementById("plateResult");
+
+    if (!inputPlate) {
+        resultDiv.innerHTML = "<strong>Please enter a license plate.</strong>";
+        return;
+    }
+
+    // Search the cached list for a matching LicensePlate string
+    const match = cachedVehicles.find(v => 
+        v.LicensePlate && v.LicensePlate.trim().toUpperCase() === inputPlate
+    );
+
+    if (match) {
+        resultDiv.innerHTML = `
+            <strong>Vehicle Found!</strong><br>
+            <strong>Model:</strong> ${match.Name || "Unknown"}<br>
+            <strong>Owner:</strong> ${match.Owner || "Unknown"}<br>
+            <strong>Plate:</strong> ${match.LicensePlate}
+        `;
+    } else {
+        resultDiv.innerHTML = `
+            <strong>No Match Found</strong><br>
+            Plate "${inputPlate}" is not registered.
+        `;
+    }
 });
 
 loadServerData();
