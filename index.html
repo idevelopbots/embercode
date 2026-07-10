@@ -345,23 +345,82 @@ async function loadServerData() {
         }
 
         // Update Staff List
-        const staffList = document.getElementById("staffList");
-        staffList.innerHTML = "";
+const staffList = document.getElementById("staffList");
 
-        if(!staff || staff.length === 0){
-            staffList.innerHTML = '<div class="loading">No active staff online.</div>';
-        } else {
-            staff.forEach(member => {
-                const item = document.createElement("div");
-                item.className = "staff-item";
-                item.innerHTML = `
-                    <strong>${member.Player || "Unknown Staff"}</strong>
-                    <div><span class="staff-role">${member.Permission || member.Role || "Administrator"}</span></div>
-                `;
-                staffList.appendChild(item);
-            });
-        }
+staffList.innerHTML = "";
 
+const admins = staff?.Staff?.Admins || {};
+const mods = staff?.Staff?.Mods || {};
+const helpers = staff?.Staff?.Helpers || {};
+
+let hasStaff = false;
+
+Object.values(admins).forEach(admin => {
+
+    hasStaff = true;
+
+    const item = document.createElement("div");
+
+    item.className = "staff-item";
+
+    item.innerHTML = `
+        <strong>👑 ${admin}</strong>
+        <div>
+            <span class="staff-role">
+                Administrator
+            </span>
+        </div>
+    `;
+
+    staffList.appendChild(item);
+
+});
+
+Object.values(mods).forEach(mod => {
+
+    hasStaff = true;
+
+    const item = document.createElement("div");
+
+    item.className = "staff-item";
+
+    item.innerHTML = `
+        <strong>🔨 ${mod}</strong>
+        <div>
+            <span class="staff-role">
+                Moderator
+            </span>
+        </div>
+    `;
+
+    staffList.appendChild(item);
+
+});
+
+Object.values(helpers).forEach(helper => {
+
+    hasStaff = true;
+
+    const item = document.createElement("div");
+
+    item.className = "staff-item";
+
+    item.innerHTML = `
+        <strong>⭐ ${helper}</strong>
+        <div>
+            <span class="staff-role">
+                Helper
+            </span>
+        </div>
+    `;
+
+    staffList.appendChild(item);
+
+});
+
+if (!hasStaff) {
+
+    
     } catch(error){
         console.error(error);
         document.getElementById("serverName").textContent = "Connection Failed";
