@@ -64,6 +64,76 @@ body{
     margin-top:8px;
 }
 
+/* Plate Lookup */
+
+.plate-card{
+    position:absolute;
+    top:120px;
+    left:30px;
+
+    width:320px;
+
+    background:rgba(0,0,0,.55);
+
+    backdrop-filter:blur(12px);
+
+    border:1px solid rgba(255,255,255,.12);
+
+    border-radius:16px;
+
+    padding:20px;
+}
+
+.plate-card h2{
+    color:white;
+    margin-bottom:15px;
+}
+
+#plateSearch{
+    width:100%;
+
+    padding:12px;
+
+    border:none;
+    outline:none;
+
+    border-radius:10px;
+
+    background:rgba(255,255,255,.08);
+
+    color:white;
+
+    margin-bottom:10px;
+}
+
+#searchPlate{
+    width:100%;
+
+    padding:12px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#0e639c;
+
+    color:white;
+
+    cursor:pointer;
+}
+
+#searchPlate:hover{
+    background:#1177bb;
+}
+
+#plateResult{
+    color:#d0d0d0;
+    margin-top:15px;
+    font-size:14px;
+}
+
+/* Player Panel */
+
 .player-panel{
     width:350px;
     background:rgba(0,0,0,.55);
@@ -145,6 +215,26 @@ body{
 
         </div>
 
+        <div class="plate-card">
+
+            <h2>Plate Lookup</h2>
+
+            <input
+                id="plateSearch"
+                type="text"
+                placeholder="Enter License Plate..."
+            >
+
+            <button id="searchPlate">
+                Search
+            </button>
+
+            <div id="plateResult">
+                Vehicle lookup coming soon...
+            </div>
+
+        </div>
+
     </div>
 
     <div class="player-panel">
@@ -209,7 +299,6 @@ async function loadServerData() {
                 '<div class="loading">No players online.</div>';
 
             return;
-
         }
 
         players.forEach(player => {
@@ -245,6 +334,20 @@ async function loadServerData() {
     }
 
 }
+
+document
+.getElementById("searchPlate")
+.addEventListener("click", () => {
+
+    const plate =
+        document.getElementById("plateSearch").value;
+
+    document.getElementById("plateResult").innerHTML = `
+        <strong>Searched Plate:</strong> ${plate}<br>
+        Vehicle lookup not connected yet.
+    `;
+
+});
 
 loadServerData();
 
