@@ -536,7 +536,7 @@ async function loadServerData() {
         if(!Array.isArray(commands) || commands.length === 0){
             commandList.innerHTML = '<div class="loading">No recent commands.</div>';
         } else {
-            commands.forEach(cmd => {
+            [...commands].reverse().forEach(cmd => {
                 const item = document.createElement("div");
                 item.className = "list-item";
                 const content = typeof cmd === 'string' ? cmd : `${cmd.Command || 'Unknown'}`;
