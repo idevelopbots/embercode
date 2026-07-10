@@ -435,19 +435,24 @@ body {
 
 <script>
 async function loadServerData() {
-    try {
-        const [serverResponse, playersResponse, vehiclesResponse, staffResponse] =
-            await Promise.all([
-                fetch("/api/server").catch(() => null),
-                fetch("/api/players").catch(() => null),
-                fetch("/api/vehicles").catch(() => null),
-                fetch("/api/staff").catch(() => null)
-            ]);
+    const fetchJson = async (url, fallback) => {
+        try {
+            const res = await fetch(url);
+            if (!res.ok) return fallback;
+            return await res.json();
+        } catch (e) {
+            console.warn(`Failed to fetch ${url}`, e);
+            return fallback;
+        }
+    };
 
-        const serverData = serverResponse && serverResponse.ok ? await serverResponse.json() : {};
-        const players = playersResponse && playersResponse.ok ? await playersResponse.json() : [];
-        const vehicles = vehiclesResponse && vehiclesResponse.ok ? await vehiclesResponse.json() : [];
-        const staff = staffResponse && staffResponse.ok ? await staffResponse.json() : {};
+    try {
+        const [serverData, players, vehicles, staff] = await Promise.all([
+            fetchJson("/api/server", {}),
+            fetchJson("/api/players", []),
+            fetchJson("/api/vehicles", []),
+            fetchJson("/api/staff", {})
+        ]);
 
         // Update Server Stats
         document.getElementById("serverName").textContent =
@@ -459,24 +464,24 @@ async function loadServerData() {
         document.getElementById("playerStats").textContent =
             `${serverData.CurrentPlayers || 0} / ${serverData.MaxPlayers || 0} Players`;
 
-        document.getElementById("playerCount").textContent = players.length;
+        document.getElementById("playerCount").textContent = players.length || 0;
 
         // Update Player List
         const playerList = document.getElementById("playerList");
         playerList.innerHTML = "";
 
-        if(players.length === 0){
+        if(!Array.isArray(players) || players.length === 0){
             playerList.innerHTML = '<div class="loading">No players online.</div>';
         } else {
             players.forEach(player => {
                 const card = document.createElement("div");
                 card.className = "player-card";
-                card.innerHTML = \`
+                card.innerHTML = `
                     <div class="player-info">
-                        <div class="player-name">\${player.Player || "Unknown"}</div>
+                        <div class="player-name">${player.Player || "Unknown"}</div>
                     </div>
-                    <div class="badge badge-team">\${player.Team || "Civilian"}</div>
-                \`;
+                    <div class="badge badge-team">${player.Team || "Civilian"}</div>
+                `;
                 playerList.appendChild(card);
             });
         }
@@ -485,19 +490,19 @@ async function loadServerData() {
         const vehicleList = document.getElementById("vehicleList");
         vehicleList.innerHTML = "";
 
-        if(!vehicles || vehicles.length === 0){
+        if(!Array.isArray(vehicles) || vehicles.length === 0){
             vehicleList.innerHTML = '<div class="loading">No active vehicles.</div>';
         } else {
             vehicles.forEach(veh => {
                 const item = document.createElement("div");
                 item.className = "list-item";
-                item.innerHTML = \`
-                    <div class="item-title">\${veh.Name || "Unknown Vehicle"}</div>
+                item.innerHTML = `
+                    <div class="item-title">${veh.Name || "Unknown Vehicle"}</div>
                     <div class="item-subtitle">
-                        <span style="color: #cbd5e1;">Plate: \${veh.Plate || "N/A"}</span> • 
-                        <span>Owner: \${veh.Owner || "Unknown"}</span>
+                        <span style="color: #cbd5e1;">Plate: ${veh.Plate || "N/A"}</span> • 
+                        <span>Owner: ${veh.Owner || "Unknown"}</span>
                     </div>
-                \`;
+                `;
                 vehicleList.appendChild(item);
             });
         }
@@ -516,12 +521,12 @@ async function loadServerData() {
             hasStaff = true;
             const item = document.createElement("div");
             item.className = "list-item";
-            item.innerHTML = \`
+            item.innerHTML = `
                 <div class="item-title">
-                    <span>\${icon} \${name}</span>
-                    <span class="badge \${roleClass}">\${roleName}</span>
+                    <span>${icon} ${name}</span>
+                    <span class="badge ${roleClass}">${roleName}</span>
                 </div>
-            \`;
+            `;
             staffList.appendChild(item);
         };
 
@@ -535,8 +540,6 @@ async function loadServerData() {
 
     } catch(error){
         console.error("Dashboard Update Error:", error);
-        document.getElementById("serverName").textContent = "Connection Error";
-        document.getElementById("joinCode").textContent = "Check console for details";
     }
 }
 
