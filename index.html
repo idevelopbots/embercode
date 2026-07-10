@@ -17,10 +17,7 @@ body{
     font-family:'Segoe UI',sans-serif;
     height:100vh;
     overflow:hidden;
-
-    background:url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdM7xpdhNRKYY_OEdQKxIPc1pAcQldBJBrBFODchAOkJ0wJmgucYnlMTvs&s=10");
-    background-size:cover;
-    background-position:center;
+    background:#0f1117;
 }
 
 .overlay{
@@ -31,31 +28,22 @@ body{
     display:flex;
 }
 
-/* MAIN AREA */
-
 .main{
     flex:1;
     position:relative;
 }
-
-/* SERVER HEADER */
 
 .server-header{
     position:absolute;
     top:20px;
     left:50%;
     transform:translateX(-50%);
-
     text-align:center;
-
     background:rgba(0,0,0,0.45);
     backdrop-filter:blur(10px);
-
     border:1px solid rgba(255,255,255,0.15);
     border-radius:16px;
-
     padding:18px 35px;
-
     min-width:420px;
 }
 
@@ -76,27 +64,17 @@ body{
     margin-top:8px;
 }
 
-/* COMMAND CONSOLE */
-
 .command-box{
     position:absolute;
-
     left:50%;
     bottom:30px;
-
     transform:translateX(-50%);
-
     width:700px;
     max-width:90%;
-
     background:rgba(0,0,0,.45);
-
     backdrop-filter:blur(12px);
-
     border-radius:16px;
-
     border:1px solid rgba(255,255,255,.15);
-
     padding:15px;
 }
 
@@ -113,30 +91,20 @@ body{
 
 #commandInput{
     flex:1;
-
     border:none;
     outline:none;
-
     padding:12px;
-
     border-radius:10px;
-
     background:rgba(255,255,255,.1);
-
     color:white;
 }
 
 #sendCommand{
     border:none;
-
     background:#0e639c;
-
     color:white;
-
     padding:12px 18px;
-
     border-radius:10px;
-
     cursor:pointer;
 }
 
@@ -148,19 +116,14 @@ body{
     color:#84ff84;
     margin-top:10px;
     font-size:14px;
+    word-break:break-word;
 }
-
-/* PLAYER PANEL */
 
 .player-panel{
     width:350px;
-
     background:rgba(0,0,0,.55);
-
     backdrop-filter:blur(12px);
-
     border-left:1px solid rgba(255,255,255,.12);
-
     display:flex;
     flex-direction:column;
 }
@@ -187,37 +150,17 @@ body{
     padding:15px;
 }
 
-.player-list::-webkit-scrollbar{
-    width:8px;
-}
-
-.player-list::-webkit-scrollbar-thumb{
-    background:rgba(255,255,255,.18);
-    border-radius:10px;
-}
-
 .player-card{
     background:rgba(255,255,255,.05);
-
     border:1px solid rgba(255,255,255,.08);
-
     border-radius:12px;
-
     padding:12px;
-
     margin-bottom:10px;
-
-    transition:.25s;
-}
-
-.player-card:hover{
-    background:rgba(255,255,255,.08);
 }
 
 .player-name{
     color:white;
     font-weight:600;
-    font-size:15px;
 }
 
 .player-team{
@@ -334,18 +277,14 @@ async function loadServerData() {
         document.getElementById("playerCount").textContent =
             `${players.length} Players Online`;
 
-        const playerList =
-            document.getElementById("playerList");
+        const playerList = document.getElementById("playerList");
 
         playerList.innerHTML = "";
 
         if(players.length === 0){
 
-            playerList.innerHTML = `
-                <div class="loading">
-                    No players online.
-                </div>
-            `;
+            playerList.innerHTML =
+                '<div class="loading">No players online.</div>';
 
             return;
         }
@@ -361,7 +300,6 @@ async function loadServerData() {
                 <div class="player-name">
                     ${player.Player || "Unknown"}
                 </div>
-
                 <div class="player-team">
                     ${player.Team || "Civilian"}
                 </div>
@@ -388,46 +326,57 @@ document
 .addEventListener("click", async () => {
 
     const command =
-        document.getElementById("commandInput").value;
+        document.getElementById("commandInput").value.trim();
 
-    if(!command) return;
+    if(!command){
+        alert("Enter a command first.");
+        return;
+    }
 
     try {
+
+        document.getElementById("commandStatus")
+            .textContent = "Sending...";
 
         const response = await fetch(
             "/api/command",
             {
                 method:"POST",
-
                 headers:{
                     "Content-Type":"application/json"
                 },
-
-                body:JSON.stringify({
-                    command
+                body: JSON.stringify({
+                    command: command
                 })
             }
         );
 
         const data = await response.json();
 
-        document.getElementById("commandStatus")
-            .textContent = "Command sent successfully.";
+        console.log("COMMAND RESPONSE:", data);
 
-        console.log(data);
+        alert(JSON.stringify(data, null, 2));
+
+        document.getElementById("commandStatus")
+            .textContent =
+            JSON.stringify(data);
 
     } catch(err){
 
-        document.getElementById("commandStatus")
-            .textContent = "Failed to send command.";
-
         console.error(err);
+
+        alert(
+            "ERROR: " + err.message
+        );
+
+        document.getElementById("commandStatus")
+            .textContent =
+            "Failed: " + err.message;
     }
 
 });
 
 loadServerData();
-
 setInterval(loadServerData, 5000);
 
 </script>
