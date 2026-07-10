@@ -432,6 +432,13 @@ body {
                     <div class="loading">Fetching helper data...</div>
                 </div>
             </div>
+
+            <div class="glass-panel">
+                <h2>Recent Commands</h2>
+                <div id="commandList" class="scrollable-list">
+                    <div class="loading">Fetching command logs...</div>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -461,11 +468,12 @@ async function loadServerData() {
     };
 
     try {
-        const [serverData, players, vehicles, staff] = await Promise.all([
+        const [serverData, players, vehicles, staff, commands] = await Promise.all([
             fetchJson("/api/server", {}),
             fetchJson("/api/players", []),
             fetchJson("/api/vehicles", []),
-            fetchJson("/api/staff", {})
+            fetchJson("/api/staff", {}),
+            fetchJson("/api/commands", [])
         ]);
 
         // Update Server Stats
@@ -518,6 +526,28 @@ async function loadServerData() {
                     </div>
                 `;
                 vehicleList.appendChild(item);
+            });
+        }
+
+        // Update Commands List
+        const commandList = document.getElementById("commandList");
+        commandList.innerHTML = "";
+
+        if(!Array.isArray(commands) || commands.length === 0){
+            commandList.innerHTML = '<div class="loading">No recent commands.</div>';
+        } else {
+            commands.forEach(cmd => {
+                const item = document.createElement("div");
+                item.className = "list-item";
+                const content = typeof cmd === 'string' ? cmd : `${cmd.Command || 'Unknown'}`;
+                const player = typeof cmd === 'string' ? 'System' : `${cmd.Player || 'System'}`;
+                item.innerHTML = `
+                    <div class="item-title">${player}</div>
+                    <div class="item-subtitle" style="font-family: monospace; font-size: 11px;">
+                        ${content}
+                    </div>
+                `;
+                commandList.appendChild(item);
             });
         }
 
