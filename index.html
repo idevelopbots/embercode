@@ -365,7 +365,7 @@ async function loadServerData() {
                 item.className = "vehicle-item";
                 item.innerHTML = `
                     <strong>${veh.Name || "Unknown Vehicle"}</strong>
-                    <div class="vehicle-owner">Plate: ${veh.LicensePlate || "N/A"} • Owner: ${veh.Owner || "Unknown"}</div>
+                    <div class="vehicle-owner">Plate: ${veh.Plate || "N/A"} • Owner: ${veh.Owner || "Unknown"}</div>
                 `;
                 vehicleList.appendChild(item);
             });
@@ -379,30 +379,24 @@ async function loadServerData() {
 }
 
 document.getElementById("searchPlate").addEventListener("click", () => {
-    const inputPlate = document.getElementById("plateSearch").value.trim().toUpperCase();
+    const plate = document.getElementById("plateSearch").value.trim().toUpperCase();
     const resultDiv = document.getElementById("plateResult");
 
-    if (!inputPlate) {
-        resultDiv.innerHTML = "<strong>Please enter a license plate.</strong>";
-        return;
-    }
-
-    // Search the cached list for a matching LicensePlate string
-    const match = cachedVehicles.find(v => 
-        v.LicensePlate && v.LicensePlate.trim().toUpperCase() === inputPlate
+    const vehicle = cachedVehicles.find(v =>
+        v.Plate && v.Plate.toUpperCase() === plate
     );
 
-    if (match) {
+    if (vehicle) {
         resultDiv.innerHTML = `
-            <strong>Vehicle Found!</strong><br>
-            <strong>Model:</strong> ${match.Name || "Unknown"}<br>
-            <strong>Owner:</strong> ${match.Owner || "Unknown"}<br>
-            <strong>Plate:</strong> ${match.LicensePlate}
+            <strong>Vehicle Found</strong><br>
+            Model: ${vehicle.Name}<br>
+            Plate: ${vehicle.Plate}<br>
+            Owner: ${vehicle.Owner}
         `;
     } else {
         resultDiv.innerHTML = `
             <strong>No Match Found</strong><br>
-            Plate "${inputPlate}" is not registered.
+            ${plate}
         `;
     }
 });
