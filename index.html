@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Los Angeles Roleplay Dashboard</title>
+<title>Management Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -432,13 +432,6 @@ body {
                     <div class="loading">Fetching helper data...</div>
                 </div>
             </div>
-
-            <div class="glass-panel">
-                <h2>Recent Commands</h2>
-                <div id="commandList" class="scrollable-list">
-                    <div class="loading">Fetching command logs...</div>
-                </div>
-            </div>
         </div>
 
     </div>
@@ -468,12 +461,11 @@ async function loadServerData() {
     };
 
     try {
-        const [serverData, players, vehicles, staff, commands] = await Promise.all([
+        const [serverData, players, vehicles, staff] = await Promise.all([
             fetchJson("/api/server", {}),
             fetchJson("/api/players", []),
             fetchJson("/api/vehicles", []),
-            fetchJson("/api/staff", {}),
-            fetchJson("/api/commands", [])
+            fetchJson("/api/staff", {})
         ]);
 
         // Update Server Stats
@@ -521,7 +513,7 @@ async function loadServerData() {
                 item.innerHTML = `
                     <div class="item-title">${veh.Name || "Unknown Vehicle"}</div>
                     <div class="item-subtitle">
-                        <span style="color: #cbd5e1;">Plate: ${veh.Plate || "N/A"}</span> • 
+                        <span style="color: #cbd5e1;">Plate: ${veh.Plate || "N/A"}</span> &bull; 
                         <span>Owner: ${veh.Owner || "Unknown"}</span>
                     </div>
                 `;
@@ -529,37 +521,13 @@ async function loadServerData() {
             });
         }
 
-        // Update Commands List
-        const commandList = document.getElementById("commandList");
-        commandList.innerHTML = "";
-
-        if(!Array.isArray(commands) || commands.length === 0){
-            commandList.innerHTML = '<div class="loading">No recent commands.</div>';
-        } else {
-            [...commands].reverse().forEach(cmd => {
-                const item = document.createElement("div");
-                item.className = "list-item";
-                const content = typeof cmd === 'string' ? cmd : `${cmd.Command || 'Unknown'}`;
-                const player = typeof cmd === 'string' ? 'System' : `${cmd.Player || 'System'}`;
-                item.innerHTML = `
-                    <div class="item-title">${player}</div>
-                    <div class="item-subtitle" style="font-family: monospace; font-size: 11px;">
-                        ${content}
-                    </div>
-                `;
-                commandList.appendChild(item);
-            });
-        }
-
-        // Update Administration List
+        // Update Administration Lists
         const staffList = document.getElementById("staffList");
         staffList.innerHTML = "";
 
-        // Update Moderation List
         const modList = document.getElementById("modList");
         modList.innerHTML = "";
 
-        // Update Helper List
         const helperList = document.getElementById("helperList");
         helperList.innerHTML = "";
 
@@ -584,7 +552,7 @@ async function loadServerData() {
             return true;
         };
 
-        Object.values(admins).forEach(admin => { hasAdmin = addStaffMember(staffList, admin, "badge-admin", "Admin", "👑"); });
+        Object.values(admins).forEach(admin => { hasAdmin = addStaffMember(staffList, admin, "badge-admin", "Administrator", "👑"); });
         Object.values(mods).forEach(mod => { hasMod = addStaffMember(modList, mod, "badge-mod", "Moderator", "🔨"); });
         Object.values(helpers).forEach(helper => { hasHelper = addStaffMember(helperList, helper, "badge-helper", "Helper", "⭐"); });
 
