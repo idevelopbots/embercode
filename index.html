@@ -3,27 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logging Component</title>
+    <title>LVRP Staff Hub</title>
     <style>
-        /* Base page styling to match the screenshot */
+        /* Base Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             background-color: #050505;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding: 40px;
             color: #ffffff;
         }
 
-        /* The main outer container widget */
-        .logging-widget {
+        /* Sticky Navigation Bar with Integrated Logo */
+        .nav-container {
             background-color: #0f0f0f;
-            border: 1px solid #241911; /* Subtle dark orange/brown border tint */
-            border-radius: 12px;
-            padding: 24px;
-            max-width: 1200px;
-            margin: 0 auto;
+            padding: 10px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Pushes logo left, links right */
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.7);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #1f1f1f;
         }
 
-        /* Header row layout */
+        .nav-logo-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-logo-wrapper img {
+            max-height: 45px; /* Neatly fits into the header bar */
+            width: auto;
+            object-fit: contain;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links li a {
+            color: #b3b3b3;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 10px 18px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links li a:hover {
+            color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Active Navigation Highlight State */
+        .nav-links li a.active {
+            background-color: #ff6b1a; 
+            color: #ffffff;
+        }
+
+        /* Main Layout Section */
+        .main-content {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 60px 30px;
+            margin-bottom: 40px;
+            background-color: #0f0f0f;
+            border-radius: 12px;
+            border: 1px solid #1f1f1f;
+            scroll-margin-top: 90px; /* Prevents layout overlap from header */
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        p {
+            color: #8c8c8c;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        /* --- Logging Widget Component Layout --- */
+        .logging-widget {
+            border: 1px solid #241911; /* Subtle dark orange/brown border tint */
+            padding: 24px;
+            background-color: #0f0f0f;
+            border-radius: 12px;
+        }
+
         .widget-header {
             margin-bottom: 24px;
         }
@@ -35,7 +124,6 @@
             margin-bottom: 8px;
         }
 
-        /* Orange document icon placeholder */
         .icon-orange {
             color: #ff6b1a;
             font-size: 24px;
@@ -48,7 +136,6 @@
             color: #ffffff;
         }
 
-        /* BETA badge styling */
         .beta-badge {
             background-color: rgba(255, 107, 26, 0.15);
             color: #ff6b1a;
@@ -65,14 +152,12 @@
             font-size: 14px;
         }
 
-        /* Two-column grid for the interactive cards */
         .card-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 16px;
         }
 
-        /* Card styling */
         .log-card {
             background-color: #141414;
             border: 1px solid #222222;
@@ -82,7 +167,6 @@
             transition: all 0.2s ease;
         }
 
-        /* Hover effect for interactivity */
         .log-card:hover {
             border-color: #ff6b1a;
             background-color: #1a1a1a;
@@ -95,10 +179,6 @@
             margin-bottom: 6px;
         }
 
-        .card-icon {
-            font-size: 16px;
-        }
-
         .card-title {
             font-size: 16px;
             font-weight: 600;
@@ -109,47 +189,139 @@
             color: #666666;
             font-size: 13px;
         }
+
+        /* Generic nested rules placeholder layout */
+        .placeholder-text {
+            border-top: 1px dashed #222222;
+            margin-top: 20px;
+            padding-top: 20px;
+        }
+
+        /* Responsive Navbar Layout adjustment */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <div class="logging-widget">
+    <nav class="nav-container">
+        <div class="nav-logo-wrapper">
+            <a href="#home">
+                <img src="lasvegas.png" alt="Las Vegas Roleplay Logo">
+            </a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home" class="nav-item active">Home</a></li>
+            <li><a href="#expectations" class="nav-item">General Expectations</a></li>
+            <li><a href="#driving" class="nav-item">Driving Expectations</a></li>
+            <li><a href="#logging" class="nav-item">Logging Module</a></li>
+            <li><a href="#punishments" class="nav-item">Punishments</a></li>
+        </ul>
+    </nav>
+
+<main class="main-content">
+
+    <section id="home">
+        <h2>Welcome to the Staff Hub</h2>
+        <p>
+            Your central single-page terminal for managing network staff operations, tracking live moderation policies, 
+            and checking user activity configurations.
+        </p>
+    </section>
+
+    <section id="expectations">
+        <h2>General Expectations</h2>
+        <p>Standards of conduct, administrative guidelines, and user interactions within the community network.</p>
+        <div class="placeholder-text">
+            <p>• Staff must approach active player incidents neutrally.</p>
+            <p>• Avoid engaging in administrative overreach or meta-gaming.</p>
+        </div>
+    </section>
+
+    <section id="driving">
+        <h2>Driving Expectations</h2>
+        <p>Specific instructions regarding mechanical operation, emergency vehicles, and baseline driving realism.</p>
+        <div class="placeholder-text">
+            <p>• Do not use high-performance configuration speeds outside of active task enforcement.</p>
+        </div>
+    </section>
+
+    <section id="logging">
+        <div class="logging-widget">
+            <div class="widget-header">
+                <div class="title-row">
+                    <span class="icon-orange">📄</span>
+                    <span class="widget-title">Logging</span>
+                    <span class="beta-badge">Beta</span>
+                </div>
+                <div class="widget-subtitle">
+                    Log briefings and priorities to track staff activities
+                </div>
+            </div>
+
+            <div class="card-row">
+                <div class="log-card">
+                    <div class="card-title-row">
+                        <span class="icon-orange" style="font-size:16px;">📄</span>
+                        <span class="card-title">Log Briefing</span>
+                    </div>
+                    <div class="card-description">
+                        Record staff briefings and meetings
+                    </div>
+                </div>
+
+                <div class="log-card">
+                    <div class="card-title-row">
+                        <span style="color: #ff6b1a; font-size:16px;">⚠️</span>
+                        <span class="card-title">Log Priority</span>
+                    </div>
+                    <div class="card-description">
+                        Record priority incidents and events
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="punishments">
+        <h2>Punishments Matrix</h2>
+        <p>Standardized enforcement structures designed to ensure rule validation across active operations.</p>
+        <div class="placeholder-text">
+            <p>• Standard infrastructure violation: Tier 1 Warning.</p>
+        </div>
+    </section>
+
+</main>
+
+<script>
+    // Smooth scrolling auto-highlight feature logic
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-item');
+
+    window.addEventListener('scroll', () => {
+        let current = '';
         
-        <div class="widget-header">
-            <div class="title-row">
-                <span class="icon-orange">📄</span>
-                <span class="widget-title">Logging</span>
-                <span class="beta-badge">Beta</span>
-            </div>
-            <div class="widget-subtitle">
-                Log briefings and priorities to track staff activities
-            </div>
-        </div>
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            // Target triggers midway point down the page segment
+            if (pageYOffset >= (sectionTop - 140)) {
+                current = section.getAttribute('id');
+            }
+        });
 
-        <div class="card-row">
-            
-            <div class="log-card">
-                <div class="card-title-row">
-                    <span class="card-icon">📄</span>
-                    <span class="card-title">Log Briefing</span>
-                </div>
-                <div class="card-description">
-                    Record staff briefings and meetings
-                </div>
-            </div>
-
-            <div class="log-card">
-                <div class="card-title-row">
-                    <span class="card-icon" style="color: #ff6b1a;">⚠️</span>
-                    <span class="card-title">Log Priority</span>
-                </div>
-                <div class="card-description">
-                    Record priority incidents and events
-                </div>
-            </div>
-
-        </div>
-    </div>
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href').includes(current)) {
+                link.classList.add('active');
+            }
+        });
+    });
+</script>
 
 </body>
 </html>
