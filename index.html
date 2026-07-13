@@ -13,6 +13,10 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             background-color: #0d0d0d;
             color: #ffffff;
@@ -23,12 +27,11 @@
             position: relative;
             width: 100%;
             height: 320px;
-            /* Replace image_22.jpg with your background image filename */
             background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url('image_22.jpg') center/cover no-repeat;
             display: flex;
             justify-content: center;
             align-items: center;
-            border-bottom: 3px solid #7B2CBF; /* Purple accent border line */
+            border-bottom: 3px solid #7B2CBF; 
         }
 
         .logo-container img {
@@ -37,7 +40,7 @@
             filter: drop-shadow(0px 4px 15px rgba(0,0,0,0.7));
         }
 
-        /* Navigation Bar */
+        /* Sticky Navigation Bar */
         .nav-container {
             background-color: #141414;
             padding: 15px 20px;
@@ -45,6 +48,9 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         .nav-links {
@@ -65,36 +71,87 @@
             transition: all 0.3s ease;
         }
 
-        /* Hover Effect for Links */
         .nav-links li a:hover {
             color: #ffffff;
             background-color: rgba(255, 255, 255, 0.05);
         }
 
-        /* Active Tab / Home Highlight (Purple Theme to match Las Vegas logo) */
         .nav-links li a.active {
             background-color: #7B2CBF; 
             color: #ffffff;
         }
 
-        /* Main Content Placeholder Area */
+        /* Single Page Content Structure */
         .main-content {
             max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-            text-align: center;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
 
-        .main-content h1 {
+        /* Full Page / Section Styling */
+        section {
+            padding: 60px 20px;
+            margin-bottom: 40px;
+            background-color: #141414;
+            border-radius: 12px;
+            border: 1px solid #222;
+            scroll-margin-top: 100px; /* Prevents sticky nav from covering heading */
+        }
+
+        #home {
+            text-align: center;
+            background: transparent;
+            border: none;
+            padding: 20px 0;
+        }
+
+        h1, h2 {
             font-size: 2.5rem;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             color: #9D4EDD;
         }
 
-        .main-content p {
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #e0aaff;
+        }
+
+        p {
             color: #a6a6a6;
             font-size: 1.1rem;
             line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        /* Grid Layout for Home Dashboard Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background-color: #1a1a1a;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid #7B2CBF;
+            text-align: left;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(123, 44, 191, 0.2);
+        }
+
+        /* Text Styling inside sections */
+        .placeholder-text {
+            border-top: 1px dashed #333;
+            margin-top: 20px;
+            padding-top: 20px;
+            text-align: left;
         }
     </style>
 </head>
@@ -108,56 +165,106 @@
 
     <nav class="nav-container">
         <ul class="nav-links">
-            <li><a href="Home.html" class="active">Home</a></li>
-            <li><a href="General Expectations.html">General Expectations</a></li>
-            <li><a href="Driving Expectations.html">Driving Expectations</a></li>
-            <li><a href="Mod Calls.html">Mod Calls</a></li>
-            <li><a href="Punishments.html">Punishments</a></li>
+            <li><a href="#home" class="nav-item active">Home</a></li>
+            <li><a href="#expectations" class="nav-item">General Expectations</a></li>
+            <li><a href="#driving" class="nav-item">Driving Expectations</a></li>
+            <li><a href="#mod-calls" class="nav-item">Mod Calls</a></li>
+            <li><a href="#punishments" class="nav-item">Punishments</a></li>
         </ul>
     </nav>
 
 <main class="main-content">
 
-    <section class="welcome">
+    <section id="home">
         <h2>Welcome to the Staff Hub</h2>
         <p>
             Your central location for staff resources, operational procedures,
             moderation policies, and community expectations.
         </p>
+
+        <div class="card-grid">
+            <div class="card">
+                <h3>General Expectations</h3>
+                <p>Review standards of conduct, professionalism, and staff behavior.</p>
+            </div>
+            <div class="card">
+                <h3>Driving Expectations</h3>
+                <p>Learn vehicle operation guidelines and realistic driving standards.</p>
+            </div>
+            <div class="card">
+                <h3>Mod Calls</h3>
+                <p>Procedures for handling reports, player assistance, and moderation.</p>
+            </div>
+            <div class="card">
+                <h3>Punishments</h3>
+                <p>Reference disciplinary procedures and enforcement policies.</p>
+            </div>
+        </div>
     </section>
 
-    <section class="card-grid">
+    <section id="expectations">
+        <h2>General Expectations</h2>
+        <p>Standards of conduct, professionalism, and staff behavior across the Las Vegas Roleplay network.</p>
+        <div class="placeholder-text">
+            <p>• Always maintain a professional tone when dealing with players.</p>
+            <p>• Remain impartial and unbiased during disputes.</p>
+            </div>
+    </section>
 
-        <div class="card">
-            <h3>General Expectations</h3>
-            <p>
-                Review standards of conduct, professionalism, and staff behavior.
-            </p>
-        </div>
+    <section id="driving">
+        <h2>Driving Expectations</h2>
+        <p>Vehicle operation guidelines, pursuit limitations, and realistic driving standards for staff and community members.</p>
+        <div class="placeholder-text">
+            <p>• Staff vehicles must follow realistic physics guidelines during active roleplay.</p>
+            <p>• Do not use administrative abilities to give an unfair advantage during pursuits.</p>
+            </div>
+    </section>
 
-        <div class="card">
-            <h3>Driving Expectations</h3>
-            <p>
-                Learn vehicle operation guidelines and realistic driving standards.
-            </p>
-        </div>
+    <section id="mod-calls">
+        <h2>Mod Calls</h2>
+        <p>In-depth procedures for handling reports, managing tickets, providing player assistance, and escalation paths.</p>
+        <div class="placeholder-text">
+            <p>• Always record video evidence before handling an active moderation incident.</p>
+            <p>• Claim tickets in the queue strictly in chronological order.</p>
+            </div>
+    </section>
 
-        <div class="card">
-            <h3>Mod Calls</h3>
-            <p>
-                Procedures for handling reports, player assistance, and moderation.
-            </p>
-        </div>
-
-        <div class="card">
-            <h3>Punishments</h3>
-            <p>
-                Reference disciplinary procedures and enforcement policies.
-            </p>
-        </div>
-
+    <section id="punishments">
+        <h2>Punishments</h2>
+        <p>Reference matrix for disciplinary procedures, ban durations, warning system, and enforcement policies.</p>
+        <div class="placeholder-text">
+            <p>• First offense VDM/RDM: Official Warning.</p>
+            <p>• Severe offenses or repeat violations: 24-Hour to Permanent Exclusions.</p>
+            </div>
     </section>
 
 </main>
+
+<script>
+    // Script to dynamically highlight active nav items while scrolling
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-item');
+
+    window.addEventListener('scroll', () => {
+        let current = '';
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            // Checks if window scroll position is currently over the section
+            if (pageYOffset >= (sectionTop - 150)) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href').includes(current)) {
+                link.classList.add('active');
+            }
+        });
+    });
+</script>
+
 </body>
 </html>
