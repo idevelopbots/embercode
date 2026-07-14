@@ -1,327 +1,777 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LVRP Staff Hub</title>
-    <style>
-        /* Base Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
 
-        html {
-            scroll-behavior: smooth;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        body {
-            background-color: #050505;
-            color: #ffffff;
-        }
+<title>Roblox Moderation Panel</title>
 
-        /* Sticky Navigation Bar with Integrated Logo */
-        .nav-container {
-            background-color: #0f0f0f;
-            padding: 10px 40px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between; /* Pushes logo left, links right */
-            box-shadow: 0px 4px 15px rgba(0,0,0,0.7);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid #1f1f1f;
-        }
 
-        .nav-logo-wrapper {
-            display: flex;
-            align-items: center;
-        }
+<style>
 
-        .nav-logo-wrapper img {
-            max-height: 45px; /* Neatly fits into the header bar */
-            width: auto;
-            object-fit: contain;
-        }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
 
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
 
-        .nav-links li a {
-            color: #b3b3b3;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            padding: 10px 18px;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-        }
+body{
 
-        .nav-links li a:hover {
-            color: #ffffff;
-            background-color: rgba(255, 255, 255, 0.05);
-        }
+    background:#111318;
+    color:white;
+    display:flex;
+    height:100vh;
 
-        /* Active Navigation Highlight State */
-        .nav-links li a.active {
-            background-color: #ff6b1a; 
-            color: #ffffff;
-        }
+}
 
-        /* Main Layout Section */
-        .main-content {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
 
-        section {
-            padding: 60px 30px;
-            margin-bottom: 40px;
-            background-color: #0f0f0f;
-            border-radius: 12px;
-            border: 1px solid #1f1f1f;
-            scroll-margin-top: 90px; /* Prevents layout overlap from header */
-        }
+/* Sidebar */
 
-        h2 {
-            font-size: 2rem;
-            margin-bottom: 15px;
-            color: #ffffff;
-            font-weight: 700;
-        }
+.sidebar{
 
-        p {
-            color: #8c8c8c;
-            font-size: 1.05rem;
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
+    width:240px;
+    background:#1c2028;
+    padding:25px;
 
-        /* --- Logging Widget Component Layout --- */
-        .logging-widget {
-            border: 1px solid #241911; /* Subtle dark orange/brown border tint */
-            padding: 24px;
-            background-color: #0f0f0f;
-            border-radius: 12px;
-        }
+}
 
-        .widget-header {
-            margin-bottom: 24px;
-        }
 
-        .title-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-        }
+.sidebar h2{
 
-        .icon-orange {
-            color: #ff6b1a;
-            font-size: 24px;
-            font-weight: bold;
-        }
+    text-align:center;
+    margin-bottom:30px;
 
-        .widget-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #ffffff;
-        }
+}
 
-        .beta-badge {
-            background-color: rgba(255, 107, 26, 0.15);
-            color: #ff6b1a;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
 
-        .widget-subtitle {
-            color: #8c8c8c;
-            font-size: 14px;
-        }
 
-        .card-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 16px;
-        }
+.sidebar button{
 
-        .log-card {
-            background-color: #141414;
-            border: 1px solid #222222;
-            border-radius: 8px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
+    width:100%;
+    padding:13px;
 
-        .log-card:hover {
-            border-color: #ff6b1a;
-            background-color: #1a1a1a;
-        }
+    margin-bottom:12px;
 
-        .card-title-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 6px;
-        }
+    background:#2d333d;
+    color:white;
 
-        .card-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #ffffff;
-        }
+    border:none;
+    border-radius:8px;
 
-        .card-description {
-            color: #666666;
-            font-size: 13px;
-        }
+    cursor:pointer;
 
-        /* Generic nested rules placeholder layout */
-        .placeholder-text {
-            border-top: 1px dashed #222222;
-            margin-top: 20px;
-            padding-top: 20px;
-        }
+}
 
-        /* Responsive Navbar Layout adjustment */
-        @media (max-width: 768px) {
-            .nav-container {
-                flex-direction: column;
-                gap: 15px;
-                padding: 15px;
-            }
-        }
-    </style>
+
+
+.sidebar button:hover{
+
+    background:#3b82f6;
+
+}
+
+
+
+
+
+/* Main */
+
+.main{
+
+    flex:1;
+    padding:40px;
+
+}
+
+
+
+
+.card{
+
+    background:#1c2028;
+
+    padding:30px;
+
+    border-radius:12px;
+
+    width:600px;
+
+}
+
+
+
+
+h1{
+
+    margin-bottom:25px;
+
+}
+
+
+
+
+
+label{
+
+    display:block;
+
+    margin-top:15px;
+
+    margin-bottom:6px;
+
+    font-weight:bold;
+
+}
+
+
+
+
+
+input,
+select,
+textarea{
+
+
+    width:100%;
+
+    padding:12px;
+
+    background:#2d333d;
+
+    color:white;
+
+    border:none;
+
+    border-radius:8px;
+
+
+}
+
+
+
+textarea{
+
+    height:100px;
+
+    resize:none;
+
+}
+
+
+
+
+
+.execute{
+
+    width:100%;
+
+    padding:14px;
+
+    margin-top:20px;
+
+
+    background:#3b82f6;
+
+    color:white;
+
+
+    border:none;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+
+}
+
+
+
+
+.execute:hover{
+
+    background:#2563eb;
+
+}
+
+
+
+
+
+.hidden{
+
+    display:none;
+
+}
+
+
+
+
+
+#status{
+
+    margin-top:15px;
+
+    color:#6ee7b7;
+
+    text-align:center;
+
+}
+
+
+
+
+
+/* Tables */
+
+
+table{
+
+    width:100%;
+
+    margin-top:20px;
+
+    border-collapse:collapse;
+
+
+}
+
+
+
+th,
+td{
+
+    padding:10px;
+
+    border-bottom:1px solid #333;
+
+    text-align:left;
+
+}
+
+
+
+</style>
+
+
 </head>
+
+
 <body>
 
-    <nav class="nav-container">
-        <div class="nav-logo-wrapper">
-            <a href="#home">
-                <img src="lasvegas.png" alt="Las Vegas Roleplay Logo">
-            </a>
-        </div>
-        <ul class="nav-links">
-            <li><a href="#home" class="nav-item active">Home</a></li>
-            <li><a href="#expectations" class="nav-item">General Expectations</a></li>
-            <li><a href="#driving" class="nav-item">Driving Expectations</a></li>
-            <li><a href="#logging" class="nav-item">Logging Module</a></li>
-            <li><a href="#punishments" class="nav-item">Punishments</a></li>
-        </ul>
-    </nav>
 
-<main class="main-content">
 
-    <section id="home">
-        <h2>Welcome to the Staff Hub</h2>
-        <p>
-            Your central single-page terminal for managing network staff operations, tracking live moderation policies, 
-            and checking user activity configurations.
-        </p>
-    </section>
 
-    <section id="expectations">
-        <h2>General Expectations</h2>
-        <p>Standards of conduct, administrative guidelines, and user interactions within the community network.</p>
-        <div class="placeholder-text">
-            <p>• Staff must approach active player incidents neutrally.</p>
-            <p>• Avoid engaging in administrative overreach or meta-gaming.</p>
-        </div>
-    </section>
 
-    <section id="driving">
-        <h2>Driving Expectations</h2>
-        <p>Specific instructions regarding mechanical operation, emergency vehicles, and baseline driving realism.</p>
-        <div class="placeholder-text">
-            <p>• Do not use high-performance configuration speeds outside of active task enforcement.</p>
-        </div>
-    </section>
+<div class="sidebar">
 
-    <section id="logging">
-        <div class="logging-widget">
-            <div class="widget-header">
-                <div class="title-row">
-                    <span class="icon-orange">📄</span>
-                    <span class="widget-title">Logging</span>
-                    <span class="beta-badge">Beta</span>
-                </div>
-                <div class="widget-subtitle">
-                    Log briefings and priorities to track staff activities
-                </div>
-            </div>
 
-            <div class="card-row">
-                <div class="log-card">
-                    <div class="card-title-row">
-                        <span class="icon-orange" style="font-size:16px;">📄</span>
-                        <span class="card-title">Log Briefing</span>
-                    </div>
-                    <div class="card-description">
-                        Record staff briefings and meetings
-                    </div>
-                </div>
+<h2>
+Admin Panel
+</h2>
 
-                <div class="log-card">
-                    <div class="card-title-row">
-                        <span style="color: #ff6b1a; font-size:16px;">⚠️</span>
-                        <span class="card-title">Log Priority</span>
-                    </div>
-                    <div class="card-description">
-                        Record priority incidents and events
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <section id="punishments">
-        <h2>Punishments Matrix</h2>
-        <p>Standardized enforcement structures designed to ensure rule validation across active operations.</p>
-        <div class="placeholder-text">
-            <p>• Standard infrastructure violation: Tier 1 Warning.</p>
-        </div>
-    </section>
 
-</main>
+<button onclick="openPage('moderation')">
+
+Moderation
+
+</button>
+
+
+
+
+<button onclick="openPage('history')">
+
+Ban History
+
+</button>
+
+
+
+
+
+<button onclick="openPage('logs')">
+
+Logs
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="main">
+
+
+
+
+
+<!-- MODERATION PAGE -->
+
+
+<div id="moderation">
+
+
+<div class="card">
+
+
+
+<h1>
+Moderation
+</h1>
+
+
+
+
+
+
+<label>
+Target Type
+</label>
+
+
+<select id="targetType">
+
+
+<option value="username">
+Username
+</option>
+
+
+<option value="userid">
+User ID
+</option>
+
+
+</select>
+
+
+
+
+
+
+
+<label>
+Target
+</label>
+
+
+<input 
+id="target"
+placeholder="Username or User ID">
+
+
+
+
+
+
+
+<label>
+Action
+</label>
+
+
+<select id="action" onchange="updateDurations()">
+
+
+
+<option value="kick">
+Kick
+</option>
+
+
+
+<option value="ban">
+Ban
+</option>
+
+
+</select>
+
+
+
+
+
+
+
+
+<label>
+Duration
+</label>
+
+
+<select id="duration">
+
+</select>
+
+
+
+
+
+
+
+
+<label>
+Reason
+</label>
+
+
+<textarea 
+id="reason"
+placeholder="Reason for action">
+</textarea>
+
+
+
+
+
+
+
+
+
+<button class="execute" onclick="sendCommand()">
+
+Execute
+
+</button>
+
+
+
+
+
+
+<p id="status"></p>
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- BAN HISTORY PAGE -->
+
+
+<div id="history" class="hidden">
+
+
+<div class="card">
+
+
+<h1>
+Ban History
+</h1>
+
+
+
+<table id="historyTable">
+
+
+<tr>
+
+<th>
+User
+</th>
+
+
+<th>
+Duration
+</th>
+
+
+<th>
+Reason
+</th>
+
+
+</tr>
+
+
+</table>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- LOGS PAGE -->
+
+
+<div id="logs" class="hidden">
+
+
+<div class="card">
+
+
+<h1>
+Logs
+</h1>
+
+
+
+<table id="logsTable">
+
+
+<tr>
+
+<th>
+Action
+</th>
+
+
+<th>
+User
+</th>
+
+
+<th>
+Date
+</th>
+
+
+</tr>
+
+
+</table>
+
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+</div>
 
 <script>
-    // Smooth scrolling auto-highlight feature logic
-    const sections = document.querySelectorAll('section');
-    const navLinks = document.querySelectorAll('.nav-item');
+/*
+FIREBASE REALTIME DATABASE CONFIG
 
-    window.addEventListener('scroll', () => {
-        let current = '';
-        
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            // Target triggers midway point down the page segment
-            if (pageYOffset >= (sectionTop - 140)) {
-                current = section.getAttribute('id');
-            }
-        });
+This is your logging database:
+https://moderationpanel-86889-default-rtdb.firebaseio.com/
+*/
 
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href').includes(current)) {
-                link.classList.add('active');
-            }
-        });
+const FIREBASE_DATABASE = "https://moderationpanel-86889-default-rtdb.firebaseio.com";
+const COMMAND_LOCATION = "/commands.json";
+const LOG_LOCATION = "/logs.json";
+const HISTORY_LOCATION = "/banHistory.json";
+
+function openPage(page) {
+  document.querySelectorAll(".main > div").forEach(section => {
+    section.classList.add("hidden");
+  });
+
+  document.getElementById(page).classList.remove("hidden");
+
+  if (page === "logs") {
+    loadLogs();
+  }
+
+  if (page === "history") {
+    loadHistory();
+  }
+}
+
+function updateDurations() {
+  const action = document.getElementById("action").value;
+  const duration = document.getElementById("duration");
+  duration.innerHTML = "";
+
+  if (action === "kick") {
+    duration.innerHTML = `
+      <option value="30">30 Minutes</option>
+      <option value="60">1 Hour</option>
+      <option value="120">2 Hours</option>
+      <option value="360">6 Hours</option>
+      <option value="720">12 Hours</option>
+      <option value="1440">1 Day</option>
+    `;
+  } else {
+    duration.innerHTML = `
+      <option value="1440">1 Day</option>
+      <option value="4320">3 Days</option>
+      <option value="10080">1 Week</option>
+      <option value="43200">1 Month</option>
+      <option value="permanent">Permanent</option>
+    `;
+}
+
+async function sendCommand() {
+
+  const createdAt = Date.now();
+
+  const durationMinutes =
+    Number(document.getElementById("duration").value);
+
+
+  const command = {
+
+    targetType:
+    document.getElementById("targetType").value,
+
+
+    target:
+    document.getElementById("target").value,
+
+
+    action:
+    document.getElementById("action").value,
+
+
+    // Stored as minutes
+    duration:
+    durationMinutes,
+
+
+    // UTC timestamp in milliseconds
+    createdAt:
+    createdAt,
+
+
+    // Exact time the action expires
+    expiresAt:
+    createdAt + (durationMinutes * 60 * 1000),
+
+
+    reason:
+    document.getElementById("reason").value
+
+  };
+
+
+
+  await fetch(FIREBASE_DATABASE + COMMAND_LOCATION, {
+
+    method:"POST",
+
+    headers:{
+      "Content-Type":"application/json"
+    },
+
+    body:
+    JSON.stringify(command)
+
+  });
+
+
+
+  await fetch(FIREBASE_DATABASE + LOG_LOCATION, {
+
+    method:"POST",
+
+    headers:{
+      "Content-Type":"application/json"
+    },
+
+    body:
+    JSON.stringify({
+
+      action:
+      command.action,
+
+      target:
+      command.target,
+
+      reason:
+      command.reason,
+
+      createdAt:
+      createdAt
+
+    })
+
+  });
+
+
+
+  if(command.action === "ban") {
+
+    await fetch(FIREBASE_DATABASE + HISTORY_LOCATION, {
+
+      method:"POST",
+
+      headers:{
+        "Content-Type":"application/json"
+      },
+
+      body:
+      JSON.stringify(command)
+
     });
-</script>
 
+  }
+
+
+
+  document.getElementById("status").innerText =
+  "Command sent to Roblox system.";
+
+}
+
+async function loadLogs() {
+  const response = await fetch(FIREBASE_DATABASE + LOG_LOCATION);
+  const logs = await response.json();
+  const table = document.getElementById("logsTable");
+  table.innerHTML = `<tr><th>Action</th><th>User</th><th>Date</th></tr>`;
+
+  if (logs) {
+    Object.values(logs).reverse().forEach(log => {
+      table.innerHTML += `<tr><td>${log.action}</td><td>${log.target}</td><td>${new Date(log.createdAt).toLocaleString()}</td></tr>`;
+    });
+  }
+}
+
+async function loadHistory() {
+  const response = await fetch(FIREBASE_DATABASE + HISTORY_LOCATION);
+  const history = await response.json();
+  const table = document.getElementById("historyTable");
+  table.innerHTML = `<tr><th>User</th><th>Duration</th><th>Reason</th></tr>`;
+
+  if (history) {
+    Object.values(history).reverse().forEach(ban => {
+      table.innerHTML += `<tr><td>${ban.target}</td><td>${ban.duration}</td><td>${ban.reason}</td></tr>`;
+    });
+  }
+}
+
+updateDurations();
+</script>
 </body>
 </html>
