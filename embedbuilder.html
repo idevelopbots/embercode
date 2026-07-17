@@ -13,7 +13,8 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #0f0f0f;
+            color: #e0e0e0;
             min-height: 100vh;
             padding: 20px;
         }
@@ -33,24 +34,26 @@
         }
 
         .panel {
-            background: white;
+            background: #1a1a1a;
             border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
             padding: 30px;
+            border: 1px solid #2a2a2a;
         }
 
         h1 {
-            color: #2c3e50;
+            color: #ffffff;
             margin-bottom: 30px;
             font-size: 28px;
+            font-weight: 700;
         }
 
         h2 {
-            color: #34495e;
+            color: #e0e0e0;
             margin-top: 25px;
             margin-bottom: 15px;
             font-size: 18px;
-            border-bottom: 2px solid #ecf0f1;
+            border-bottom: 1px solid #2a2a2a;
             padding-bottom: 10px;
         }
 
@@ -61,7 +64,7 @@
         label {
             display: block;
             margin-bottom: 6px;
-            color: #2c3e50;
+            color: #b0b0b0;
             font-weight: 500;
             font-size: 14px;
         }
@@ -73,11 +76,13 @@
         select {
             width: 100%;
             padding: 10px;
-            border: 1px solid #bdc3c7;
+            border: 1px solid #2a2a2a;
             border-radius: 6px;
             font-family: inherit;
             font-size: 14px;
-            transition: border-color 0.3s;
+            background: #242424;
+            color: #e0e0e0;
+            transition: all 0.3s;
         }
 
         input[type="text"]:focus,
@@ -86,8 +91,9 @@
         textarea:focus,
         select:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #5865f2;
+            background: #2a2a2a;
+            box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.1);
         }
 
         textarea {
@@ -120,55 +126,59 @@
         }
 
         .btn-primary {
-            background: #667eea;
+            background: #5865f2;
             color: white;
         }
 
         .btn-primary:hover {
-            background: #5568d3;
+            background: #4752c4;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 15px rgba(88, 101, 242, 0.4);
         }
 
         .btn-secondary {
-            background: #ecf0f1;
-            color: #2c3e50;
+            background: #2a2a2a;
+            color: #e0e0e0;
+            border: 1px solid #3a3a3a;
         }
 
         .btn-secondary:hover {
-            background: #bdc3c7;
+            background: #333333;
+            border-color: #4a4a4a;
         }
 
         .btn-danger {
-            background: #e74c3c;
+            background: #ed4245;
             color: white;
         }
 
         .btn-danger:hover {
-            background: #c0392b;
+            background: #d83c3e;
         }
 
         .btn-success {
-            background: #27ae60;
-            color: white;
+            background: #57f287;
+            color: #000000;
+            font-weight: 700;
         }
 
         .btn-success:hover {
-            background: #229954;
+            background: #3ba374;
+            color: #ffffff;
         }
 
         /* Field Array Styles */
         .field-array {
-            background: #f8f9fa;
-            border: 1px solid #ecf0f1;
+            background: #242424;
+            border: 1px solid #2a2a2a;
             border-radius: 6px;
             padding: 15px;
             margin-bottom: 15px;
         }
 
         .field-item {
-            background: white;
-            border: 1px solid #ecf0f1;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
             border-radius: 6px;
             padding: 15px;
             margin-bottom: 10px;
@@ -186,14 +196,14 @@
         }
 
         .field-number {
-            color: #7f8c8d;
+            color: #7a7a7a;
             font-weight: 600;
             font-size: 12px;
         }
 
         /* Preview Styles */
         .preview {
-            background: #36393f;
+            background: #0f0f0f;
             border-radius: 8px;
             padding: 20px;
             color: #dcddde;
@@ -201,11 +211,12 @@
         }
 
         .embed-preview {
-            background: #2f3136;
-            border-left: 4px solid #667eea;
+            background: #1a1a1a;
+            border-left: 4px solid #5865f2;
             border-radius: 4px;
             padding: 15px;
             margin-bottom: 15px;
+            border: 1px solid #2a2a2a;
         }
 
         .embed-title {
@@ -215,7 +226,7 @@
         }
 
         .embed-description {
-            color: #dcddde;
+            color: #b0b0b0;
             margin-bottom: 10px;
             line-height: 1.5;
         }
@@ -232,21 +243,21 @@
         }
 
         .embed-field-value {
-            color: #dcddde;
+            color: #b0b0b0;
             font-size: 13px;
         }
 
         .embed-footer {
-            color: #72767d;
+            color: #7a7a7a;
             font-size: 12px;
             margin-top: 10px;
             padding-top: 10px;
-            border-top: 1px solid #202225;
+            border-top: 1px solid #2a2a2a;
         }
 
         .json-output {
-            background: #1e1e1e;
-            border: 1px solid #404040;
+            background: #0f0f0f;
+            border: 1px solid #2a2a2a;
             border-radius: 6px;
             padding: 15px;
             margin-top: 15px;
@@ -254,8 +265,8 @@
         }
 
         .json-code {
-            background: #1e1e1e;
-            color: #ce9178;
+            background: #1a1a1a;
+            color: #a8d8a8;
             font-family: 'Courier New', monospace;
             font-size: 12px;
             overflow-x: auto;
@@ -264,6 +275,7 @@
             padding: 10px;
             border-radius: 4px;
             line-height: 1.5;
+            border: 1px solid #2a2a2a;
         }
 
         .copy-button {
@@ -278,14 +290,15 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            background: #27ae60;
-            color: white;
+            background: #57f287;
+            color: #000000;
             padding: 12px 20px;
             border-radius: 6px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
             opacity: 0;
             transition: opacity 0.3s;
             z-index: 1000;
+            font-weight: 600;
         }
 
         .copy-feedback.show {
@@ -302,6 +315,7 @@
             width: 18px;
             height: 18px;
             cursor: pointer;
+            accent-color: #5865f2;
         }
 
         .color-input-group {
@@ -315,29 +329,36 @@
             height: 40px;
             cursor: pointer;
             padding: 2px;
+            border-radius: 6px;
         }
 
         .color-value {
             flex: 1;
             font-family: 'Courier New', monospace;
             font-size: 12px;
+            background: #242424;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #2a2a2a;
+            color: #e0e0e0;
         }
 
         .section-title {
-            color: #667eea;
+            color: #5865f2;
             font-size: 12px;
             font-weight: 700;
             text-transform: uppercase;
             margin-top: 20px;
             margin-bottom: 15px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #ecf0f1;
+            border-bottom: 1px solid #2a2a2a;
+            letter-spacing: 0.5px;
         }
 
         .add-button {
             width: 100%;
             padding: 10px;
-            background: #667eea;
+            background: #5865f2;
             color: white;
             border: none;
             border-radius: 6px;
@@ -348,7 +369,7 @@
         }
 
         .add-button:hover {
-            background: #5568d3;
+            background: #4752c4;
         }
 
         .inline-row {
@@ -365,6 +386,25 @@
         .inline-row button {
             padding: 10px 15px;
             margin-bottom: 0;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #3a3a3a;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a4a4a;
         }
     </style>
 </head>
@@ -397,8 +437,8 @@
                 <div class="form-group">
                     <label>Color</label>
                     <div class="color-input-group">
-                        <input type="color" id="color" value="#667eea">
-                        <input type="text" class="color-value" id="colorHex" placeholder="#667eea" readonly>
+                        <input type="color" id="color" value="#5865f2">
+                        <input type="text" class="color-value" id="colorHex" placeholder="#5865f2" readonly>
                     </div>
                 </div>
 
@@ -688,8 +728,8 @@
         function resetForm() {
             document.getElementById('embedForm').reset();
             document.getElementById('fieldsContainer').innerHTML = '';
-            document.getElementById('color').value = '#667eea';
-            document.getElementById('colorHex').value = '#667eea';
+            document.getElementById('color').value = '#5865f2';
+            document.getElementById('colorHex').value = '#5865f2';
             updatePreview();
         }
 
