@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discord Embed Builder</title>
+    <title>Discord Embed Builder - Final</title>
     <style>
         * {
             margin: 0;
@@ -39,22 +39,84 @@
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
             padding: 30px;
             border: 1px solid #2a2a2a;
+            height: fit-content;
         }
 
         h1 {
             color: #ffffff;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             font-size: 28px;
             font-weight: 700;
         }
 
-        h2 {
-            color: #e0e0e0;
-            margin-top: 25px;
-            margin-bottom: 15px;
-            font-size: 18px;
-            border-bottom: 1px solid #2a2a2a;
+        /* Embed Tabs */
+        .embed-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
             padding-bottom: 10px;
+        }
+
+        .embed-tab {
+            padding: 8px 16px;
+            background: #242424;
+            border: 1px solid #2a2a2a;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .embed-tab:hover {
+            background: #2a2a2a;
+        }
+
+        .embed-tab.active {
+            background: #5865f2;
+            color: white;
+            border-color: #5865f2;
+        }
+
+        .btn-add-embed {
+            background: #3ba374;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            font-size: 14px;
+        }
+
+        .btn-add-embed:hover {
+            background: #2d7d59;
+        }
+
+        .tab-close {
+            font-size: 16px;
+            opacity: 0.6;
+        }
+
+        .tab-close:hover {
+            opacity: 1;
+        }
+
+        .section-title {
+            color: #5865f2;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #2a2a2a;
+            letter-spacing: 0.5px;
         }
 
         .form-group {
@@ -102,10 +164,46 @@
             font-family: 'Courier New', monospace;
         }
 
-        .row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+        /* Combined URL Textbox and Upload Button styling */
+        .image-input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .image-input-group input[type="text"] {
+            flex: 1;
+        }
+
+        .upload-btn-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .btn-upload {
+            border: 1px solid #3a3a3a;
+            color: #e0e0e0;
+            background-color: #242424;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            height: 100%;
+        }
+
+        .btn-upload:hover {
+            background-color: #2a2a2a;
+            border-color: #5865f2;
+        }
+
+        .upload-btn-wrapper input[type=file] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
         }
 
         .button-group {
@@ -115,7 +213,6 @@
         }
 
         button {
-            flex: 1;
             padding: 12px 20px;
             border: none;
             border-radius: 6px;
@@ -128,6 +225,7 @@
         .btn-primary {
             background: #5865f2;
             color: white;
+            flex: 1;
         }
 
         .btn-primary:hover {
@@ -140,11 +238,11 @@
             background: #2a2a2a;
             color: #e0e0e0;
             border: 1px solid #3a3a3a;
+            flex: 1;
         }
 
         .btn-secondary:hover {
             background: #333333;
-            border-color: #4a4a4a;
         }
 
         .btn-danger {
@@ -174,6 +272,7 @@
             border-radius: 6px;
             padding: 15px;
             margin-bottom: 15px;
+            min-height: 50px;
         }
 
         .field-item {
@@ -182,6 +281,13 @@
             border-radius: 6px;
             padding: 15px;
             margin-bottom: 10px;
+            cursor: grab;
+            position: relative;
+        }
+
+        .field-item.dragging {
+            opacity: 0.5;
+            border: 2px dashed #5865f2;
         }
 
         .field-item:last-child {
@@ -199,15 +305,36 @@
             color: #7a7a7a;
             font-weight: 600;
             font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        /* Preview Styles */
-        .preview {
-            background: #0f0f0f;
-            border-radius: 8px;
-            padding: 20px;
-            color: #dcddde;
-            font-size: 14px;
+        .drag-handle {
+            color: #4a4a4a;
+            cursor: grab;
+            font-size: 16px;
+        }
+
+        .field-controls {
+            display: flex;
+            gap: 5px;
+        }
+
+        .control-btn {
+            padding: 4px 8px;
+            font-size: 11px;
+            background: #2a2a2a;
+            color: #b0b0b0;
+            border: 1px solid #3a3a3a;
+            border-radius: 4px;
+        }
+
+        /* Preview Layout Refined for Images */
+        .preview-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
         .embed-preview {
@@ -215,24 +342,92 @@
             border-left: 4px solid #5865f2;
             border-radius: 4px;
             padding: 15px;
-            margin-bottom: 15px;
             border: 1px solid #2a2a2a;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .embed-main-content {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+        }
+
+        .embed-text-section {
+            flex: 1;
+        }
+
+        .embed-author {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+
+        .embed-author-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .embed-author-name {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .embed-author-name:hover {
+            text-decoration: underline;
         }
 
         .embed-title {
             color: #ffffff;
             font-weight: 600;
             margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        .embed-title a {
+            color: #00b0f4;
+            text-decoration: none;
+        }
+
+        .embed-title a:hover {
+            text-decoration: underline;
         }
 
         .embed-description {
             color: #b0b0b0;
-            margin-bottom: 10px;
+            font-size: 14px;
             line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        .embed-thumbnail {
+            width: 80px;
+            height: 80px;
+            border-radius: 4px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .embed-fields-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 5px;
         }
 
         .embed-field {
-            margin-top: 10px;
+            grid-column: span 3;
+        }
+
+        .embed-field.inline {
+            grid-column: span 1;
         }
 
         .embed-field-name {
@@ -245,14 +440,48 @@
         .embed-field-value {
             color: #b0b0b0;
             font-size: 13px;
+            white-space: pre-wrap;
+        }
+
+        .embed-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 4px;
+            margin-top: 8px;
+            object-fit: contain;
+        }
+
+        .embed-footer-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .embed-footer-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            object-fit: cover;
         }
 
         .embed-footer {
             color: #7a7a7a;
             font-size: 12px;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid #2a2a2a;
+        }
+
+        .embed-separator {
+            margin: 12px 0;
+            border: none;
+            border-top: 1px solid #2f3136;
+        }
+
+        .separator-preview-text {
+            color: #72767d;
+            font-size: 12px;
+            text-align: center;
+            margin: 4px 0;
+            font-style: italic;
         }
 
         .json-output {
@@ -343,20 +572,14 @@
             color: #e0e0e0;
         }
 
-        .section-title {
-            color: #5865f2;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-top: 20px;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #2a2a2a;
-            letter-spacing: 0.5px;
+        .add-buttons-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
         }
 
         .add-button {
-            width: 100%;
+            flex: 1;
             padding: 10px;
             background: #5865f2;
             color: white;
@@ -364,31 +587,12 @@
             border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
-            margin-top: 10px;
-            transition: all 0.3s;
         }
 
-        .add-button:hover {
-            background: #4752c4;
+        .add-button.btn-separator {
+            background: #4f545c;
         }
 
-        .inline-row {
-            display: flex;
-            gap: 10px;
-            align-items: flex-end;
-        }
-
-        .inline-row .form-group {
-            flex: 1;
-            margin-bottom: 0;
-        }
-
-        .inline-row button {
-            padding: 10px 15px;
-            margin-bottom: 0;
-        }
-
-        /* Scrollbar styling */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -402,20 +606,18 @@
             background: #3a3a3a;
             border-radius: 4px;
         }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #4a4a4a;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Form Panel -->
         <div class="panel">
-            <h1>Discord Embed Builder</h1>
+            <h1>Embed Builder</h1>
             
-            <form id="embedForm">
-                <!-- Basic Settings -->
+            <div class="embed-tabs" id="embedTabs">
+                <button class="btn-add-embed" onclick="createNewEmbed()">+ Add Embed</button>
+            </div>
+
+            <form id="embedForm" onsubmit="event.preventDefault();">
                 <div class="section-title">Basic Settings</div>
                 
                 <div class="form-group">
@@ -433,7 +635,6 @@
                     <input type="text" id="url" placeholder="https://example.com">
                 </div>
 
-                <!-- Color -->
                 <div class="form-group">
                     <label>Color</label>
                     <div class="color-input-group">
@@ -442,7 +643,6 @@
                     </div>
                 </div>
 
-                <!-- Author -->
                 <div class="section-title">Author</div>
                 
                 <div class="form-group">
@@ -456,33 +656,50 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="authorIcon">Author Icon URL</label>
-                    <input type="text" id="authorIcon" placeholder="https://example.com/icon.png">
+                    <label for="authorIcon">Author Icon</label>
+                    <div class="image-input-group">
+                        <input type="text" id="authorIcon" placeholder="https://example.com/icon.png">
+                        <div class="upload-btn-wrapper">
+                            <button type="button" class="btn-upload">Upload</button>
+                            <input type="file" accept="image/*" onchange="handleFileUpload(this, 'authorIcon')">
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Thumbnail -->
                 <div class="section-title">Thumbnail</div>
                 
                 <div class="form-group">
-                    <label for="thumbnailUrl">Thumbnail URL</label>
-                    <input type="text" id="thumbnailUrl" placeholder="https://example.com/image.png">
+                    <label for="thumbnailUrl">Thumbnail</label>
+                    <div class="image-input-group">
+                        <input type="text" id="thumbnailUrl" placeholder="https://example.com/image.png">
+                        <div class="upload-btn-wrapper">
+                            <button type="button" class="btn-upload">Upload</button>
+                            <input type="file" accept="image/*" onchange="handleFileUpload(this, 'thumbnailUrl')">
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Image -->
                 <div class="section-title">Image</div>
                 
                 <div class="form-group">
-                    <label for="imageUrl">Image URL</label>
-                    <input type="text" id="imageUrl" placeholder="https://example.com/image.png">
+                    <label for="imageUrl">Image</label>
+                    <div class="image-input-group">
+                        <input type="text" id="imageUrl" placeholder="https://example.com/image.png">
+                        <div class="upload-btn-wrapper">
+                            <button type="button" class="btn-upload">Upload</button>
+                            <input type="file" accept="image/*" onchange="handleFileUpload(this, 'imageUrl')">
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Fields -->
-                <div class="section-title">Fields</div>
+                <div class="section-title">Fields & Separators</div>
                 
                 <div id="fieldsContainer" class="field-array"></div>
-                <button type="button" class="add-button" onclick="addField()">+ Add Field</button>
+                <div class="add-buttons-container">
+                    <button type="button" class="add-button" onclick="addField()">+ Add Field</button>
+                    <button type="button" class="add-button btn-separator" onclick="addSeparator()">+ Add Separator</button>
+                </div>
 
-                <!-- Footer -->
                 <div class="section-title">Footer</div>
                 
                 <div class="form-group">
@@ -491,11 +708,16 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="footerIcon">Footer Icon URL</label>
-                    <input type="text" id="footerIcon" placeholder="https://example.com/icon.png">
+                    <label for="footerIcon">Footer Icon</label>
+                    <div class="image-input-group">
+                        <input type="text" id="footerIcon" placeholder="https://example.com/icon.png">
+                        <div class="upload-btn-wrapper">
+                            <button type="button" class="btn-upload">Upload</button>
+                            <input type="file" accept="image/*" onchange="handleFileUpload(this, 'footerIcon')">
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Timestamp -->
                 <div class="form-group">
                     <label class="checkbox-group">
                         <input type="checkbox" id="useTimestamp">
@@ -505,18 +727,10 @@
             </form>
         </div>
 
-        <!-- Preview Panel -->
         <div class="panel">
             <h1>Preview & JSON</h1>
             
-            <div class="preview">
-                <div class="embed-preview" id="embedPreview">
-                    <div class="embed-title" id="previewTitle">Embed Title</div>
-                    <div class="embed-description" id="previewDescription">Embed description goes here</div>
-                    <div id="previewFields"></div>
-                    <div class="embed-footer" id="previewFooter"></div>
-                </div>
-            </div>
+            <div class="preview-container" id="previewContainer"></div>
 
             <div class="json-output">
                 <button class="btn-success copy-button" onclick="copyJSON()">Copy JSON</button>
@@ -524,7 +738,7 @@
             </div>
 
             <div class="button-group">
-                <button class="btn-secondary" onclick="resetForm()">Reset</button>
+                <button class="btn-secondary" onclick="resetForm()">Reset All</button>
                 <button class="btn-primary" onclick="downloadJSON()">Download JSON</button>
             </div>
         </div>
@@ -533,224 +747,486 @@
     <div class="copy-feedback" id="copyFeedback">Copied to clipboard!</div>
 
     <script>
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add event listeners
-            document.getElementById('title').addEventListener('input', updatePreview);
-            document.getElementById('description').addEventListener('input', updatePreview);
-            document.getElementById('url').addEventListener('input', updatePreview);
-            document.getElementById('color').addEventListener('input', updateColor);
-            document.getElementById('authorName').addEventListener('input', updatePreview);
-            document.getElementById('authorUrl').addEventListener('input', updatePreview);
-            document.getElementById('authorIcon').addEventListener('input', updatePreview);
-            document.getElementById('thumbnailUrl').addEventListener('input', updatePreview);
-            document.getElementById('imageUrl').addEventListener('input', updatePreview);
-            document.getElementById('footerText').addEventListener('input', updatePreview);
-            document.getElementById('footerIcon').addEventListener('input', updatePreview);
-            document.getElementById('useTimestamp').addEventListener('change', updatePreview);
+        let embeds = [];
+        let activeEmbedIndex = 0;
 
-            // Initial preview
-            updatePreview();
-        });
-
-        function updateColor() {
-            const color = document.getElementById('color').value;
-            document.getElementById('colorHex').value = color;
-            updatePreview();
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text
+                .toString()
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
         }
 
-        function addField() {
+        document.addEventListener('DOMContentLoaded', function() {
+            createNewEmbed();
+
+            const formInputs = ['title', 'description', 'url', 'authorName', 'authorUrl', 'authorIcon', 'thumbnailUrl', 'imageUrl', 'footerText', 'footerIcon'];
+            formInputs.forEach(id => {
+                document.getElementById(id).addEventListener('input', () => {
+                    saveCurrentState();
+                    updateAllPreviews();
+                });
+            });
+
+            document.getElementById('color').addEventListener('input', () => {
+                document.getElementById('colorHex').value = document.getElementById('color').value;
+                saveCurrentState();
+                updateAllPreviews();
+            });
+
+            document.getElementById('useTimestamp').addEventListener('change', () => {
+                saveCurrentState();
+                updateAllPreviews();
+            });
+
             const container = document.getElementById('fieldsContainer');
-            const fieldCount = container.children.length;
+            container.addEventListener('dragover', e => {
+                e.preventDefault();
+                const afterElement = getDragAfterElement(container, e.clientY);
+                const draggable = document.querySelector('.dragging');
+                if (afterElement == null) {
+                    container.appendChild(draggable);
+                } else {
+                    container.insertBefore(draggable, afterElement);
+                }
+            });
+
+            container.addEventListener('dragend', () => {
+                renumberFields();
+                saveCurrentState();
+                updateAllPreviews();
+            });
+        });
+
+        // FileReader implementation to process uploaded files into local data URLs
+        function handleFileUpload(inputElement, targetInputId) {
+            const file = inputElement.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById(targetInputId).value = e.target.result;
+                saveCurrentState();
+                updateAllPreviews();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function createNewEmbed() {
+            const newEmbed = {
+                title: '',
+                description: '',
+                url: '',
+                color: '#5865f2',
+                authorName: '',
+                authorUrl: '',
+                authorIcon: '',
+                thumbnailUrl: '',
+                imageUrl: '',
+                fields: [],
+                footerText: '',
+                footerIcon: '',
+                useTimestamp: false
+            };
+            embeds.push(newEmbed);
+            activeEmbedIndex = embeds.length - 1;
+            renderTabs();
+            loadEmbed(activeEmbedIndex);
+            updateAllPreviews();
+        }
+
+        function deleteEmbed(index, event) {
+            event.stopPropagation();
+            if (embeds.length <= 1) return;
             
+            embeds.splice(index, 1);
+            if (activeEmbedIndex >= embeds.length) {
+                activeEmbedIndex = embeds.length - 1;
+            }
+            renderTabs();
+            loadEmbed(activeEmbedIndex);
+            updateAllPreviews();
+        }
+
+        function renderTabs() {
+            const tabsContainer = document.getElementById('embedTabs');
+            const addBtn = tabsContainer.querySelector('.btn-add-embed');
+            
+            const existingTabs = tabsContainer.querySelectorAll('.embed-tab');
+            existingTabs.forEach(tab => tab.remove());
+
+            embeds.forEach((embed, index) => {
+                const tab = document.createElement('div');
+                tab.className = `embed-tab ${index === activeEmbedIndex ? 'active' : ''}`;
+                tab.onclick = () => switchEmbed(index);
+                
+                const title = embed.title || `Embed ${index + 1}`;
+                tab.innerHTML = `
+                    <span>${title.length > 15 ? title.substring(0, 12) + '...' : title}</span>
+                    ${embeds.length > 1 ? `<span class="tab-close" onclick="deleteEmbed(${index}, event)">×</span>` : ''}
+                `;
+                
+                tabsContainer.insertBefore(tab, addBtn);
+            });
+        }
+
+        function switchEmbed(index) {
+            saveCurrentState();
+            activeEmbedIndex = index;
+            renderTabs();
+            loadEmbed(index);
+            updateAllPreviews();
+        }
+
+        function saveCurrentState() {
+            if (!embeds[activeEmbedIndex]) return;
+            
+            const embed = embeds[activeEmbedIndex];
+            embed.title = document.getElementById('title').value;
+            embed.description = document.getElementById('description').value;
+            embed.url = document.getElementById('url').value;
+            embed.color = document.getElementById('color').value;
+            embed.authorName = document.getElementById('authorName').value;
+            embed.authorUrl = document.getElementById('authorUrl').value;
+            embed.authorIcon = document.getElementById('authorIcon').value;
+            embed.thumbnailUrl = document.getElementById('thumbnailUrl').value;
+            embed.imageUrl = document.getElementById('imageUrl').value;
+            embed.footerText = document.getElementById('footerText').value;
+            embed.footerIcon = document.getElementById('footerIcon').value;
+            embed.useTimestamp = document.getElementById('useTimestamp').checked;
+
+            embed.fields = [];
+            document.querySelectorAll('.field-item').forEach(item => {
+                if (item.classList.contains('separator-item')) {
+                    embed.fields.push({
+                        type: 'separator',
+                        text: item.querySelector('.separator-text').value
+                    });
+                } else {
+                    embed.fields.push({
+                        type: 'field',
+                        name: item.querySelector('.field-name').value,
+                        value: item.querySelector('.field-value').value,
+                        inline: item.querySelector('.field-inline').checked
+                    });
+                }
+            });
+            
+            renderTabs();
+        }
+
+        function loadEmbed(index) {
+            const embed = embeds[index];
+            document.getElementById('title').value = embed.title;
+            document.getElementById('description').value = embed.description;
+            document.getElementById('url').value = embed.url;
+            document.getElementById('color').value = embed.color;
+            document.getElementById('colorHex').value = embed.color;
+            document.getElementById('authorName').value = embed.authorName;
+            document.getElementById('authorUrl').value = embed.authorUrl;
+            document.getElementById('authorIcon').value = embed.authorIcon;
+            document.getElementById('thumbnailUrl').value = embed.thumbnailUrl;
+            document.getElementById('imageUrl').value = embed.imageUrl;
+            document.getElementById('footerText').value = embed.footerText;
+            document.getElementById('footerIcon').value = embed.footerIcon;
+            document.getElementById('useTimestamp').checked = embed.useTimestamp;
+
+            const container = document.getElementById('fieldsContainer');
+            container.innerHTML = '';
+            embed.fields.forEach(f => {
+                if (f.type === 'separator') {
+                    addSeparator(f.text);
+                } else {
+                    addField(f.name, f.value, f.inline);
+                }
+            });
+        }
+
+        function addField(name = '', value = '', inline = false) {
+            const container = document.getElementById('fieldsContainer');
             const fieldItem = document.createElement('div');
             fieldItem.className = 'field-item';
+            fieldItem.draggable = true;
+            
             fieldItem.innerHTML = `
                 <div class="field-header">
-                    <span class="field-number">Field ${fieldCount + 1}</span>
-                    <button type="button" class="btn-danger" style="flex: 0; padding: 6px 12px; font-size: 12px;" onclick="removeField(this)">Remove</button>
+                    <span class="field-number"><span class="drag-handle">☰</span> Field</span>
+                    <div class="field-controls">
+                        <button type="button" class="control-btn" onclick="moveUp(this)">↑</button>
+                        <button type="button" class="control-btn" onclick="moveDown(this)">↓</button>
+                        <button type="button" class="btn-danger" style="padding: 4px 8px; font-size: 11px;" onclick="removeField(this)">Remove</button>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>Field Name</label>
-                    <input type="text" class="field-name" placeholder="Field name" maxlength="256" oninput="updatePreview()">
+                    <input type="text" class="field-name" value="${escapeHtml(name)}" placeholder="Field name" oninput="saveCurrentState(); updateAllPreviews()">
                 </div>
                 <div class="form-group">
                     <label>Field Value</label>
-                    <textarea class="field-value" placeholder="Field value" oninput="updatePreview()"></textarea>
+                    <textarea class="field-value" placeholder="Field value" oninput="saveCurrentState(); updateAllPreviews()">${escapeHtml(value)}</textarea>
                 </div>
                 <div class="form-group">
                     <label class="checkbox-group">
-                        <input type="checkbox" class="field-inline">
+                        <input type="checkbox" class="field-inline" ${inline ? 'checked' : ''} onchange="saveCurrentState(); updateAllPreviews()">
                         <span>Inline</span>
                     </label>
                 </div>
             `;
             
+            setupDraggable(fieldItem);
             container.appendChild(fieldItem);
-            updatePreview();
+            renumberFields();
+        }
+
+        function addSeparator(text = '') {
+            const container = document.getElementById('fieldsContainer');
+            const fieldItem = document.createElement('div');
+            fieldItem.className = 'field-item separator-item';
+            fieldItem.draggable = true;
+            
+            fieldItem.innerHTML = `
+                <div class="field-header">
+                    <span class="field-number"><span class="drag-handle">☰</span> Separator</span>
+                    <div class="field-controls">
+                        <button type="button" class="control-btn" onclick="moveUp(this)">↑</button>
+                        <button type="button" class="control-btn" onclick="moveDown(this)">↓</button>
+                        <button type="button" class="btn-danger" style="padding: 4px 8px; font-size: 11px;" onclick="removeField(this)">Remove</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Separator Text (optional)</label>
+                    <input type="text" class="separator-text" value="${escapeHtml(text)}" placeholder="e.g. ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" oninput="saveCurrentState(); updateAllPreviews()">
+                </div>
+            `;
+            
+            setupDraggable(fieldItem);
+            container.appendChild(fieldItem);
+            renumberFields();
+        }
+
+        function setupDraggable(item) {
+            item.addEventListener('dragstart', () => item.classList.add('dragging'));
+            item.addEventListener('dragend', () => {
+                item.classList.remove('dragging');
+                renumberFields();
+                saveCurrentState();
+                updateAllPreviews();
+            });
+        }
+
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('.field-item:not(.dragging)')];
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
+        function moveUp(button) {
+            const item = button.closest('.field-item');
+            const previous = item.previousElementSibling;
+            if (previous) {
+                item.parentNode.insertBefore(item, previous);
+                renumberFields();
+                saveCurrentState();
+                updateAllPreviews();
+            }
+        }
+
+        function moveDown(button) {
+            const item = button.closest('.field-item');
+            const next = item.nextElementSibling;
+            if (next) {
+                item.parentNode.insertBefore(next, item);
+                renumberFields();
+                saveCurrentState();
+                updateAllPreviews();
+            }
         }
 
         function removeField(button) {
             button.closest('.field-item').remove();
-            updatePreview();
+            renumberFields();
+            saveCurrentState();
+            updateAllPreviews();
         }
 
-        function updatePreview() {
-            const title = document.getElementById('title').value || 'Embed Title';
-            const description = document.getElementById('description').value || 'Embed description goes here';
-            const color = document.getElementById('color').value;
-            
-            // Update preview
-            document.getElementById('previewTitle').textContent = title;
-            document.getElementById('previewDescription').textContent = description;
-            
-            // Update color
-            const rgbColor = hexToRgb(color);
-            document.getElementById('embedPreview').style.borderLeftColor = color;
-            
-            // Update fields preview
-            const fieldsContainer = document.getElementById('previewFields');
-            fieldsContainer.innerHTML = '';
-            
-            const fieldItems = document.querySelectorAll('.field-item');
-            fieldItems.forEach(item => {
-                const name = item.querySelector('.field-name').value;
-                const value = item.querySelector('.field-value').value;
-                
-                if (name || value) {
-                    const fieldDiv = document.createElement('div');
-                    fieldDiv.className = 'embed-field';
-                    fieldDiv.innerHTML = `
-                        <div class="embed-field-name">${escapeHtml(name || 'Unnamed')}</div>
-                        <div class="embed-field-value">${escapeHtml(value || 'No value')}</div>
-                    `;
-                    fieldsContainer.appendChild(fieldDiv);
+        function renumberFields() {
+            const items = document.querySelectorAll('.field-item');
+            let fieldCount = 1;
+            items.forEach(item => {
+                const numberSpan = item.querySelector('.field-number');
+                if (!item.classList.contains('separator-item')) {
+                    numberSpan.innerHTML = `<span class="drag-handle">☰</span> Field ${fieldCount++}`;
+                } else {
+                    numberSpan.innerHTML = `<span class="drag-handle">☰</span> Separator`;
                 }
             });
-            
-            // Update footer preview
-            const footerText = document.getElementById('footerText').value;
-            const previewFooter = document.getElementById('previewFooter');
-            if (footerText) {
-                previewFooter.textContent = footerText;
-            } else {
-                previewFooter.textContent = '';
-            }
-            
-            // Generate JSON
+        }
+
+        function updateAllPreviews() {
+            const container = document.getElementById('previewContainer');
+            container.innerHTML = '';
+
+            embeds.forEach((embed, index) => {
+                const preview = document.createElement('div');
+                preview.className = 'embed-preview';
+                preview.style.borderLeftColor = embed.color || '#5865f2';
+                if (index !== activeEmbedIndex) preview.style.opacity = '0.6';
+
+                // Author Segment
+                let authorHtml = '';
+                if (embed.authorName) {
+                    const iconHtml = embed.authorIcon ? `<img class="embed-author-icon" src="${escapeHtml(embed.authorIcon)}" alt="">` : '';
+                    const nameHtml = embed.authorUrl ? `<a class="embed-author-name" href="${escapeHtml(embed.authorUrl)}" target="_blank">${escapeHtml(embed.authorName)}</a>` : `<span class="embed-author-name">${escapeHtml(embed.authorName)}</span>`;
+                    authorHtml = `<div class="embed-author">${iconHtml}${nameHtml}</div>`;
+                }
+
+                // Title Section
+                let titleHtml = '';
+                if (embed.title) {
+                    titleHtml = embed.url ? `<div class="embed-title"><a href="${escapeHtml(embed.url)}" target="_blank">${escapeHtml(embed.title)}</a></div>` : `<div class="embed-title">${escapeHtml(embed.title)}</div>`;
+                }
+
+                // Description
+                const descHtml = embed.description ? `<div class="embed-description">${escapeHtml(embed.description)}</div>` : '';
+
+                // Thumbnail Segment
+                const thumbHtml = embed.thumbnailUrl ? `<img class="embed-thumbnail" src="${escapeHtml(embed.thumbnailUrl)}" alt="">` : '';
+
+                // Fields Processing
+                let fieldsHtml = '';
+                if (embed.fields && embed.fields.length > 0) {
+                    let insideGrid = false;
+                    embed.fields.forEach(f => {
+                        if (f.type === 'separator') {
+                            if (insideGrid) { fieldsHtml += `</div>`; insideGrid = false; }
+                            fieldsHtml += `<hr class="embed-separator">`;
+                            if (f.text) fieldsHtml += `<div class="separator-preview-text">${escapeHtml(f.text)}</div>`;
+                        } else if (f.name || f.value) {
+                            if (!insideGrid) { fieldsHtml += `<div class="embed-fields-grid">`; insideGrid = true; }
+                            fieldsHtml += `
+                                <div class="embed-field ${f.inline ? 'inline' : ''}">
+                                    <div class="embed-field-name">${escapeHtml(f.name || 'Unnamed')}</div>
+                                    <div class="embed-field-value">${escapeHtml(f.value || 'No value')}</div>
+                                </div>
+                            `;
+                        }
+                    });
+                    if (insideGrid) fieldsHtml += `</div>`;
+                }
+
+                // Main Image
+                const imgHtml = embed.imageUrl ? `<img class="embed-image" src="${escapeHtml(embed.imageUrl)}" alt="">` : '';
+
+                // Footer Wrapper
+                let footerHtml = '';
+                if (embed.footerText || embed.footerIcon || embed.useTimestamp) {
+                    const fIcon = embed.footerIcon ? `<img class="embed-footer-icon" src="${escapeHtml(embed.footerIcon)}" alt="">` : '';
+                    let fText = embed.footerText || '';
+                    if (embed.useTimestamp) {
+                        const timestampStr = new Date().toLocaleString();
+                        fText += fText ? ` • ${timestampStr}` : timestampStr;
+                    }
+                    footerHtml = `
+                        <div class="embed-footer-wrapper">
+                            ${fIcon}
+                            <div class="embed-footer">${escapeHtml(fText)}</div>
+                        </div>
+                    `;
+                }
+
+                preview.innerHTML = `
+                    ${authorHtml}
+                    <div class="embed-main-content">
+                        <div class="embed-text-section">
+                            ${titleHtml}
+                            ${descHtml}
+                        </div>
+                        ${thumbHtml}
+                    </div>
+                    ${fieldsHtml}
+                    ${imgHtml}
+                    ${footerHtml}
+                `;
+                container.appendChild(preview);
+            });
+
             generateJSON();
         }
 
         function generateJSON() {
-            const embed = {
-                title: document.getElementById('title').value || undefined,
-                description: document.getElementById('description').value || undefined,
-                url: document.getElementById('url').value || undefined,
-                color: parseInt(document.getElementById('color').value.substring(1), 16),
-                author: {
-                    name: document.getElementById('authorName').value || undefined,
-                    url: document.getElementById('authorUrl').value || undefined,
-                    icon_url: document.getElementById('authorIcon').value || undefined
-                },
-                thumbnail: {
-                    url: document.getElementById('thumbnailUrl').value || undefined
-                },
-                image: {
-                    url: document.getElementById('imageUrl').value || undefined
-                },
-                fields: [],
-                footer: {
-                    text: document.getElementById('footerText').value || undefined,
-                    icon_url: document.getElementById('footerIcon').value || undefined
-                },
-                timestamp: document.getElementById('useTimestamp').checked ? new Date().toISOString() : undefined
-            };
+            const outputEmbeds = embeds.map(e => {
+                const parsedFields = [];
+                e.fields.forEach(f => {
+                    if (f.type !== 'separator' && (f.name || f.value)) {
+                        parsedFields.push({
+                            name: f.name || 'Unnamed',
+                            value: f.value || 'No value',
+                            inline: f.inline || false
+                        });
+                    }
+                });
 
-            // Add fields
-            document.querySelectorAll('.field-item').forEach(item => {
-                const name = item.querySelector('.field-name').value;
-                const value = item.querySelector('.field-value').value;
-                const inline = item.querySelector('.field-inline').checked;
-                
-                if (name && value) {
-                    embed.fields.push({
-                        name: name,
-                        value: value,
-                        inline: inline
-                    });
-                }
+                return {
+                    title: e.title || undefined,
+                    description: e.description || undefined,
+                    url: e.url || undefined,
+                    color: parseInt(e.color.replace('#', ''), 16),
+                    author: e.authorName ? {
+                        name: e.authorName,
+                        url: e.authorUrl || undefined,
+                        icon_url: e.authorIcon || undefined
+                    } : undefined,
+                    thumbnail: e.thumbnailUrl ? { url: e.thumbnailUrl } : undefined,
+                    image: e.imageUrl ? { url: e.imageUrl } : undefined,
+                    fields: parsedFields.length > 0 ? parsedFields : undefined,
+                    footer: e.footerText ? {
+                        text: e.footerText,
+                        icon_url: e.footerIcon || undefined
+                    } : undefined,
+                    timestamp: e.useTimestamp ? new Date().toISOString() : undefined
+                };
             });
 
-            // Clean up undefined values
-            const cleanEmbed = JSON.parse(JSON.stringify(embed, (key, value) => {
-                if (value === undefined) return undefined;
-                if (typeof value === 'object' && value !== null) {
-                    const cleaned = {};
-                    for (const k in value) {
-                        if (value[k] !== undefined) {
-                            cleaned[k] = value[k];
-                        }
-                    }
-                    return Object.keys(cleaned).length > 0 ? cleaned : undefined;
-                }
-                return value;
-            }));
-
-            const jsonOutput = {
-                embeds: [cleanEmbed]
-            };
-
-            document.getElementById('jsonOutput').textContent = JSON.stringify(jsonOutput, null, 2);
+            const cleanOutput = { embeds: outputEmbeds.filter(e => Object.values(e).some(v => v !== undefined)) };
+            document.getElementById('jsonOutput').innerText = JSON.stringify(cleanOutput, null, 4);
         }
 
         function copyJSON() {
-            const jsonText = document.getElementById('jsonOutput').textContent;
+            const jsonText = document.getElementById('jsonOutput').innerText;
             navigator.clipboard.writeText(jsonText).then(() => {
                 const feedback = document.getElementById('copyFeedback');
-                feedback.classList.add('show');
-                setTimeout(() => {
-                    feedback.classList.remove('show');
-                }, 2000);
+                feedback.className = "copy-feedback show";
+                setTimeout(() => { feedback.className = "copy-feedback"; }, 2000);
             });
         }
 
-        function downloadJSON() {
-            const jsonText = document.getElementById('jsonOutput').textContent;
-            const element = document.createElement('a');
-            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(jsonText));
-            element.setAttribute('download', 'discord-embed.json');
-            element.style.display = 'none';
-            document.body.appendChild(element);
-            element.click();
-            document.body.removeChild(element);
-        }
-
         function resetForm() {
-            document.getElementById('embedForm').reset();
-            document.getElementById('fieldsContainer').innerHTML = '';
-            document.getElementById('color').value = '#5865f2';
-            document.getElementById('colorHex').value = '#5865f2';
-            updatePreview();
+            embeds = [];
+            createNewEmbed();
         }
 
-        function hexToRgb(hex) {
-            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-            return result ? {
-                r: parseInt(result[1], 16),
-                g: parseInt(result[2], 16),
-                b: parseInt(result[3], 16)
-            } : null;
-        }
-
-        function escapeHtml(text) {
-            const map = {
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                "'": '&#039;'
-            };
-            return text.replace(/[&<>"']/g, m => map[m]);
+        function downloadJSON() {
+            const jsonText = document.getElementById('jsonOutput').innerText;
+            const blob = new Blob([jsonText], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'embed.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
     </script>
 </body>
