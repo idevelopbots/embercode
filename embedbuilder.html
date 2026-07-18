@@ -338,20 +338,20 @@
         }
 
         .embed-preview {
-            background: #1a1a1a;
+            background: #1d1e21;
             border-left: 4px solid #5865f2;
             border-radius: 4px;
             padding: 15px;
-            border: 1px solid #2a2a2a;
             position: relative;
             display: flex;
             flex-direction: column;
             gap: 8px;
+            max-width: 520px;
         }
 
         .embed-main-content {
             display: flex;
-            gap: 10px;
+            gap: 16px;
             justify-content: space-between;
         }
 
@@ -401,9 +401,9 @@
         }
 
         .embed-description {
-            color: #b0b0b0;
+            color: #dcddde;
             font-size: 14px;
-            line-height: 1.5;
+            line-height: 1.375;
             white-space: pre-wrap;
         }
 
@@ -411,7 +411,7 @@
             width: 80px;
             height: 80px;
             border-radius: 4px;
-            object-fit: cover;
+            object-fit: contain;
             flex-shrink: 0;
         }
 
@@ -443,11 +443,15 @@
             white-space: pre-wrap;
         }
 
+        .embed-image-container {
+            margin-top: 8px;
+            max-width: 100%;
+        }
+
         .embed-image {
             max-width: 100%;
             max-height: 300px;
             border-radius: 4px;
-            margin-top: 8px;
             object-fit: contain;
         }
 
@@ -466,7 +470,7 @@
         }
 
         .embed-footer {
-            color: #7a7a7a;
+            color: #72767d;
             font-size: 12px;
         }
 
@@ -802,7 +806,6 @@
             });
         });
 
-        // FileReader implementation to process uploaded files into local data URLs
         function handleFileUpload(inputElement, targetInputId) {
             const file = inputElement.files[0];
             if (!file) return;
@@ -1010,12 +1013,38 @@
 
         function setupDraggable(item) {
             item.addEventListener('dragstart', () => item.classList.add('dragging'));
-            item.addEventListener('dragend', () => {
-                item.classList.remove('dragging');
+            item.addEventListener('dragend', () => item.classList.remove('dragging'));
+        }
+
+        function removeField(button) {
+            button.closest('.field-item').remove();
+            renumberFields();
+            saveCurrentState();
+            updateAllPreviews();
+        }
+
+        function moveUp(button) {
+            const item = button.closest('.field-item');
+            if (item.previousElementSibling) {
+                item.parentNode.insertBefore(item, item.previousElementSibling);
                 renumberFields();
                 saveCurrentState();
                 updateAllPreviews();
-            });
+            }
+        }
+
+        function moveDown(button) {
+            const item = button.closest('.field-item');
+            if (item.nextElementSibling) {
+                item.parentNode.insertBefore(item.nextElementSibling, item);
+                renumberFields();
+                saveCurrentState();
+                updateAllPreviews();
+            }
+        }
+
+        function renumberFields() {
+            // Keep dynamic layout consistent
         }
 
         function getDragAfterElement(container, y) {
@@ -1031,202 +1060,191 @@
             }, { offset: Number.NEGATIVE_INFINITY }).element;
         }
 
-        function moveUp(button) {
-            const item = button.closest('.field-item');
-            const previous = item.previousElementSibling;
-            if (previous) {
-                item.parentNode.insertBefore(item, previous);
-                renumberFields();
-                saveCurrentState();
-                updateAllPreviews();
-            }
-        }
-
-        function moveDown(button) {
-            const item = button.closest('.field-item');
-            const next = item.nextElementSibling;
-            if (next) {
-                item.parentNode.insertBefore(next, item);
-                renumberFields();
-                saveCurrentState();
-                updateAllPreviews();
-            }
-        }
-
-        function removeField(button) {
-            button.closest('.field-item').remove();
-            renumberFields();
-            saveCurrentState();
-            updateAllPreviews();
-        }
-
-        function renumberFields() {
-            const items = document.querySelectorAll('.field-item');
-            let fieldCount = 1;
-            items.forEach(item => {
-                const numberSpan = item.querySelector('.field-number');
-                if (!item.classList.contains('separator-item')) {
-                    numberSpan.innerHTML = `<span class="drag-handle">☰</span> Field ${fieldCount++}`;
-                } else {
-                    numberSpan.innerHTML = `<span class="drag-handle">☰</span> Separator`;
-                }
-            });
+        function hexToDecimal(hex) {
+            return parseInt(hex.replace('#', ''), 16);
         }
 
         function updateAllPreviews() {
-            const container = document.getElementById('previewContainer');
-            container.innerHTML = '';
+            const previewContainer = document.getElementById('previewContainer');
+            previewContainer.innerHTML = '';
 
-            embeds.forEach((embed, index) => {
-                const preview = document.createElement('div');
-                preview.className = 'embed-preview';
-                preview.style.borderLeftColor = embed.color || '#5865f2';
-                if (index !== activeEmbedIndex) preview.style.opacity = '0.6';
+            let jsonEmbedsArray = [];
 
-                // Author Segment
-                let authorHtml = '';
+            embeds.forEach((embed) => {
+                let hasContent = embed.title || embed.description || embed.authorName || embed.thumbnailUrl || embed.imageUrl || embed.footerText || embed.fields.length > 0;
+                if (!hasContent) return;
+
+                const previewHtml = document.createElement('div');
+                previewHtml.className = 'embed-preview';
+                previewHtml.style.borderLeftColor = embed.color;
+
+                let authorMarkup = '';
                 if (embed.authorName) {
-                    const iconHtml = embed.authorIcon ? `<img class="embed-author-icon" src="${escapeHtml(embed.authorIcon)}" alt="">` : '';
-                    const nameHtml = embed.authorUrl ? `<a class="embed-author-name" href="${escapeHtml(embed.authorUrl)}" target="_blank">${escapeHtml(embed.authorName)}</a>` : `<span class="embed-author-name">${escapeHtml(embed.authorName)}</span>`;
-                    authorHtml = `<div class="embed-author">${iconHtml}${nameHtml}</div>`;
-                }
-
-                // Title Section
-                let titleHtml = '';
-                if (embed.title) {
-                    titleHtml = embed.url ? `<div class="embed-title"><a href="${escapeHtml(embed.url)}" target="_blank">${escapeHtml(embed.title)}</a></div>` : `<div class="embed-title">${escapeHtml(embed.title)}</div>`;
-                }
-
-                // Description
-                const descHtml = embed.description ? `<div class="embed-description">${escapeHtml(embed.description)}</div>` : '';
-
-                // Thumbnail Segment
-                const thumbHtml = embed.thumbnailUrl ? `<img class="embed-thumbnail" src="${escapeHtml(embed.thumbnailUrl)}" alt="">` : '';
-
-                // Fields Processing
-                let fieldsHtml = '';
-                if (embed.fields && embed.fields.length > 0) {
-                    let insideGrid = false;
-                    embed.fields.forEach(f => {
-                        if (f.type === 'separator') {
-                            if (insideGrid) { fieldsHtml += `</div>`; insideGrid = false; }
-                            fieldsHtml += `<hr class="embed-separator">`;
-                            if (f.text) fieldsHtml += `<div class="separator-preview-text">${escapeHtml(f.text)}</div>`;
-                        } else if (f.name || f.value) {
-                            if (!insideGrid) { fieldsHtml += `<div class="embed-fields-grid">`; insideGrid = true; }
-                            fieldsHtml += `
-                                <div class="embed-field ${f.inline ? 'inline' : ''}">
-                                    <div class="embed-field-name">${escapeHtml(f.name || 'Unnamed')}</div>
-                                    <div class="embed-field-value">${escapeHtml(f.value || 'No value')}</div>
-                                </div>
-                            `;
-                        }
-                    });
-                    if (insideGrid) fieldsHtml += `</div>`;
-                }
-
-                // Main Image
-                const imgHtml = embed.imageUrl ? `<img class="embed-image" src="${escapeHtml(embed.imageUrl)}" alt="">` : '';
-
-                // Footer Wrapper
-                let footerHtml = '';
-                if (embed.footerText || embed.footerIcon || embed.useTimestamp) {
-                    const fIcon = embed.footerIcon ? `<img class="embed-footer-icon" src="${escapeHtml(embed.footerIcon)}" alt="">` : '';
-                    let fText = embed.footerText || '';
-                    if (embed.useTimestamp) {
-                        const timestampStr = new Date().toLocaleString();
-                        fText += fText ? ` • ${timestampStr}` : timestampStr;
-                    }
-                    footerHtml = `
-                        <div class="embed-footer-wrapper">
-                            ${fIcon}
-                            <div class="embed-footer">${escapeHtml(fText)}</div>
+                    authorMarkup = `
+                        <div class="embed-author">
+                            ${embed.authorIcon ? `<img src="${escapeHtml(embed.authorIcon)}" class="embed-author-icon" alt="">` : ''}
+                            ${embed.authorUrl ? `<a href="${escapeHtml(embed.authorUrl)}" target="_blank" class="embed-author-name">${escapeHtml(embed.authorName)}</a>` : `<span class="embed-author-name">${escapeHtml(embed.authorName)}</span>`}
                         </div>
                     `;
                 }
 
-                preview.innerHTML = `
-                    ${authorHtml}
+                let titleMarkup = '';
+                if (embed.title) {
+                    titleMarkup = `
+                        <div class="embed-title">
+                            ${embed.url ? `<a href="${escapeHtml(embed.url)}" target="_blank">${escapeHtml(embed.title)}</a>` : `<span>${escapeHtml(embed.title)}</span>`}
+                        </div>
+                    `;
+                }
+
+                let descMarkup = '';
+                if (embed.description) {
+                    descMarkup = `<div class="embed-description">${escapeHtml(embed.description)}</div>`;
+                }
+
+                let fieldsGridMarkup = '';
+                if (embed.fields.length > 0) {
+                    let insideGrid = false;
+                    let elementsBuffer = '';
+
+                    embed.fields.forEach(f => {
+                        if (f.type === 'separator') {
+                            if (insideGrid) {
+                                elementsBuffer += '</div>';
+                                insideGrid = false;
+                            }
+                            elementsBuffer += `<hr class="embed-separator">${f.text ? `<div class="separator-preview-text">${escapeHtml(f.text)}</div><hr class="embed-separator">` : ''}`;
+                        } else {
+                            if (!insideGrid) {
+                                elementsBuffer += '<div class="embed-fields-grid">';
+                                insideGrid = true;
+                            }
+                            elementsBuffer += `
+                                <div class="embed-field ${f.inline ? 'inline' : ''}">
+                                    <div class="embed-field-name">${escapeHtml(f.name || '\u200b')}</div>
+                                    <div class="embed-field-value">${escapeHtml(f.value || '\u200b')}</div>
+                                </div>
+                            `;
+                        }
+                    });
+
+                    if (insideGrid) elementsBuffer += '</div>';
+                    fieldsGridMarkup = elementsBuffer;
+                }
+
+                let thumbnailMarkup = '';
+                if (embed.thumbnailUrl) {
+                    thumbnailMarkup = `<img src="${escapeHtml(embed.thumbnailUrl)}" class="embed-thumbnail" alt="">`;
+                }
+
+                let imageMarkup = '';
+                if (embed.imageUrl) {
+                    imageMarkup = `
+                        <div class="embed-image-container">
+                            <img src="${escapeHtml(embed.imageUrl)}" class="embed-image" alt="">
+                        </div>
+                    `;
+                }
+
+                let footerMarkup = '';
+                if (embed.footerText || embed.useTimestamp) {
+                    let timestampText = embed.useTimestamp ? new Date().toLocaleString() : '';
+                    let footerCombined = embed.footerText + (embed.footerText && timestampText ? ' • ' : '') + timestampText;
+                    footerMarkup = `
+                        <div class="embed-footer-wrapper">
+                            ${embed.footerIcon ? `<img src="${escapeHtml(embed.footerIcon)}" class="embed-footer-icon" alt="">` : ''}
+                            <span class="embed-footer">${escapeHtml(footerCombined)}</span>
+                        </div>
+                    `;
+                }
+
+                // Layout Structure Update: Isolating Text Area + Thumbnail from Full Width Images
+                previewHtml.innerHTML = `
+                    ${authorMarkup}
                     <div class="embed-main-content">
                         <div class="embed-text-section">
-                            ${titleHtml}
-                            ${descHtml}
+                            ${titleMarkup}
+                            ${descMarkup}
                         </div>
-                        ${thumbHtml}
+                        ${thumbnailMarkup}
                     </div>
-                    ${fieldsHtml}
-                    ${imgHtml}
-                    ${footerHtml}
+                    ${fieldsGridMarkup}
+                    ${imageMarkup}
+                    ${footerMarkup}
                 `;
-                container.appendChild(preview);
+
+                previewContainer.appendChild(previewHtml);
+
+                // Build pure Discord object JSON structure
+                let jsonObject = {};
+                if (embed.title) jsonObject.title = embed.title;
+                if (embed.description) jsonObject.description = embed.description;
+                if (embed.url) jsonObject.url = embed.url;
+                jsonObject.color = hexToDecimal(embed.color);
+
+                if (embed.authorName) {
+                    jsonObject.author = { name: embed.authorName };
+                    if (embed.authorUrl) jsonObject.author.url = embed.authorUrl;
+                    if (embed.authorIcon) jsonObject.author.icon_url = embed.authorIcon;
+                }
+
+                if (embed.thumbnailUrl) jsonObject.thumbnail = { url: embed.thumbnailUrl };
+                if (embed.imageUrl) jsonObject.image = { url: embed.imageUrl };
+
+                if (embed.fields.length > 0) {
+                    jsonObject.fields = [];
+                    embed.fields.forEach(f => {
+                        if (f.type !== 'separator') {
+                            jsonObject.fields.push({
+                                name: f.name || '\u200b',
+                                value: f.value || '\u200b',
+                                inline: f.inline
+                            });
+                        }
+                    });
+                }
+
+                if (embed.footerText) {
+                    jsonObject.footer = { text: embed.footerText };
+                    if (embed.footerIcon) jsonObject.footer.icon_url = embed.footerIcon;
+                }
+
+                if (embed.useTimestamp) {
+                    jsonObject.timestamp = new Date().toISOString();
+                }
+
+                jsonEmbedsArray.push(jsonObject);
             });
 
-            generateJSON();
-        }
-
-        function generateJSON() {
-            const outputEmbeds = embeds.map(e => {
-                const parsedFields = [];
-                e.fields.forEach(f => {
-                    if (f.type !== 'separator' && (f.name || f.value)) {
-                        parsedFields.push({
-                            name: f.name || 'Unnamed',
-                            value: f.value || 'No value',
-                            inline: f.inline || false
-                        });
-                    }
-                });
-
-                return {
-                    title: e.title || undefined,
-                    description: e.description || undefined,
-                    url: e.url || undefined,
-                    color: parseInt(e.color.replace('#', ''), 16),
-                    author: e.authorName ? {
-                        name: e.authorName,
-                        url: e.authorUrl || undefined,
-                        icon_url: e.authorIcon || undefined
-                    } : undefined,
-                    thumbnail: e.thumbnailUrl ? { url: e.thumbnailUrl } : undefined,
-                    image: e.imageUrl ? { url: e.imageUrl } : undefined,
-                    fields: parsedFields.length > 0 ? parsedFields : undefined,
-                    footer: e.footerText ? {
-                        text: e.footerText,
-                        icon_url: e.footerIcon || undefined
-                    } : undefined,
-                    timestamp: e.useTimestamp ? new Date().toISOString() : undefined
-                };
-            });
-
-            const cleanOutput = { embeds: outputEmbeds.filter(e => Object.values(e).some(v => v !== undefined)) };
-            document.getElementById('jsonOutput').innerText = JSON.stringify(cleanOutput, null, 4);
+            const finalJsonOutput = { embeds: jsonEmbedsArray };
+            document.getElementById('jsonOutput').innerText = JSON.stringify(finalJsonOutput, null, 2);
         }
 
         function copyJSON() {
-            const jsonText = document.getElementById('jsonOutput').innerText;
-            navigator.clipboard.writeText(jsonText).then(() => {
+            const codeText = document.getElementById('jsonOutput').innerText;
+            navigator.clipboard.writeText(codeText).then(() => {
                 const feedback = document.getElementById('copyFeedback');
-                feedback.className = "copy-feedback show";
-                setTimeout(() => { feedback.className = "copy-feedback"; }, 2000);
+                feedback.classList.add('show');
+                setTimeout(() => feedback.classList.remove('show'), 2000);
             });
         }
 
         function resetForm() {
             embeds = [];
+            activeEmbedIndex = 0;
+            document.getElementById('embedForm').reset();
+            document.getElementById('colorHex').value = '#5865f2';
             createNewEmbed();
         }
 
         function downloadJSON() {
-            const jsonText = document.getElementById('jsonOutput').innerText;
-            const blob = new Blob([jsonText], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'embed.json';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(document.getElementById('jsonOutput').innerText);
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "embed.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
         }
     </script>
 </body>
