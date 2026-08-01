@@ -24,9 +24,9 @@
       position: relative;
     }
 
-    /* Caution Tape Lines */
+    /* Caution Tape Base */
     .caution-tape {
-      width: 100%;
+      width: 120%; /* Extra width to prevent edges showing during rotation */
       height: 60px;
       background: repeating-linear-gradient(
         -45deg,
@@ -35,23 +35,47 @@
         #ffcc00 30px,
         #ffcc00 60px
       );
+      background-size: 85px 100%; /* Sets up seamless loop */
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
       position: absolute;
     }
 
+    /* Top Tape Animation */
     .tape-top {
       top: 15%;
-      transform: rotate(-3deg) scaleX(1.1);
+      transform: rotate(-3deg);
+      animation: moveTapeLeft 2s linear infinite;
     }
 
+    /* Bottom Tape Animation */
     .tape-bottom {
       bottom: 15%;
-      transform: rotate(3deg) scaleX(1.1);
+      transform: rotate(3deg);
+      animation: moveTapeRight 2s linear infinite;
+    }
+
+    /* Scrolling Animations */
+    @keyframes moveTapeLeft {
+      0% {
+        background-position: 0 0;
+      }
+      100% {
+        background-position: 85px 0;
+      }
+    }
+
+    @keyframes moveTapeRight {
+      0% {
+        background-position: 0 0;
+      }
+      100% {
+        background-position: -85px 0;
+      }
     }
 
     /* Big Red Sign Banner */
     .sign-container {
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.95);
       padding: 40px 60px;
       border: 8px solid #111;
       border-radius: 12px;
