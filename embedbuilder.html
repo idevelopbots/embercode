@@ -177,6 +177,32 @@
             font-weight: 500;
         }
 
+        .btn-copy {
+            background: linear-gradient(90deg, #a855f7, #6366f1);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-copy:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-copy:active {
+            transform: translateY(0);
+        }
+
         /* Live Preview Section */
         .preview-card {
             background: #1e293b;
@@ -372,7 +398,6 @@
     </header>
 
     <main class="builder-container">
-        <!-- Editor Controls -->
         <section class="editor-card">
             <h2>Embed Customizer</h2>
 
@@ -431,9 +456,10 @@
                     <input type="file" id="footer-icon" class="file-input" accept="image/*">
                 </div>
             </div>
+
+            <button id="copy-json-btn" class="btn-copy">📋 Copy Embed JSON</button>
         </section>
 
-        <!-- Live Preview -->
         <section class="preview-card">
             <h2>Live Discord Preview</h2>
 
@@ -447,29 +473,24 @@
                 </div>
 
                 <div class="embed-container" id="preview-embed">
-                    <!-- Author Bar -->
                     <div class="embed-header" id="preview-author-wrapper" style="display: none;">
                         <img id="preview-author-icon" class="embed-author-icon" src="" alt="Author">
                         <span id="preview-author-name" class="embed-author-name"></span>
                     </div>
 
-                    <!-- Title -->
                     <div id="preview-title-wrapper" class="embed-title-wrapper" style="display: none;">
                         <span id="preview-title"></span>
                     </div>
 
-                    <!-- Content & Thumbnail -->
                     <div class="embed-main-content">
                         <div id="preview-description" class="embed-description" style="display: none;"></div>
                         <img id="preview-thumbnail" class="embed-thumbnail" src="" alt="Thumbnail">
                     </div>
 
-                    <!-- Main Image -->
                     <div class="embed-image-container">
                         <img id="preview-image" class="embed-image" src="" alt="Main Image">
                     </div>
 
-                    <!-- Footer -->
                     <div id="preview-footer-wrapper" class="embed-footer" style="display: none;">
                         <img id="preview-footer-icon" class="embed-footer-icon" src="" alt="Footer Icon">
                         <span id="preview-footer-text"></span>
@@ -496,6 +517,7 @@
         const imageInput = document.getElementById('image-input');
         const footerText = document.getElementById('footer-text');
         const footerIcon = document.getElementById('footer-icon');
+        const copyJsonBtn = document.getElementById('copy-json-btn');
 
         // Preview Elements
         const previewEmbed = document.getElementById('preview-embed');
@@ -603,6 +625,66 @@
         handleImageUpload(thumbnailInput, previewThumbnail);
         handleImageUpload(imageInput, previewImage);
         handleImageUpload(footerIcon, previewFooterIcon, updateFooter);
+
+        // Generate and Copy Embed JSON
+        copyJsonBtn.addEventListener('click', () => {
+            const hexColor = colorHex.value.replace('#', '');
+            const colorInt = parseInt(hexColor, 16) || 0;
+
+            const embedData = {};
+
+            if (!isNaN(colorInt) && colorInt !== 0) {
+                embedData.color = colorInt;
+            }
+
+            if (embedTitle.value.trim()) {
+                embedData.title = embedTitle.value.trim();
+            }
+
+            if (titleUrl.value.trim()) {
+                embedData.url = titleUrl.value.trim();
+            }
+
+            if (embedDescription.value.trim()) {
+                embedData.description = embedDescription.value.trim();
+            }
+
+            if (authorName.value.trim() || previewAuthorIcon.src) {
+                embedData.author = {};
+                if (authorName.value.trim()) embedData.author.name = authorName.value.trim();
+                if (previewAuthorIcon.src && previewAuthorIcon.style.display !== 'none') {
+                    embedData.author.icon_url = previewAuthorIcon.src;
+                }
+            }
+
+            if (previewThumbnail.src && previewThumbnail.style.display !== 'none') {
+                embedData.thumbnail = { url: previewThumbnail.src };
+            }
+
+            if (previewImage.src && previewImage.style.display !== 'none') {
+                embedData.image = { url: previewImage.src };
+            }
+
+            if (footerText.value.trim() || previewFooterIcon.src) {
+                embedData.footer = {};
+                if (footerText.value.trim()) embedData.footer.text = footerText.value.trim();
+                if (previewFooterIcon.src && previewFooterIcon.style.display !== 'none') {
+                    embedData.footer.icon_url = previewFooterIcon.src;
+                }
+            }
+
+            const jsonString = JSON.stringify({ embeds: [embedData] }, null, 2);
+
+            navigator.clipboard.writeText(jsonString).then(() => {
+                const originalText = copyJsonBtn.textContent;
+                copyJsonBtn.textContent = '✅ Copied to Clipboard!';
+                setTimeout(() => {
+                    copyJsonBtn.textContent = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        });
 
         // Initialize default state
         updateColor('#a855f7');
