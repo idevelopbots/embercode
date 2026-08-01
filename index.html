@@ -1,174 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Canvas - Home</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Under Construction</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        body {
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
-            color: #f8fafc;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      /* Yellow Gradient Background */
+      background: linear-gradient(135deg, #fff200 0%, #ffd700 50%, #ffae00 100%);
+      font-family: 'Arial Black', Impact, sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 8%;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+    /* Caution Tape Lines */
+    .caution-tape {
+      width: 100%;
+      height: 60px;
+      background: repeating-linear-gradient(
+        -45deg,
+        #111,
+        #111 30px,
+        #ffcc00 30px,
+        #ffcc00 60px
+      );
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      position: absolute;
+    }
 
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, #a855f7, #6366f1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-decoration: none;
-        }
+    .tape-top {
+      top: 15%;
+      transform: rotate(-3deg) scaleX(1.1);
+    }
 
-        nav {
-            display: flex;
-            gap: 20px;
-        }
+    .tape-bottom {
+      bottom: 15%;
+      transform: rotate(3deg) scaleX(1.1);
+    }
 
-        nav a {
-            color: #cbd5e1;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-            padding: 8px 16px;
-            border-radius: 8px;
-        }
+    /* Big Red Sign Banner */
+    .sign-container {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 40px 60px;
+      border: 8px solid #111;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      z-index: 10;
+    }
 
-        nav a:hover, nav a.active {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .hero {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 60px 20px;
-        }
-
-        .hero h1 {
-            font-size: 3.2rem;
-            max-width: 800px;
-            margin-bottom: 40px;
-            line-height: 1.2;
-            background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .btn {
-            padding: 16px 32px;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-primary {
-            background: linear-gradient(90deg, #6366f1, #a855f7);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: #64748b;
-            font-size: 0.9rem;
-            background: rgba(15, 23, 42, 0.8);
-        }
-
-        @media (max-width: 600px) {
-            .hero h1 {
-                font-size: 2.2rem;
-            }
-            .btn-group {
-                flex-direction: column;
-                width: 100%;
-                max-width: 300px;
-            }
-            .btn {
-                justify-content: center;
-            }
-        }
-    </style>
+    /* Big Red Letters */
+    .construction-text {
+      color: #e60000;
+      font-size: clamp(2.5rem, 8vw, 6rem);
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      text-shadow: 3px 3px 0px #000;
+      line-height: 1.1;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <a href="index.html" class="logo">Canvas</a>
-        <nav>
-            <a href="index.html" class="active">Home</a>
-            <a href="tos.html">Terms of Service</a>
-            <a href="privacypolicy.html">Privacy Policy</a>
-        </nav>
-    </header>
 
-    <main class="hero">
-        <h1>The tools you need, all packed into one bot.</h1>
-        <div class="btn-group">
-            <a href="https://discord.com/oauth2/authorize?client_id=1532874424913760296&permissions=8&scope=bot%20applications.commands" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
-                Invite Canvas
-            </a>
-            <a href="https://discord.gg/wgW7WbQFjn" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">
-                Support Server
-            </a>
-        </div>
-    </main>
+  <div class="caution-tape tape-top"></div>
 
-    <footer>
-        <p>&copy; 2026 Canvas Bot. All rights reserved.</p>
-    </footer>
+  <div class="sign-container">
+    <h1 class="construction-text">UNDER-CONSTRUCTION</h1>
+  </div>
+
+  <div class="caution-tape tape-bottom"></div>
+
 </body>
 </html>
