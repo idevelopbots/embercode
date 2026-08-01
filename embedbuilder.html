@@ -156,6 +156,12 @@
             border-radius: 8px;
         }
 
+        .file-input-wrapper {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
         .file-input {
             background: #0f172a;
             border: 1px solid #334155;
@@ -164,6 +170,8 @@
             color: #94a3b8;
             font-size: 0.85rem;
             cursor: pointer;
+            flex: 1;
+            min-width: 0;
         }
 
         .file-input::-webkit-file-upload-button {
@@ -175,6 +183,23 @@
             cursor: pointer;
             margin-right: 10px;
             font-weight: 500;
+        }
+
+        .btn-clear-file {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-clear-file:hover {
+            background: #dc2626;
         }
 
         .btn-copy {
@@ -417,7 +442,10 @@
 
             <div class="form-group">
                 <label for="author-icon">Author Icon</label>
-                <input type="file" id="author-icon" class="file-input" accept="image/*">
+                <div class="file-input-wrapper">
+                    <input type="file" id="author-icon" class="file-input" accept="image/*">
+                    <button type="button" class="btn-clear-file" data-input="author-icon">Clear</button>
+                </div>
             </div>
 
             <div class="form-group">
@@ -438,11 +466,17 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="thumbnail-input">Thumbnail Image</label>
-                    <input type="file" id="thumbnail-input" class="file-input" accept="image/*">
+                    <div class="file-input-wrapper">
+                        <input type="file" id="thumbnail-input" class="file-input" accept="image/*">
+                        <button type="button" class="btn-clear-file" data-input="thumbnail-input">Clear</button>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="image-input">Main Image</label>
-                    <input type="file" id="image-input" class="file-input" accept="image/*">
+                    <div class="file-input-wrapper">
+                        <input type="file" id="image-input" class="file-input" accept="image/*">
+                        <button type="button" class="btn-clear-file" data-input="image-input">Clear</button>
+                    </div>
                 </div>
             </div>
 
@@ -453,7 +487,10 @@
                 </div>
                 <div class="form-group">
                     <label for="footer-icon">Footer Icon</label>
-                    <input type="file" id="footer-icon" class="file-input" accept="image/*">
+                    <div class="file-input-wrapper">
+                        <input type="file" id="footer-icon" class="file-input" accept="image/*">
+                        <button type="button" class="btn-clear-file" data-input="footer-icon">Clear</button>
+                    </div>
                 </div>
             </div>
 
@@ -625,6 +662,18 @@
         handleImageUpload(thumbnailInput, previewThumbnail);
         handleImageUpload(imageInput, previewImage);
         handleImageUpload(footerIcon, previewFooterIcon, updateFooter);
+
+        // Clear File Event Listeners
+        document.querySelectorAll('.btn-clear-file').forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.getAttribute('data-input');
+                const fileInput = document.getElementById(targetId);
+                if (fileInput) {
+                    fileInput.value = '';
+                    fileInput.dispatchEvent(new Event('change'));
+                }
+            });
+        });
 
         // Generate and Copy Embed JSON
         copyJsonBtn.addEventListener('click', () => {
