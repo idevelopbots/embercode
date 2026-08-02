@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Texas State Roleplay - Coming Soon</title>
+    <title>Texas State Roleplay - Live Dashboard</title>
     <style>
-        /* Modern Reset & Typography */
         * {
             margin: 0;
             padding: 0;
@@ -14,147 +13,285 @@
         }
 
         body {
-            background: #0d0f12;
+            background-color: #0d0f12;
             color: #ffffff;
             min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .header {
             display: flex;
             align-items: center;
-            justify-content: center;
-            overflow-x: hidden;
-            position: relative;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto 2rem auto;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Ambient Background Glow */
-        .bg-glow {
-            position: absolute;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(0, 102, 255, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 0;
-            pointer-events: none;
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
-        /* Container Card */
-        .container {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            padding: 3rem 2rem;
-            max-width: 650px;
-            width: 90%;
-            background: rgba(22, 26, 33, 0.7);
-            backdrop-filter: blur(12px);
+        .brand img {
+            height: 50px;
+            width: auto;
+        }
+
+        .brand h1 {
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .api-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            background: #161a21;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            outline: none;
+            width: 250px;
+        }
+
+        button {
+            background: #0066ff;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        button:hover {
+            background: #0052cc;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto 2rem auto;
+        }
+
+        .card {
+            background: rgba(22, 26, 33, 0.8);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
         }
 
-        /* Logo Styling */
-        .logo-container {
-            margin-bottom: 2rem;
-        }
-
-        .logo {
-            max-width: 180px;
-            height: auto;
-            filter: drop-shadow(0 0 15px rgba(0, 102, 255, 0.3));
-            transition: transform 0.3s ease;
-        }
-
-        .logo:hover {
-            transform: scale(1.03);
-        }
-
-        /* Typography */
-        h1 {
-            font-size: 2.2rem;
-            font-weight: 700;
+        .card h3 {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            text-transform: uppercase;
             letter-spacing: 1px;
             margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
-        .status-badge {
-            display: inline-block;
-            background: rgba(234, 179, 8, 0.15);
-            color: #facc15;
-            border: 1px solid rgba(234, 179, 8, 0.3);
-            font-size: 0.85rem;
-            font-weight: 600;
-            padding: 0.4rem 1rem;
-            border-radius: 50px;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .card .stat {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #38bdf8;
         }
 
-        p {
-            color: #94a3b8;
-            font-size: 1.05rem;
-            line-height: 1.6;
-            margin-bottom: 2.5rem;
+        .tables-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        /* Discord Button */
-        .btn-discord {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            background: #5865F2;
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1rem;
-            padding: 0.9rem 2rem;
+        .panel {
+            background: rgba(22, 26, 33, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 12px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(88, 101, 242, 0.4);
+            padding: 1.5rem;
         }
 
-        .btn-discord:hover {
-            background: #4752C4;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(88, 101, 242, 0.6);
+        .panel h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #e2e8f0;
         }
 
-        /* Footer Info */
-        .footer-text {
-            margin-top: 2.5rem;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.9rem;
+        }
+
+        th {
+            color: #64748b;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status {
             font-size: 0.85rem;
-            color: #475569;
-            margin-bottom: 0;
+            color: #94a3b8;
+            margin-top: 0.5rem;
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-glow"></div>
-
-    <div class="container">
-        <div class="logo-container">
-            <img src="https://i.ibb.co/MD7JVW4J/LA-8.png" alt="Texas State Roleplay Logo" class="logo">
+    <header class="header">
+        <div class="brand">
+            <img src="https://i.ibb.co/MD7JVW4J/LA-8.png" alt="Texas State Roleplay">
+            <h1>TSRP Dashboard</h1>
         </div>
+        <div class="api-controls">
+            <input type="text" id="apiKeyInput" placeholder="Enter ER:LC Server Key">
+            <button onclick="fetchData()">Connect</button>
+        </div>
+    </header>
 
-        <div class="status-badge">🛠️ Under Construction</div>
-        <h1>Texas State Roleplay</h1>
-        <p>We are currently working behind the scenes to bring you an immersive, high-quality roleplay experience. Stay connected with us on Discord for updates, staff applications, and launch announcements!</p>
-
-        <a href="#" class="btn-discord">
-            <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032a.06.06 0 0 0 .022.043c1.35 1 2.66 1.611 3.947 2.02a.05.05 0 0 0 .058-.019c.308-.42.582-.863.818-1.329a.05.05 0 0 0-.026-.07c-.432-.164-.847-.363-1.246-.593a.05.05 0 0 1-.005-.083c.084-.063.168-.129.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007c.08.066.164.132.248.195a.05.05 0 0 1-.004.083 8 8 0 0 1-1.248.593.05.05 0 0 0-.026.07c.238.465.51.909.817 1.329a.05.05 0 0 0 .058.019c1.29-.41 2.601-1.02 3.952-2.02a.06.06 0 0 0 .022-.042c.33-3.486-.563-6.487-2.365-9.107a.04.04 0 0 0-.02-.019M5.18 10.225c-.783 0-1.428-.72-1.428-1.597 0-.877.633-1.597 1.428-1.597.795 0 1.438.72 1.428 1.597 0 .877-.633 1.597-1.428 1.597m5.632 0c-.784 0-1.428-.72-1.428-1.597 0-.877.633-1.597 1.428-1.597.795 0 1.438.72 1.428 1.597 0 .877-.633 1.597-1.428 1.597"/>
-            </svg>
-            Join Our Discord
-        </a>
-
-        <p class="footer-text">&copy; 2026 Texas State Roleplay. All rights reserved.</p>
+    <div class="grid">
+        <div class="card">
+            <h3>Server Status</h3>
+            <div class="stat" id="statStatus">Offline</div>
+        </div>
+        <div class="card">
+            <h3>Active Players</h3>
+            <div class="stat" id="statPlayers">0 / 0</div>
+        </div>
+        <div class="card">
+            <h3>Queue</h3>
+            <div class="stat" id="statQueue">0</div>
+        </div>
+        <div class="card">
+            <h3>Vehicles Spawned</h3>
+            <div class="stat" id="statVehicles">0</div>
+        </div>
     </div>
 
+    <div class="tables-container">
+        <div class="panel">
+            <h2>Active Players</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Permission/Role</th>
+                    </tr>
+                </thead>
+                <tbody id="playerTable">
+                    <tr><td colspan="2">No data available</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel">
+            <h2>Active Vehicles</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Owner</th>
+                        <th>Vehicle Model</th>
+                    </tr>
+                </thead>
+                <tbody id="vehicleTable">
+                    <tr><td colspan="2">No data available</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        async function fetchData() {
+            const apiKey = document.getElementById('apiKeyInput').value.trim();
+            if (!apiKey) {
+                alert('Please enter your ER:LC API Key.');
+                return;
+            }
+
+            const headers = { 'Server-Key': apiKey };
+            const baseUrl = 'https://api.policeroleplay.community/v1';
+
+            try {
+                // Fetch Server Details
+                const serverRes = await fetch(`${baseUrl}/server`, { headers });
+                const serverData = await serverRes.json();
+
+                if (serverRes.ok) {
+                    document.getElementById('statStatus').innerText = 'Online';
+                    document.getElementById('statStatus').style.color = '#4ade80';
+                    document.getElementById('statPlayers').innerText = `${serverData.CurrentPlayers} / ${serverData.MaxPlayers}`;
+                    document.getElementById('statQueue').innerText = serverData.Queue || 0;
+                } else {
+                    document.getElementById('statStatus').innerText = 'Error';
+                    document.getElementById('statStatus').style.color = '#f87171';
+                }
+
+                // Fetch Players
+                const playersRes = await fetch(`${baseUrl}/server/players`, { headers });
+                if (playersRes.ok) {
+                    const players = await playersRes.json();
+                    const playerTable = document.getElementById('playerTable');
+                    playerTable.innerHTML = '';
+
+                    if (players.length === 0) {
+                        playerTable.innerHTML = '<tr><td colspan="2">No players online</td></tr>';
+                    } else {
+                        players.forEach(p => {
+                            playerTable.innerHTML += `
+                                <tr>
+                                    <td><strong>${p.Player}</strong></td>
+                                    <td>${p.Permission || 'Member'}</td>
+                                </tr>`;
+                        });
+                    }
+                }
+
+                // Fetch Vehicles
+                const vehiclesRes = await fetch(`${baseUrl}/server/vehicles`, { headers });
+                if (vehiclesRes.ok) {
+                    const vehicles = await vehiclesRes.json();
+                    const vehicleTable = document.getElementById('vehicleTable');
+                    document.getElementById('statVehicles').innerText = vehicles.length;
+                    vehicleTable.innerHTML = '';
+
+                    if (vehicles.length === 0) {
+                        vehicleTable.innerHTML = '<tr><td colspan="2">No vehicles spawned</td></tr>';
+                    } else {
+                        vehicles.forEach(v => {
+                            vehicleTable.innerHTML += `
+                                <tr>
+                                    <td>${v.Owner}</td>
+                                    <td><strong>${v.Name}</strong></td>
+                                </tr>`;
+                        });
+                    }
+                }
+
+            } catch (err) {
+                console.error('API Fetch Error:', err);
+                alert('Failed to connect to the ER:LC API. Check your key or CORS settings.');
+            }
+        }
+    </script>
 </body>
 </html>
