@@ -8,9 +8,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Lora:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg-dark: #091a2e;
-    --bg-blueprint: #0f2b48;
-    --paper-card: rgba(14, 38, 64, 0.75);
+    --bg-dark: #071526;
+    --paper-card: rgba(13, 35, 60, 0.85);
     --line-main: #dce8f5;
     --line-dim: rgba(220, 232, 245, 0.2);
     --line-faint: rgba(220, 232, 245, 0.07);
@@ -28,16 +27,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: 
-      radial-gradient(circle at 50% 50%, #133559 0%, #081729 100%);
+    background: radial-gradient(circle at 50% 50%, #0d2847 0%, #040d18 100%);
     position: relative;
     color: var(--line-main);
-    cursor: none;
+    perspective: 1200px; /* Perspective container for full 3D card tilt */
   }
 
-  @media (hover: none) { body { cursor: auto; } }
-
-  /* Traditional Blueprint Grid */
+  /* Blueprint Grid Background */
   .grid {
     position: absolute; inset: 0;
     background-image:
@@ -45,15 +41,14 @@
       linear-gradient(90deg, var(--line-faint) 1px, transparent 1px),
       linear-gradient(var(--line-dim) 1px, transparent 1px),
       linear-gradient(90deg, var(--line-dim) 1px, transparent 1px);
-    background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
+    background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
     pointer-events: none;
     z-index: 1;
   }
 
-  /* Soft Ambient Light Gradient */
   .vignette {
     position: absolute; inset: 0;
-    background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(4, 12, 22, 0.6) 100%);
+    background: radial-gradient(circle at 50% 50%, transparent 30%, rgba(2, 6, 12, 0.75) 100%);
     pointer-events: none;
     z-index: 2;
   }
@@ -64,7 +59,7 @@
     font-size: 11px;
     letter-spacing: 2px;
     color: var(--text-muted);
-    opacity: 0.5;
+    opacity: 0.4;
     z-index: 3;
     pointer-events: none;
   }
@@ -89,7 +84,7 @@
     position: fixed; top: 0; left: 0;
     font-size: 10px;
     color: var(--line-main);
-    background: rgba(9, 26, 46, 0.85);
+    background: rgba(7, 21, 38, 0.9);
     border: 1px solid var(--line-dim);
     padding: 3px 7px;
     border-radius: 2px;
@@ -102,65 +97,63 @@
   }
   @media (hover: none) { .crosshair, .cursor-tag { display: none; } }
 
-  /* Classic Stamp */
+  /* Floating Card Container */
+  .card-wrap {
+    position: relative;
+    z-index: 10;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+
+  .card {
+    position: relative;
+    width: min(620px, 90vw);
+    background: var(--paper-card);
+    border: 1px solid var(--line-dim);
+    border-radius: 12px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 
+      0 25px 50px -12px rgba(0, 0, 0, 0.7),
+      0 0 30px rgba(220, 232, 245, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    padding: 40px 36px 0;
+    transform-style: preserve-3d;
+  }
+
+  /* Corner Crop Marks */
+  .crop { position: absolute; width: 12px; height: 12px; border: 1.5px solid var(--line-main); opacity: 0.5; }
+  .crop.tl { top: -4px; left: -4px; border-right: none; border-bottom: none; }
+  .crop.tr { top: -4px; right: -4px; border-left: none; border-bottom: none; }
+  .crop.bl { bottom: -4px; left: -4px; border-right: none; border-top: none; }
+  .crop.br { bottom: -4px; right: -4px; border-left: none; border-top: none; }
+
+  /* Stamp */
   .stamp {
     position: absolute;
-    top: -16px; right: -12px;
-    font-size: 11px;
+    top: -14px; right: -10px;
+    font-size: 10.5px;
     font-weight: 600;
     letter-spacing: 1.5px;
     color: var(--amber-stamp);
     border: 2px solid var(--amber-dim);
-    padding: 6px 14px;
-    border-radius: 2px;
-    transform: rotate(-4deg);
-    z-index: 12;
-    background: rgba(9, 26, 46, 0.9);
+    padding: 6px 12px;
+    border-radius: 4px;
+    transform: translateZ(25px) rotate(-4deg);
+    background: rgba(7, 21, 38, 0.95);
     text-align: center;
     line-height: 1.4;
-    animation: stampFade 0.8s ease-out 0.2s both;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   }
-  @keyframes stampFade {
-    from { opacity: 0; transform: rotate(-4deg) scale(1.1); }
-    to { opacity: 1; transform: rotate(-4deg) scale(1); }
-  }
-
-  /* Main Sheet Frame */
-  .sheet {
-    position: relative;
-    z-index: 10;
-    width: min(660px, 92vw);
-    background: var(--paper-card);
-    border: 1px solid var(--line-dim);
-    border-radius: 4px;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: 
-      0 30px 60px rgba(0, 0, 0, 0.5),
-      inset 0 0 0 1px rgba(220, 232, 245, 0.05);
-    padding: 44px 40px 0;
-    will-change: transform;
-    animation: riseIn 1s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  @keyframes riseIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* Architectural Crop Corners */
-  .crop { position: absolute; width: 14px; height: 14px; border: 1px solid var(--line-main); opacity: 0.4; }
-  .crop.tl { top: -6px; left: -6px; border-right: none; border-bottom: none; }
-  .crop.tr { top: -6px; right: -6px; border-left: none; border-bottom: none; }
-  .crop.bl { bottom: -6px; left: -6px; border-right: none; border-top: none; }
-  .crop.br { bottom: -6px; right: -6px; border-left: none; border-top: none; }
 
   .eyebrow {
-    font-size: 11px;
+    font-size: 10.5px;
     letter-spacing: 2.5px;
     color: var(--text-muted);
     display: flex;
     align-items: center;
     gap: 10px;
+    transform: translateZ(15px);
   }
   .eyebrow::before {
     content: "";
@@ -177,30 +170,32 @@
   h1 {
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 600;
-    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-size: clamp(1.8rem, 4.5vw, 2.6rem);
     letter-spacing: -0.5px;
     margin-top: 14px;
     color: #fff;
+    transform: translateZ(20px);
   }
 
   .subtitle {
     font-family: 'Lora', serif;
     font-style: italic;
     margin-top: 10px;
-    font-size: 1.05rem;
+    font-size: 0.98rem;
     line-height: 1.6;
     color: var(--text-muted);
-    max-width: 480px;
+    max-width: 460px;
+    transform: translateZ(15px);
   }
 
-  /* Smooth Line Drawing SVG */
+  /* SVG Drawing */
   .drawing-wrap {
-    margin: 32px 0 12px;
+    margin: 28px 0 10px;
     display: flex;
     justify-content: center;
-    opacity: 0.9;
+    transform: translateZ(25px);
   }
-  .drawing-wrap svg { width: 100%; max-width: 340px; height: auto; }
+  .drawing-wrap svg { width: 100%; max-width: 320px; height: auto; }
   .draw-line {
     fill: none;
     stroke: var(--line-main);
@@ -219,26 +214,27 @@
   .draw-line.d5 { animation-delay: 1.2s; }
   .draw-line.d6 { animation-delay: 1.5s; stroke: var(--amber-stamp); stroke-dasharray: 3 3; }
   @keyframes smoothDraw {
-    0% { stroke-dashoffset: 1; opacity: 0.1; }
+    0% { stroke-dashoffset: 1; opacity: 0.15; }
     35%, 75% { stroke-dashoffset: 0; opacity: 1; }
-    90%, 100% { stroke-dashoffset: 1; opacity: 0.1; }
+    90%, 100% { stroke-dashoffset: 1; opacity: 0.15; }
   }
   .ground { stroke: var(--text-muted); stroke-width: 1; opacity: 0.3; }
 
-  /* Status List */
+  /* Status Log */
   .status-log {
-    margin-top: 26px;
+    margin-top: 24px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px 20px;
-    font-size: 11.5px;
+    gap: 8px 20px;
+    font-size: 11px;
+    transform: translateZ(15px);
   }
   .status-row {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     color: var(--text-muted);
-    padding: 6px 0;
+    padding: 4px 0;
     border-bottom: 1px dashed var(--line-faint);
   }
   .status-row .dot {
@@ -251,20 +247,20 @@
   .status-row.done { color: var(--line-main); }
   .status-row.active .dot { background: var(--amber-stamp); opacity: 1; animation: smoothPulse 2.4s ease-in-out infinite; }
   .status-row.active { color: #fff; }
-  .status-row .tag { margin-left: auto; opacity: 0.5; font-size: 10px; }
+  .status-row .tag { margin-left: auto; opacity: 0.5; font-size: 9.5px; }
 
-  /* Smooth Progress Bar */
-  .progress { margin: 26px 0 8px; }
+  /* Progress Bar */
+  .progress { margin: 24px 0 8px; transform: translateZ(15px); }
   .progress-label {
     display: flex; justify-content: space-between;
-    font-size: 10.5px;
+    font-size: 10px;
     letter-spacing: 1.5px;
     color: var(--text-muted);
     margin-bottom: 8px;
   }
   .dim-bar {
     position: relative;
-    height: 12px;
+    height: 10px;
   }
   .dim-bar .track {
     position: absolute; top: 50%; left: 0; right: 0;
@@ -276,38 +272,39 @@
     background: var(--line-main);
     transform: translateY(-50%);
     width: 0%;
-    animation: fillBar 2.2s 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: fillBar 2s 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
   @keyframes fillBar { to { width: 63%; } }
-  .dim-bar .cap { position: absolute; top: 0; width: 1px; height: 12px; background: var(--line-dim); }
+  .dim-bar .cap { position: absolute; top: 0; width: 1px; height: 10px; background: var(--line-dim); }
 
-  /* Architectural Title Block */
+  /* Title Block */
   .title-block {
-    margin-top: 32px;
+    margin-top: 28px;
     border-top: 1px solid var(--line-dim);
     display: grid;
     grid-template-columns: 1.3fr 1fr 1fr 1fr;
+    transform: translateZ(10px);
   }
   .tb-cell {
-    padding: 12px 14px;
+    padding: 10px 12px;
     border-right: 1px solid var(--line-dim);
   }
   .tb-cell:last-child { border-right: none; }
   .tb-label {
-    font-size: 8.5px;
+    font-size: 8px;
     letter-spacing: 1.5px;
     color: var(--text-muted);
     text-transform: uppercase;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
   }
   .tb-value {
-    font-size: 11px;
+    font-size: 10.5px;
     color: var(--line-main);
   }
   @media (max-width: 600px) {
     .title-block { grid-template-columns: 1fr 1fr; }
     .status-log { grid-template-columns: 1fr; }
-    .sheet { padding: 34px 24px 0; }
+    .card { padding: 30px 20px 0; }
   }
 </style>
 </head>
@@ -325,151 +322,159 @@
 <div class="crosshair h" id="cy"></div>
 <div class="cursor-tag" id="ctag">X 000 &nbsp;Y 000</div>
 
-<main class="sheet" id="sheet">
-  <div class="crop tl"></div>
-  <div class="crop tr"></div>
-  <div class="crop bl"></div>
-  <div class="crop br"></div>
-  <div class="stamp">PRELIMINARY<br>DRAFT ONLY</div>
+<div class="card-wrap" id="cardWrap">
+  <main class="card">
+    <div class="crop tl"></div>
+    <div class="crop tr"></div>
+    <div class="crop bl"></div>
+    <div class="crop br"></div>
+    <div class="stamp">PRELIMINARY<br>DRAFT ONLY</div>
 
-  <div class="eyebrow">SHEET A&#8209;101 &nbsp;&middot;&nbsp; DRAFTING BOARD</div>
+    <div class="eyebrow">SHEET A&#8209;101 &nbsp;&middot;&nbsp; DRAFTING BOARD</div>
 
-  <h1>Under construction</h1>
-  <p class="subtitle">We are finalizing the foundational design work. The site structure is actively being drafted—check back shortly.</p>
+    <h1>Under construction</h1>
+    <p class="subtitle">We are finalizing the foundational design work. The site structure is actively being drafted—check back shortly.</p>
 
-  <div class="drawing-wrap" aria-hidden="true">
-    <svg viewBox="0 0 240 190" xmlns="http://www.w3.org/2000/svg">
-      <line class="ground" x1="8" y1="178" x2="232" y2="178"/>
-      <line class="draw-line d1" pathLength="1" x1="40" y1="178" x2="40" y2="70"/>
-      <line class="draw-line d1" pathLength="1" x1="70" y1="178" x2="70" y2="70"/>
-      <line class="draw-line d2" pathLength="1" x1="100" y1="178" x2="100" y2="70"/>
-      <line class="draw-line d2" pathLength="1" x1="130" y1="178" x2="130" y2="70"/>
-      <line class="draw-line d3" pathLength="1" x1="40" y1="178" x2="130" y2="178"/>
-      <line class="draw-line d3" pathLength="1" x1="40" y1="148" x2="130" y2="148"/>
-      <line class="draw-line d4" pathLength="1" x1="40" y1="118" x2="130" y2="118"/>
-      <line class="draw-line d4" pathLength="1" x1="40" y1="90" x2="130" y2="90"/>
-      <line class="draw-line d5" pathLength="1" x1="40" y1="90" x2="70" y2="70"/>
-      <line class="draw-line d5" pathLength="1" x1="100" y1="118" x2="130" y2="90"/>
-      <line class="draw-line d2" pathLength="1" x1="185" y1="178" x2="185" y2="34"/>
-      <line class="draw-line d3" pathLength="1" x1="160" y1="34" x2="228" y2="34"/>
-      <line class="draw-line d4" pathLength="1" x1="160" y1="34" x2="172" y2="46"/>
-      <line class="draw-line d6" pathLength="1" x1="212" y1="34" x2="212" y2="74"/>
-      <line class="draw-line d5" pathLength="1" x1="205" y1="74" x2="219" y2="74"/>
-    </svg>
-  </div>
-
-  <div class="status-log">
-    <div class="status-row done"><span class="dot"></span>Foundation<span class="tag">Poured</span></div>
-    <div class="status-row active"><span class="dot"></span>Structure<span class="tag">In progress</span></div>
-    <div class="status-row"><span class="dot"></span>Systems<span class="tag">Queued</span></div>
-    <div class="status-row"><span class="dot"></span>Finishes<span class="tag">Queued</span></div>
-  </div>
-
-  <div class="progress">
-    <div class="progress-label"><span>COMPLETION</span><span id="pctLabel">0%</span></div>
-    <div class="dim-bar">
-      <div class="track"></div>
-      <div class="cap" style="left:0;"></div>
-      <div class="cap" style="right:0;"></div>
-      <div class="fill" id="fillBar"></div>
+    <div class="drawing-wrap" aria-hidden="true">
+      <svg viewBox="0 0 240 190" xmlns="http://www.w3.org/2000/svg">
+        <line class="ground" x1="8" y1="178" x2="232" y2="178"/>
+        <line class="draw-line d1" pathLength="1" x1="40" y1="178" x2="40" y2="70"/>
+        <line class="draw-line d1" pathLength="1" x1="70" y1="178" x2="70" y2="70"/>
+        <line class="draw-line d2" pathLength="1" x1="100" y1="178" x2="100" y2="70"/>
+        <line class="draw-line d2" pathLength="1" x1="130" y1="178" x2="130" y2="70"/>
+        <line class="draw-line d3" pathLength="1" x1="40" y1="178" x2="130" y2="178"/>
+        <line class="draw-line d3" pathLength="1" x1="40" y1="148" x2="130" y2="148"/>
+        <line class="draw-line d4" pathLength="1" x1="40" y1="118" x2="130" y2="118"/>
+        <line class="draw-line d4" pathLength="1" x1="40" y1="90" x2="130" y2="90"/>
+        <line class="draw-line d5" pathLength="1" x1="40" y1="90" x2="70" y2="70"/>
+        <line class="draw-line d5" pathLength="1" x1="100" y1="118" x2="130" y2="90"/>
+        <line class="draw-line d2" pathLength="1" x1="185" y1="178" x2="185" y2="34"/>
+        <line class="draw-line d3" pathLength="1" x1="160" y1="34" x2="228" y2="34"/>
+        <line class="draw-line d4" pathLength="1" x1="160" y1="34" x2="172" y2="46"/>
+        <line class="draw-line d6" pathLength="1" x1="212" y1="34" x2="212" y2="74"/>
+        <line class="draw-line d5" pathLength="1" x1="205" y1="74" x2="219" y2="74"/>
+      </svg>
     </div>
-  </div>
 
-  <div class="title-block">
-    <div class="tb-cell">
-      <div class="tb-label">Project</div>
-      <div class="tb-value">This Site</div>
+    <div class="status-log">
+      <div class="status-row done"><span class="dot"></span>Foundation<span class="tag">Poured</span></div>
+      <div class="status-row active"><span class="dot"></span>Structure<span class="tag">In progress</span></div>
+      <div class="status-row"><span class="dot"></span>Systems<span class="tag">Queued</span></div>
+      <div class="status-row"><span class="dot"></span>Finishes<span class="tag">Queued</span></div>
     </div>
-    <div class="tb-cell">
-      <div class="tb-label">Status</div>
-      <div class="tb-value">Active</div>
+
+    <div class="progress">
+      <div class="progress-label"><span>COMPLETION</span><span id="pctLabel">0%</span></div>
+      <div class="dim-bar">
+        <div class="track"></div>
+        <div class="cap" style="left:0;"></div>
+        <div class="cap" style="right:0;"></div>
+        <div class="fill" id="fillBar"></div>
+      </div>
     </div>
-    <div class="tb-cell">
-      <div class="tb-label">Rev</div>
-      <div class="tb-value">02.A</div>
+
+    <div class="title-block">
+      <div class="tb-cell">
+        <div class="tb-label">Project</div>
+        <div class="tb-value">This Site</div>
+      </div>
+      <div class="tb-cell">
+        <div class="tb-label">Status</div>
+        <div class="tb-value">Active</div>
+      </div>
+      <div class="tb-cell">
+        <div class="tb-label">Rev</div>
+        <div class="tb-value">02.A</div>
+      </div>
+      <div class="tb-cell">
+        <div class="tb-label">Date</div>
+        <div class="tb-value" id="tbDate">—</div>
+      </div>
     </div>
-    <div class="tb-cell">
-      <div class="tb-label">Date</div>
-      <div class="tb-value" id="tbDate">—</div>
-    </div>
-  </div>
-</main>
+  </main>
+</div>
 
 <script>
-  // Set current date
+  // Set date
   document.getElementById('tbDate').textContent = new Date().toLocaleDateString('en-US', { year:'numeric', month:'short', day:'2-digit' });
 
   const cx = document.getElementById('cx');
   const cy = document.getElementById('cy');
   const tag = document.getElementById('ctag');
-  const sheet = document.getElementById('sheet');
+  const cardWrap = document.getElementById('cardWrap');
   const isTouch = window.matchMedia('(hover: none)').matches;
 
-  // LERP Motion Engine for Smoothness
+  // Real-time Smooth Angle Tracking (LERP Engine)
   let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
   let cursor = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-  let tilt = { x: 0, y: 0 };
-  let targetTilt = { x: 0, y: 0 };
+  let rotation = { x: 0, y: 0 };
+  let targetRotation = { x: 0, y: 0 };
+
+  const MAX_TILT_ANGLE = 14; // Maximum degrees of 3D tilt
 
   if (!isTouch) {
     window.addEventListener('mousemove', (e) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
 
-      const r = sheet.getBoundingClientRect();
-      const dx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
-      const dy = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
-
-      targetTilt.x = dx * 2.5; // Smooth subtle degrees
-      targetTilt.y = -dy * 1.8;
+      // Calculate mouse angle relative to the center of the viewport
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
       
+      const percentX = (e.clientX - centerX) / centerX;
+      const percentY = (e.clientY - centerY) / centerY;
+
+      // Calculate rotation angles
+      targetRotation.y = percentX * MAX_TILT_ANGLE;   // Rotate Y based on horizontal movement
+      targetRotation.x = -percentY * MAX_TILT_ANGLE;  // Rotate X based on vertical movement
+
       tag.style.opacity = '1';
     });
 
     window.addEventListener('mouseleave', () => {
       tag.style.opacity = '0';
-      targetTilt.x = 0;
-      targetTilt.y = 0;
+      targetRotation.x = 0;
+      targetRotation.y = 0;
     });
 
-    function smoothRender() {
-      // Linear interpolation (LERP) formula: current += (target - current) * factor
-      const ease = 0.08; 
+    function renderLoop() {
+      const ease = 0.07; // Smoothing factor (lower = smoother)
       
+      // Interpolate cursor
       cursor.x += (mouse.x - cursor.x) * ease;
       cursor.y += (mouse.y - cursor.y) * ease;
 
-      tilt.x += (targetTilt.x - tilt.x) * ease;
-      tilt.y += (targetTilt.y - tilt.y) * ease;
+      // Interpolate 3D angles
+      rotation.x += (targetRotation.x - rotation.x) * ease;
+      rotation.y += (targetRotation.y - rotation.y) * ease;
 
-      // Render smoothed positions
+      // Apply transforms
       cx.style.transform = `translateX(${cursor.x}px)`;
       cy.style.transform = `translateY(${cursor.y}px)`;
       tag.style.transform = `translate(${cursor.x + 14}px, ${cursor.y + 14}px)`;
       tag.textContent = 'X ' + String(Math.round(cursor.x)).padStart(4, '0') + '  Y ' + String(Math.round(cursor.y)).padStart(4, '0');
 
-      sheet.style.transform = `perspective(1000px) rotateY(${tilt.x}deg) rotateX(${tilt.y}deg)`;
+      cardWrap.style.transform = `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`;
 
-      requestAnimationFrame(smoothRender);
+      requestAnimationFrame(renderLoop);
     }
-    smoothRender();
+    renderLoop();
   }
 
-  // Synchronized Counter Progress Animation
+  // Counter animation
   const pctLabel = document.getElementById('pctLabel');
   const target = 63;
   const start = performance.now() + 300;
   
   function tick(now) {
-    const t = Math.min(1, Math.max(0, (now - start) / 2200));
-    // Soft cubic ease-out curve
+    const t = Math.min(1, Math.max(0, (now - start) / 2000));
     const eased = 1 - Math.pow(1 - t, 3);
     pctLabel.textContent = Math.round(eased * target) + '%';
     if (t < 1) requestAnimationFrame(tick);
   }
   requestAnimationFrame(tick);
 
-  // Accessible reduced motion override
+  // Motion preference check
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.querySelectorAll('.draw-line, .eyebrow::before').forEach(el => {
       el.style.animation = 'none';
