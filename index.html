@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canvas - Home</title>
+
     <style>
         * {
             box-sizing: border-box;
@@ -13,11 +14,39 @@
         }
 
         body {
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
+            background: linear-gradient(
+                -45deg,
+                #0f172a,
+                #1e1b4b,
+                #311042,
+                #6d28d9,
+                #4338ca,
+                #0f172a
+            );
+            background-size: 400% 400%;
+            animation: gradientMove 18s ease infinite;
             color: #f8fafc;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+        }
+
+        @keyframes gradientMove {
+            0% {
+                background-position: 0% 50%;
+            }
+            25% {
+                background-position: 100% 50%;
+            }
+            50% {
+                background-position: 100% 100%;
+            }
+            75% {
+                background-position: 0% 100%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         header {
@@ -55,7 +84,8 @@
             border-radius: 8px;
         }
 
-        nav a:hover, nav a.active {
+        nav a:hover,
+        nav a.active {
             color: #ffffff;
             background: rgba(255, 255, 255, 0.1);
         }
@@ -134,20 +164,24 @@
             .hero h1 {
                 font-size: 2.2rem;
             }
+
             .btn-group {
                 flex-direction: column;
                 width: 100%;
                 max-width: 300px;
             }
+
             .btn {
                 justify-content: center;
             }
         }
     </style>
 </head>
+
 <body>
     <header>
         <a href="index.html" class="logo">Canvas</a>
+
         <nav>
             <a href="index.html" class="active">Home</a>
             <a href="tos.html">Terms of Service</a>
@@ -157,11 +191,19 @@
 
     <main class="hero">
         <h1>The tools you need, all packed into one bot.</h1>
+
         <div class="btn-group">
-            <a href="https://discord.com/oauth2/authorize?client_id=1532874424913760296&permissions=8&scope=bot%20applications.commands" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+            <a href="https://discord.com/oauth2/authorize?client_id=1532874424913760296&permissions=8&scope=bot%20applications.commands"
+                class="btn btn-primary"
+                target="_blank"
+                rel="noopener noreferrer">
                 Invite Canvas
             </a>
-            <a href="https://discord.gg/wgW7WbQFjn" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">
+
+            <a href="https://discord.gg/wgW7WbQFjn"
+                class="btn btn-secondary"
+                target="_blank"
+                rel="noopener noreferrer">
                 Support Server
             </a>
         </div>
@@ -171,3 +213,4 @@
         <p>&copy; 2026 Canvas Bot. All rights reserved.</p>
     </footer>
 </body>
+</html>
