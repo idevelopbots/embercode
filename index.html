@@ -30,7 +30,7 @@
     background: radial-gradient(circle at 50% 50%, #0d2847 0%, #040d18 100%);
     position: relative;
     color: var(--line-main);
-    perspective: 1200px; /* Perspective container for full 3D card tilt */
+    perspective: 1200px;
   }
 
   /* Blueprint Grid Background */
@@ -68,34 +68,6 @@
   .coord.left { left: 20px; top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 60px 0; }
   .coord.right { right: 20px; top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 60px 0; }
   @media (max-width: 760px) { .coord { display: none !important; } }
-
-  /* Smooth CAD Crosshair Cursor */
-  .crosshair {
-    position: fixed; top: 0; left: 0;
-    width: 1px; height: 100vh;
-    background: var(--line-dim);
-    pointer-events: none;
-    z-index: 60;
-    will-change: transform;
-  }
-  .crosshair.h { width: 100vw; height: 1px; }
-  
-  .cursor-tag {
-    position: fixed; top: 0; left: 0;
-    font-size: 10px;
-    color: var(--line-main);
-    background: rgba(7, 21, 38, 0.9);
-    border: 1px solid var(--line-dim);
-    padding: 3px 7px;
-    border-radius: 2px;
-    pointer-events: none;
-    z-index: 61;
-    white-space: nowrap;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    will-change: transform;
-  }
-  @media (hover: none) { .crosshair, .cursor-tag { display: none; } }
 
   /* Floating Card Container */
   .card-wrap {
@@ -318,10 +290,6 @@
 <div class="coord left"><span>1</span><span>2</span><span>3</span><span>4</span></div>
 <div class="coord right"><span>1</span><span>2</span><span>3</span><span>4</span></div>
 
-<div class="crosshair v" id="cx"></div>
-<div class="crosshair h" id="cy"></div>
-<div class="cursor-tag" id="ctag">X 000 &nbsp;Y 000</div>
-
 <div class="card-wrap" id="cardWrap">
   <main class="card">
     <div class="crop tl"></div>
@@ -398,15 +366,10 @@
   // Set date
   document.getElementById('tbDate').textContent = new Date().toLocaleDateString('en-US', { year:'numeric', month:'short', day:'2-digit' });
 
-  const cx = document.getElementById('cx');
-  const cy = document.getElementById('cy');
-  const tag = document.getElementById('ctag');
   const cardWrap = document.getElementById('cardWrap');
   const isTouch = window.matchMedia('(hover: none)').matches;
 
   // Real-time Smooth Angle Tracking (LERP Engine)
-  let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-  let cursor = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
   let rotation = { x: 0, y: 0 };
   let targetRotation = { x: 0, y: 0 };
 
@@ -414,9 +377,6 @@
 
   if (!isTouch) {
     window.addEventListener('mousemove', (e) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-
       // Calculate mouse angle relative to the center of the viewport
       const centerX = window.innerWidth / 2;
       const centerY = window.innerHeight / 2;
@@ -427,33 +387,21 @@
       // Calculate rotation angles
       targetRotation.y = percentX * MAX_TILT_ANGLE;   // Rotate Y based on horizontal movement
       targetRotation.x = -percentY * MAX_TILT_ANGLE;  // Rotate X based on vertical movement
-
-      tag.style.opacity = '1';
     });
 
     window.addEventListener('mouseleave', () => {
-      tag.style.opacity = '0';
       targetRotation.x = 0;
       targetRotation.y = 0;
     });
 
     function renderLoop() {
-      const ease = 0.07; // Smoothing factor (lower = smoother)
-      
-      // Interpolate cursor
-      cursor.x += (mouse.x - cursor.x) * ease;
-      cursor.y += (mouse.y - cursor.y) * ease;
+      const ease = 0.07; // Smoothing factor
 
       // Interpolate 3D angles
       rotation.x += (targetRotation.x - rotation.x) * ease;
       rotation.y += (targetRotation.y - rotation.y) * ease;
 
-      // Apply transforms
-      cx.style.transform = `translateX(${cursor.x}px)`;
-      cy.style.transform = `translateY(${cursor.y}px)`;
-      tag.style.transform = `translate(${cursor.x + 14}px, ${cursor.y + 14}px)`;
-      tag.textContent = 'X ' + String(Math.round(cursor.x)).padStart(4, '0') + '  Y ' + String(Math.round(cursor.y)).padStart(4, '0');
-
+      // Apply transform to the card
       cardWrap.style.transform = `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`;
 
       requestAnimationFrame(renderLoop);
