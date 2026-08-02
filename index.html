@@ -3,295 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Texas State Roleplay - Live Dashboard</title>
+    <title>Canvas - Home</title>
     <style>
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background-color: #0d0f12;
-            color: #ffffff;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
+            color: #f8fafc;
             min-height: 100vh;
-            padding: 2rem;
+            display: flex;
+            flex-direction: column;
         }
 
-        .header {
+        header {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto 2rem auto;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .brand {
-            display: flex;
             align-items: center;
-            gap: 15px;
+            padding: 20px 8%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .brand img {
-            height: 50px;
-            width: auto;
-        }
-
-        .brand h1 {
-            font-size: 1.5rem;
-            letter-spacing: 1px;
-        }
-
-        .api-controls {
-            display: flex;
-            gap: 10px;
-        }
-
-        input[type="text"] {
-            background: #161a21;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #fff;
-            padding: 0.6rem 1rem;
-            border-radius: 8px;
-            outline: none;
-            width: 250px;
-        }
-
-        button {
-            background: #0066ff;
-            color: white;
-            border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s ease;
-        }
-
-        button:hover {
-            background: #0052cc;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            max-width: 1200px;
-            margin: 0 auto 2rem auto;
-        }
-
-        .card {
-            background: rgba(22, 26, 33, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-        }
-
-        .card h3 {
-            color: #94a3b8;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.5rem;
-        }
-
-        .card .stat {
-            font-size: 2.2rem;
+        .logo {
+            font-size: 1.8rem;
             font-weight: 700;
-            color: #38bdf8;
+            background: linear-gradient(90deg, #a855f7, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
         }
 
-        .tables-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 1.5rem;
-            max-width: 1200px;
-            margin: 0 auto;
+        nav {
+            display: flex;
+            gap: 20px;
         }
 
-        .panel {
-            background: rgba(22, 26, 33, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        nav a:hover, nav a.active {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            max-width: 800px;
+            margin-bottom: 40px;
+            line-height: 1.2;
+            background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 16px 32px;
             border-radius: 12px;
-            padding: 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
-        .panel h2 {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            color: #e2e8f0;
+        .btn-primary {
+            background: linear-gradient(90deg, #6366f1, #a855f7);
+            color: white;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
         }
 
-        th, td {
-            padding: 0.75rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            font-size: 0.9rem;
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
         }
 
-        th {
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
             color: #64748b;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+            background: rgba(15, 23, 42, 0.8);
         }
 
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        .status {
-            font-size: 0.85rem;
-            color: #94a3b8;
-            margin-top: 0.5rem;
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            .btn-group {
+                flex-direction: column;
+                width: 100%;
+                max-width: 300px;
+            }
+            .btn {
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-
-    <header class="header">
-        <div class="brand">
-            <img src="https://i.ibb.co/MD7JVW4J/LA-8.png" alt="Texas State Roleplay">
-            <h1>TSRP Dashboard</h1>
-        </div>
-        <div class="api-controls">
-            <input type="text" id="apiKeyInput" placeholder="Enter ER:LC Server Key">
-            <button onclick="fetchData()">Connect</button>
-        </div>
+    <header>
+        <a href="index.html" class="logo">Canvas</a>
+        <nav>
+            <a href="index.html" class="active">Home</a>
+            <a href="tos.html">Terms of Service</a>
+            <a href="privacypolicy.html">Privacy Policy</a>
+        </nav>
     </header>
 
-    <div class="grid">
-        <div class="card">
-            <h3>Server Status</h3>
-            <div class="stat" id="statStatus">Offline</div>
+    <main class="hero">
+        <h1>The tools you need, all packed into one bot.</h1>
+        <div class="btn-group">
+            <a href="https://discord.com/oauth2/authorize?client_id=1532874424913760296&permissions=8&scope=bot%20applications.commands" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                Invite Canvas
+            </a>
+            <a href="https://discord.gg/wgW7WbQFjn" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">
+                Support Server
+            </a>
         </div>
-        <div class="card">
-            <h3>Active Players</h3>
-            <div class="stat" id="statPlayers">0 / 0</div>
-        </div>
-        <div class="card">
-            <h3>Queue</h3>
-            <div class="stat" id="statQueue">0</div>
-        </div>
-        <div class="card">
-            <h3>Vehicles Spawned</h3>
-            <div class="stat" id="statVehicles">0</div>
-        </div>
-    </div>
+    </main>
 
-    <div class="tables-container">
-        <div class="panel">
-            <h2>Active Players</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Username</th>
-                        <th>Permission/Role</th>
-                    </tr>
-                </thead>
-                <tbody id="playerTable">
-                    <tr><td colspan="2">No data available</td></tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="panel">
-            <h2>Active Vehicles</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Owner</th>
-                        <th>Vehicle Model</th>
-                    </tr>
-                </thead>
-                <tbody id="vehicleTable">
-                    <tr><td colspan="2">No data available</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <script>
-        async function fetchData() {
-            const apiKey = document.getElementById('apiKeyInput').value.trim();
-            if (!apiKey) {
-                alert('Please enter your ER:LC API Key.');
-                return;
-            }
-
-            const headers = { 'Server-Key': apiKey };
-            const baseUrl = 'https://api.policeroleplay.community/v1';
-
-            try {
-                // Fetch Server Details
-                const serverRes = await fetch(`${baseUrl}/server`, { headers });
-                const serverData = await serverRes.json();
-
-                if (serverRes.ok) {
-                    document.getElementById('statStatus').innerText = 'Online';
-                    document.getElementById('statStatus').style.color = '#4ade80';
-                    document.getElementById('statPlayers').innerText = `${serverData.CurrentPlayers} / ${serverData.MaxPlayers}`;
-                    document.getElementById('statQueue').innerText = serverData.Queue || 0;
-                } else {
-                    document.getElementById('statStatus').innerText = 'Error';
-                    document.getElementById('statStatus').style.color = '#f87171';
-                }
-
-                // Fetch Players
-                const playersRes = await fetch(`${baseUrl}/server/players`, { headers });
-                if (playersRes.ok) {
-                    const players = await playersRes.json();
-                    const playerTable = document.getElementById('playerTable');
-                    playerTable.innerHTML = '';
-
-                    if (players.length === 0) {
-                        playerTable.innerHTML = '<tr><td colspan="2">No players online</td></tr>';
-                    } else {
-                        players.forEach(p => {
-                            playerTable.innerHTML += `
-                                <tr>
-                                    <td><strong>${p.Player}</strong></td>
-                                    <td>${p.Permission || 'Member'}</td>
-                                </tr>`;
-                        });
-                    }
-                }
-
-                // Fetch Vehicles
-                const vehiclesRes = await fetch(`${baseUrl}/server/vehicles`, { headers });
-                if (vehiclesRes.ok) {
-                    const vehicles = await vehiclesRes.json();
-                    const vehicleTable = document.getElementById('vehicleTable');
-                    document.getElementById('statVehicles').innerText = vehicles.length;
-                    vehicleTable.innerHTML = '';
-
-                    if (vehicles.length === 0) {
-                        vehicleTable.innerHTML = '<tr><td colspan="2">No vehicles spawned</td></tr>';
-                    } else {
-                        vehicles.forEach(v => {
-                            vehicleTable.innerHTML += `
-                                <tr>
-                                    <td>${v.Owner}</td>
-                                    <td><strong>${v.Name}</strong></td>
-                                </tr>`;
-                        });
-                    }
-                }
-
-            } catch (err) {
-                console.error('API Fetch Error:', err);
-                alert('Failed to connect to the ER:LC API. Check your key or CORS settings.');
-            }
-        }
-    </script>
+    <footer>
+        <p>&copy; 2026 Canvas Bot. All rights reserved.</p>
+    </footer>
 </body>
-</html>
