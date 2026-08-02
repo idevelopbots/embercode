@@ -1,109 +1,239 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Under Construction</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Under Construction</title>
 
-    body {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      /* Yellow Gradient Background */
-      background: linear-gradient(135deg, #fff200 0%, #ffd700 50%, #ffae00 100%);
-      font-family: 'Arial Black', Impact, sans-serif;
-      overflow: hidden;
-      position: relative;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
 
-    /* Caution Tape Base */
-    .caution-tape {
-      width: 120%; /* Extra width to prevent edges showing during rotation */
-      height: 60px;
-      background: repeating-linear-gradient(
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Montserrat',sans-serif;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    background:
+        radial-gradient(circle at top,#ffe600,#ffb300 45%,#ff8c00 100%);
+    position:relative;
+}
+
+/* Background Glow */
+
+body::before{
+    content:"";
+    position:absolute;
+    width:700px;
+    height:700px;
+    border-radius:50%;
+    background:rgba(255,255,255,.15);
+    filter:blur(120px);
+    animation:floatGlow 8s ease-in-out infinite;
+}
+
+@keyframes floatGlow{
+    0%,100%{transform:translate(-100px,-50px);}
+    50%{transform:translate(120px,80px);}
+}
+
+/* Floating Dots */
+
+.particle{
+    position:absolute;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:rgba(255,255,255,.4);
+    animation:rise linear infinite;
+}
+
+@keyframes rise{
+    from{
+        transform:translateY(120vh);
+        opacity:0;
+    }
+    20%{opacity:1;}
+    to{
+        transform:translateY(-20vh);
+        opacity:0;
+    }
+}
+
+/* Card */
+
+.card{
+    position:relative;
+    z-index:10;
+    width:min(900px,90%);
+    padding:60px;
+    border-radius:30px;
+    background:rgba(255,255,255,.18);
+    backdrop-filter:blur(18px);
+    border:2px solid rgba(255,255,255,.3);
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.35),
+        inset 0 1px 0 rgba(255,255,255,.4);
+    text-align:center;
+    transition:.4s;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+}
+
+/* Icon */
+
+.icon{
+    font-size:90px;
+    animation:pulse 2s infinite;
+    filter:drop-shadow(0 0 20px rgba(255,180,0,.8));
+}
+
+@keyframes pulse{
+    50%{
+        transform:scale(1.1);
+    }
+}
+
+/* Heading */
+
+h1{
+    margin-top:20px;
+    font-size:clamp(2.5rem,7vw,5.8rem);
+    font-weight:900;
+    color:white;
+    text-shadow:
+        0 5px 15px rgba(0,0,0,.45);
+    letter-spacing:4px;
+}
+
+p{
+    margin-top:20px;
+    font-size:1.2rem;
+    color:white;
+    opacity:.95;
+    line-height:1.7;
+}
+
+/* Caution Tape */
+
+.tape{
+    position:absolute;
+    left:-10%;
+    width:120%;
+    height:60px;
+
+    background:
+    repeating-linear-gradient(
         -45deg,
-        #111,
-        #111 30px,
-        #ffcc00 30px,
-        #ffcc00 60px
-      );
-      background-size: 85px 100%; /* Sets up seamless loop */
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      position: absolute;
-    }
+        #111 0 25px,
+        #ffdb00 25px 50px
+    );
 
-    /* Top Tape Animation */
-    .tape-top {
-      top: 15%;
-      transform: rotate(-3deg);
-      animation: moveTapeLeft 2s linear infinite;
-    }
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-    /* Bottom Tape Animation */
-    .tape-bottom {
-      bottom: 15%;
-      transform: rotate(3deg);
-      animation: moveTapeRight 2s linear infinite;
-    }
+    color:white;
+    font-weight:900;
+    letter-spacing:6px;
+    text-shadow:1px 1px black;
+    font-size:18px;
 
-    /* Scrolling Animations */
-    @keyframes moveTapeLeft {
-      0% {
-        background-position: 0 0;
-      }
-      100% {
-        background-position: 85px 0;
-      }
-    }
+    overflow:hidden;
+}
 
-    @keyframes moveTapeRight {
-      0% {
-        background-position: 0 0;
-      }
-      100% {
-        background-position: -85px 0;
-      }
-    }
+.tape::before{
+    content:"UNDER CONSTRUCTION • UNDER CONSTRUCTION • UNDER CONSTRUCTION • UNDER CONSTRUCTION";
+    white-space:nowrap;
+    animation:scroll 10s linear infinite;
+}
 
-    /* Big Red Sign Banner */
-    .sign-container {
-      background: rgba(255, 255, 255, 0.95);
-      padding: 40px 60px;
-      border: 8px solid #111;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      text-align: center;
-      z-index: 10;
-    }
+@keyframes scroll{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+}
 
-    /* Big Red Letters */
-    .construction-text {
-      color: #e60000;
-      font-size: clamp(2.5rem, 8vw, 6rem);
-      text-transform: uppercase;
-      letter-spacing: 4px;
-      text-shadow: 3px 3px 0px #000;
-      line-height: 1.1;
-    }
-  </style>
+.top{
+    top:10%;
+    transform:rotate(-3deg);
+}
+
+.bottom{
+    bottom:10%;
+    transform:rotate(3deg);
+}
+
+/* Decorative Corners */
+
+.corner{
+    position:absolute;
+    width:120px;
+    height:120px;
+    border:8px solid rgba(255,255,255,.2);
+}
+
+.c1{
+    top:-20px;
+    left:-20px;
+    border-right:none;
+    border-bottom:none;
+}
+
+.c2{
+    bottom:-20px;
+    right:-20px;
+    border-left:none;
+    border-top:none;
+}
+
+</style>
 </head>
+
 <body>
 
-  <div class="caution-tape tape-top"></div>
+<div class="tape top"></div>
+<div class="tape bottom"></div>
 
-  <div class="sign-container">
-    <h1 class="construction-text">UNDER-CONSTRUCTION</h1>
-  </div>
+<div class="card">
 
-  <div class="caution-tape tape-bottom"></div>
+<div class="corner c1"></div>
+<div class="corner c2"></div>
+
+<div class="icon">🚧</div>
+
+<h1>UNDER CONSTRUCTION</h1>
+
+<p>
+We're hard at work building something awesome.<br>
+Please check back soon!
+</p>
+
+</div>
+
+<script>
+for(let i=0;i<40;i++){
+
+    const p=document.createElement("div");
+    p.className="particle";
+
+    p.style.left=Math.random()*100+"vw";
+    p.style.animationDuration=(6+Math.random()*8)+"s";
+    p.style.animationDelay=Math.random()*6+"s";
+    p.style.opacity=Math.random();
+
+    document.body.appendChild(p);
+
+}
+</script>
 
 </body>
 </html>
