@@ -1,433 +1,686 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Under Construction</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Lora:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg-dark: #071526;
-    --paper-card: rgba(13, 35, 60, 0.85);
-    --line-main: #dce8f5;
-    --line-dim: rgba(220, 232, 245, 0.2);
-    --line-faint: rgba(220, 232, 245, 0.07);
-    --text-muted: #8ba5c4;
-    --amber-stamp: #d9822b;
-    --amber-dim: rgba(217, 130, 43, 0.3);
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building Something Exceptional • Engineering Draft</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;1,400&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 
-  * { margin:0; padding:0; box-sizing:border-box; }
-  html, body { height:100%; overflow:hidden; }
+    <style>
+        :root {
+            --bg-color: #071526;
+            --card-bg: rgba(13, 35, 60, 0.85);
+            --primary-lines: #dce8f5;
+            --muted-text: #8ba5c4;
+            --accent-amber: #d9822b;
+            --grid-line: rgba(220, 232, 245, 0.05);
+            --grid-line-bold: rgba(220, 232, 245, 0.12);
+            --border-color: rgba(220, 232, 245, 0.15);
+            
+            --font-heading: 'Space Grotesk', sans-serif;
+            --font-mono: 'IBM Plex Mono', monospace;
+            --font-serif: 'Lora', serif;
+        }
 
-  body {
-    font-family: 'IBM Plex Mono', monospace;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: radial-gradient(circle at 50% 50%, #0d2847 0%, #040d18 100%);
-    position: relative;
-    color: var(--line-main);
-    perspective: 1200px;
-  }
+        /* --- Base & Resets --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-  /* Blueprint Grid Background */
-  .grid {
-    position: absolute; inset: 0;
-    background-image:
-      linear-gradient(var(--line-faint) 1px, transparent 1px),
-      linear-gradient(90deg, var(--line-faint) 1px, transparent 1px),
-      linear-gradient(var(--line-dim) 1px, transparent 1px),
-      linear-gradient(90deg, var(--line-dim) 1px, transparent 1px);
-    background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
-    pointer-events: none;
-    z-index: 1;
-  }
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            background-color: var(--bg-color);
+            color: var(--primary-lines);
+            font-family: var(--font-mono);
+            -webkit-font-smoothing: antialiased;
+        }
 
-  .vignette {
-    position: absolute; inset: 0;
-    background: radial-gradient(circle at 50% 50%, transparent 30%, rgba(2, 6, 12, 0.75) 100%);
-    pointer-events: none;
-    z-index: 2;
-  }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            perspective: 1200px;
+            position: relative;
+            padding: 2rem 1rem;
+        }
 
-  /* Coordinate Markings */
-  .coord {
-    position: absolute;
-    font-size: 11px;
-    letter-spacing: 2px;
-    color: var(--text-muted);
-    opacity: 0.4;
-    z-index: 3;
-    pointer-events: none;
-  }
-  .coord.top { top: 20px; left: 0; right: 0; display: flex; justify-content: space-between; padding: 0 50px; }
-  .coord.bottom { bottom: 20px; left: 0; right: 0; display: flex; justify-content: space-between; padding: 0 50px; }
-  .coord.left { left: 20px; top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 60px 0; }
-  .coord.right { right: 20px; top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 60px 0; }
-  @media (max-width: 760px) { .coord { display: none !important; } }
+        /* --- Drafting Grid Background --- */
+        .blueprint-background {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image: 
+                linear-gradient(to right, var(--grid-line-bold) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-line-bold) 1px, transparent 1px),
+                linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+            background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+            background-position: center center;
+        }
 
-  /* Floating Card Container */
-  .card-wrap {
-    position: relative;
-    z-index: 10;
-    transform-style: preserve-3d;
-    will-change: transform;
-  }
+        /* Soft Radial Spotlight Glow */
+        .radial-spotlight {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 50%, rgba(217, 130, 43, 0.08) 0%, rgba(13, 35, 60, 0.4) 45%, rgba(7, 21, 38, 0.95) 100%);
+        }
 
-  .card {
-    position: relative;
-    width: min(620px, 90vw);
-    background: var(--paper-card);
-    border: 1px solid var(--line-dim);
-    border-radius: 12px;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    box-shadow: 
-      0 25px 50px -12px rgba(0, 0, 0, 0.7),
-      0 0 30px rgba(220, 232, 245, 0.05),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    padding: 40px 36px 0;
-    transform-style: preserve-3d;
-  }
+        /* Particles Canvas */
+        #particleCanvas {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+        }
 
-  /* Corner Crop Marks */
-  .crop { position: absolute; width: 12px; height: 12px; border: 1.5px solid var(--line-main); opacity: 0.5; }
-  .crop.tl { top: -4px; left: -4px; border-right: none; border-bottom: none; }
-  .crop.tr { top: -4px; right: -4px; border-left: none; border-bottom: none; }
-  .crop.bl { bottom: -4px; left: -4px; border-right: none; border-top: none; }
-  .crop.br { bottom: -4px; right: -4px; border-left: none; border-top: none; }
+        /* Viewport Coordinates */
+        .coord-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 3;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1rem;
+            font-size: 0.7rem;
+            color: var(--muted-text);
+            opacity: 0.6;
+        }
 
-  /* Stamp */
-  .stamp {
-    position: absolute;
-    top: -14px; right: -10px;
-    font-size: 10.5px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    color: var(--amber-stamp);
-    border: 2px solid var(--amber-dim);
-    padding: 6px 12px;
-    border-radius: 4px;
-    transform: translateZ(25px) rotate(-4deg);
-    background: rgba(7, 21, 38, 0.95);
-    text-align: center;
-    line-height: 1.4;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  }
+        .coord-row {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
 
-  .eyebrow {
-    font-size: 10.5px;
-    letter-spacing: 2.5px;
-    color: var(--text-muted);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transform: translateZ(15px);
-  }
-  .eyebrow::before {
-    content: "";
-    width: 6px; height: 6px;
-    background: var(--amber-stamp);
-    border-radius: 50%;
-    animation: smoothPulse 2.4s ease-in-out infinite;
-  }
-  @keyframes smoothPulse {
-    0%, 100% { opacity: 0.3; transform: scale(0.9); }
-    50% { opacity: 1; transform: scale(1.1); }
-  }
+        .coord-cols {
+            position: fixed;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8vw;
+            font-size: 0.7rem;
+            color: var(--muted-text);
+            opacity: 0.6;
+        }
 
-  h1 {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600;
-    font-size: clamp(1.8rem, 4.5vw, 2.6rem);
-    letter-spacing: -0.5px;
-    margin-top: 14px;
-    color: #fff;
-    transform: translateZ(20px);
-  }
+        /* --- Main Card (Glassmorphic) --- */
+        .card-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 720px;
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
 
-  .subtitle {
-    font-family: 'Lora', serif;
-    font-style: italic;
-    margin-top: 10px;
-    font-size: 0.98rem;
-    line-height: 1.6;
-    color: var(--text-muted);
-    max-width: 460px;
-    transform: translateZ(15px);
-  }
+        .card {
+            position: relative;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 3.5rem 3rem 2.5rem;
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                inset 0 0 40px rgba(7, 21, 38, 0.8);
+            transform-style: preserve-3d;
+            overflow: hidden;
+        }
 
-  /* SVG Drawing */
-  .drawing-wrap {
-    margin: 28px 0 10px;
-    display: flex;
-    justify-content: center;
-    transform: translateZ(25px);
-  }
-  .drawing-wrap svg { width: 100%; max-width: 320px; height: auto; }
-  .draw-line {
-    fill: none;
-    stroke: var(--line-main);
-    stroke-width: 1.5;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    pathLength: 1;
-    animation: smoothDraw 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  }
-  .draw-line.d1 { animation-delay: 0s; }
-  .draw-line.d2 { animation-delay: 0.3s; }
-  .draw-line.d3 { animation-delay: 0.6s; }
-  .draw-line.d4 { animation-delay: 0.9s; }
-  .draw-line.d5 { animation-delay: 1.2s; }
-  .draw-line.d6 { animation-delay: 1.5s; stroke: var(--amber-stamp); stroke-dasharray: 3 3; }
-  @keyframes smoothDraw {
-    0% { stroke-dashoffset: 1; opacity: 0.15; }
-    35%, 75% { stroke-dashoffset: 0; opacity: 1; }
-    90%, 100% { stroke-dashoffset: 1; opacity: 0.15; }
-  }
-  .ground { stroke: var(--text-muted); stroke-width: 1; opacity: 0.3; }
+        /* Reflection Sweep */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -150%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                60deg,
+                transparent 30%,
+                rgba(220, 232, 245, 0.03) 48%,
+                rgba(220, 232, 245, 0.08) 50%,
+                rgba(220, 232, 245, 0.03) 52%,
+                transparent 70%
+            );
+            transform: rotate(30deg);
+            pointer-events: none;
+            animation: sweep 10s infinite ease-in-out;
+        }
 
-  /* Status Log */
-  .status-log {
-    margin-top: 24px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px 20px;
-    font-size: 11px;
-    transform: translateZ(15px);
-  }
-  .status-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--text-muted);
-    padding: 4px 0;
-    border-bottom: 1px dashed var(--line-faint);
-  }
-  .status-row .dot {
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: var(--text-muted);
-    opacity: 0.4;
-  }
-  .status-row.done .dot { background: var(--line-main); opacity: 1; }
-  .status-row.done { color: var(--line-main); }
-  .status-row.active .dot { background: var(--amber-stamp); opacity: 1; animation: smoothPulse 2.4s ease-in-out infinite; }
-  .status-row.active { color: #fff; }
-  .status-row .tag { margin-left: auto; opacity: 0.5; font-size: 9.5px; }
+        @keyframes sweep {
+            0% { transform: translate(-30%, -30%) rotate(0deg); }
+            20% { transform: translate(30%, 30%) rotate(0deg); }
+            100% { transform: translate(30%, 30%) rotate(0deg); }
+        }
 
-  /* Progress Bar */
-  .progress { margin: 24px 0 8px; transform: translateZ(15px); }
-  .progress-label {
-    display: flex; justify-content: space-between;
-    font-size: 10px;
-    letter-spacing: 1.5px;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-  }
-  .dim-bar {
-    position: relative;
-    height: 10px;
-  }
-  .dim-bar .track {
-    position: absolute; top: 50%; left: 0; right: 0;
-    height: 1px; background: var(--line-dim);
-    transform: translateY(-50%);
-  }
-  .dim-bar .fill {
-    position: absolute; top: 50%; left: 0; height: 3px;
-    background: var(--line-main);
-    transform: translateY(-50%);
-    width: 0%;
-    animation: fillBar 2s 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-  @keyframes fillBar { to { width: 63%; } }
-  .dim-bar .cap { position: absolute; top: 0; width: 1px; height: 10px; background: var(--line-dim); }
+        /* Corner Crop Marks */
+        .crop-mark {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-color: var(--primary-lines);
+            border-style: solid;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+        .crop-tl { top: 8px; left: 8px; border-width: 1px 0 0 1px; }
+        .crop-tr { top: 8px; right: 8px; border-width: 1px 1px 0 0; }
+        .crop-bl { bottom: 8px; left: 8px; border-width: 0 0 1px 1px; }
+        .crop-br { bottom: 8px; right: 8px; border-width: 0 1px 1px 0; }
 
-  /* Title Block */
-  .title-block {
-    margin-top: 28px;
-    border-top: 1px solid var(--line-dim);
-    display: grid;
-    grid-template-columns: 1.3fr 1fr 1fr 1fr;
-    transform: translateZ(10px);
-  }
-  .tb-cell {
-    padding: 10px 12px;
-    border-right: 1px solid var(--line-dim);
-  }
-  .tb-cell:last-child { border-right: none; }
-  .tb-label {
-    font-size: 8px;
-    letter-spacing: 1.5px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    margin-bottom: 3px;
-  }
-  .tb-value {
-    font-size: 10.5px;
-    color: var(--line-main);
-  }
-  @media (max-width: 600px) {
-    .title-block { grid-template-columns: 1fr 1fr; }
-    .status-log { grid-template-columns: 1fr; }
-    .card { padding: 30px 20px 0; }
-  }
-</style>
+        /* Stamp */
+        .stamp {
+            position: absolute;
+            top: 2rem;
+            right: 2.5rem;
+            border: 2px dashed var(--accent-amber);
+            color: var(--accent-amber);
+            padding: 0.35rem 0.6rem;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-align: center;
+            line-height: 1.2;
+            transform: rotate(5deg) translateZ(30px);
+            opacity: 0.85;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        /* --- Typography & Header --- */
+        .eyebrow {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            color: var(--muted-text);
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transform: translateZ(15px);
+        }
+
+        .eyebrow::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-amber);
+        }
+
+        .main-heading {
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 700;
+            line-height: 1.15;
+            color: var(--primary-lines);
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            transform: translateZ(25px);
+        }
+
+        .subtitle {
+            font-family: var(--font-serif);
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: var(--muted-text);
+            margin-bottom: 2rem;
+            max-width: 90%;
+            transform: translateZ(10px);
+        }
+
+        /* --- SVG Drawing Section --- */
+        .blueprint-art {
+            width: 100%;
+            height: auto;
+            margin: 1.5rem 0 2rem;
+            transform: translateZ(20px);
+        }
+
+        .blueprint-art svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .stroke-draw {
+            stroke: var(--primary-lines);
+            stroke-dasharray: 600;
+            stroke-dashoffset: 600;
+            animation: drawLine 3.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .stroke-amber {
+            stroke: var(--accent-amber);
+        }
+
+        .stroke-muted {
+            stroke: var(--muted-text);
+        }
+
+        @keyframes drawLine {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        /* --- Project Status Log --- */
+        .status-log {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            margin-bottom: 2rem;
+            font-size: 0.85rem;
+            transform: translateZ(15px);
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .status-item.completed { color: var(--primary-lines); }
+        .status-item.active { color: var(--accent-amber); font-weight: 600; }
+        .status-item.queued { color: rgba(139, 165, 196, 0.4); }
+
+        .status-icon {
+            font-size: 0.9rem;
+            width: 16px;
+            text-align: center;
+        }
+
+        /* --- Dynamic Progress System --- */
+        .progress-wrapper {
+            margin-bottom: 2.5rem;
+            transform: translateZ(15px);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--muted-text);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 6px;
+            background: rgba(220, 232, 245, 0.08);
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(220, 232, 245, 0.1);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--muted-text), var(--accent-amber));
+            border-radius: 3px;
+            transition: width 0.1s ease-out;
+            position: relative;
+        }
+
+        /* --- Title Block --- */
+        .title-block {
+            border: 1px solid var(--border-color);
+            background: rgba(7, 21, 38, 0.6);
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            transform: translateZ(10px);
+        }
+
+        .tb-cell {
+            padding: 0.6rem 0.5rem;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .tb-cell:last-child {
+            border-right: none;
+        }
+
+        .tb-label {
+            font-size: 0.55rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted-text);
+        }
+
+        .tb-value {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary-lines);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* --- Mobile Optimization --- */
+        @media (max-width: 640px) {
+            .coord-overlay, .coord-cols {
+                display: none;
+            }
+
+            .card {
+                padding: 2.5rem 1.5rem 1.5rem;
+            }
+
+            .stamp {
+                top: 1rem;
+                right: 1rem;
+                font-size: 0.55rem;
+            }
+
+            .subtitle {
+                max-width: 100%;
+                font-size: 0.95rem;
+            }
+
+            .title-block {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tb-cell {
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .tb-cell:nth-child(2n) {
+                border-right: none;
+            }
+
+            .tb-cell:last-child {
+                grid-column: span 2;
+                border-bottom: none;
+            }
+        }
+
+        /* --- Accessibility: Reduced Motion --- */
+        @media (prefers-reduced-motion: reduce) {
+            .card::before {
+                animation: none;
+            }
+
+            .stroke-draw {
+                animation: none !important;
+                stroke-dashoffset: 0 !important;
+            }
+
+            #particleCanvas {
+                display: none;
+            }
+
+            .card-container {
+                transform: none !important;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<div class="grid"></div>
-<div class="vignette"></div>
+    <div class="blueprint-background"></div>
+    <div class="radial-spotlight"></div>
+    <canvas id="particleCanvas"></canvas>
 
-<div class="coord top"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span></div>
-<div class="coord bottom"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span></div>
-<div class="coord left"><span>1</span><span>2</span><span>3</span><span>4</span></div>
-<div class="coord right"><span>1</span><span>2</span><span>3</span><span>4</span></div>
-
-<div class="card-wrap" id="cardWrap">
-  <main class="card">
-    <div class="crop tl"></div>
-    <div class="crop tr"></div>
-    <div class="crop bl"></div>
-    <div class="crop br"></div>
-    <div class="stamp">PRELIMINARY<br>DRAFT ONLY</div>
-
-    <div class="eyebrow">SHEET A&#8209;101 &nbsp;&middot;&nbsp; DRAFTING BOARD</div>
-
-    <h1>Under construction</h1>
-    <p class="subtitle">We are finalizing the foundational design work. The site structure is actively being drafted—check back shortly.</p>
-
-    <div class="drawing-wrap" aria-hidden="true">
-      <svg viewBox="0 0 240 190" xmlns="http://www.w3.org/2000/svg">
-        <line class="ground" x1="8" y1="178" x2="232" y2="178"/>
-        <line class="draw-line d1" pathLength="1" x1="40" y1="178" x2="40" y2="70"/>
-        <line class="draw-line d1" pathLength="1" x1="70" y1="178" x2="70" y2="70"/>
-        <line class="draw-line d2" pathLength="1" x1="100" y1="178" x2="100" y2="70"/>
-        <line class="draw-line d2" pathLength="1" x1="130" y1="178" x2="130" y2="70"/>
-        <line class="draw-line d3" pathLength="1" x1="40" y1="178" x2="130" y2="178"/>
-        <line class="draw-line d3" pathLength="1" x1="40" y1="148" x2="130" y2="148"/>
-        <line class="draw-line d4" pathLength="1" x1="40" y1="118" x2="130" y2="118"/>
-        <line class="draw-line d4" pathLength="1" x1="40" y1="90" x2="130" y2="90"/>
-        <line class="draw-line d5" pathLength="1" x1="40" y1="90" x2="70" y2="70"/>
-        <line class="draw-line d5" pathLength="1" x1="100" y1="118" x2="130" y2="90"/>
-        <line class="draw-line d2" pathLength="1" x1="185" y1="178" x2="185" y2="34"/>
-        <line class="draw-line d3" pathLength="1" x1="160" y1="34" x2="228" y2="34"/>
-        <line class="draw-line d4" pathLength="1" x1="160" y1="34" x2="172" y2="46"/>
-        <line class="draw-line d6" pathLength="1" x1="212" y1="34" x2="212" y2="74"/>
-        <line class="draw-line d5" pathLength="1" x1="205" y1="74" x2="219" y2="74"/>
-      </svg>
+    <div class="coord-cols">
+        <span>A</span><span>B</span><span>C</span><span>D</span><span>E</span>
+    </div>
+    <div class="coord-overlay">
+        <div class="coord-row"><span>1</span><span>1</span></div>
+        <div class="coord-row"><span>2</span><span>2</span></div>
+        <div class="coord-row"><span>3</span><span>3</span></div>
+        <div class="coord-row"><span>4</span><span>4</span></div>
     </div>
 
-    <div class="status-log">
-      <div class="status-row done"><span class="dot"></span>Foundation<span class="tag">Poured</span></div>
-      <div class="status-row active"><span class="dot"></span>Structure<span class="tag">In progress</span></div>
-      <div class="status-row"><span class="dot"></span>Systems<span class="tag">Queued</span></div>
-      <div class="status-row"><span class="dot"></span>Finishes<span class="tag">Queued</span></div>
+    <div class="card-container" id="cardContainer">
+        <main class="card">
+            
+            <div class="crop-mark crop-tl"></div>
+            <div class="crop-mark crop-tr"></div>
+            <div class="crop-mark crop-bl"></div>
+            <div class="crop-mark crop-br"></div>
+
+            <div class="stamp">
+                PRELIMINARY<br>DRAFT ONLY
+            </div>
+
+            <header>
+                <div class="eyebrow">SHEET A-101 • DRAFTING BOARD</div>
+                <h1 class="main-heading">Building Something Exceptional</h1>
+                <p class="subtitle">We're currently engineering the next version of this experience. Every detail is being refined before launch.</p>
+            </header>
+
+            <figure class="blueprint-art" aria-label="Technical architectural blueprint drawing">
+                <svg viewBox="0 0 500 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="20" y1="140" x2="480" y2="140" stroke="currentColor" class="stroke-muted" stroke-width="1" stroke-dasharray="4 4" opacity="0.4"/>
+                    <line x1="50" y1="10" x2="50" y2="150" stroke="currentColor" class="stroke-muted" stroke-width="1" stroke-dasharray="4 4" opacity="0.3"/>
+                    <line x1="250" y1="10" x2="250" y2="150" stroke="currentColor" class="stroke-muted" stroke-width="1" stroke-dasharray="4 4" opacity="0.3"/>
+                    <line x1="450" y1="10" x2="450" y2="150" stroke="currentColor" class="stroke-muted" stroke-width="1" stroke-dasharray="4 4" opacity="0.3"/>
+
+                    <path d="M 50 140 L 50 40 L 250 10 L 450 40 L 450 140 Z" stroke="currentColor" stroke-width="1.5" class="stroke-draw" />
+                    
+                    <path d="M 150 140 L 150 25 L 350 25 L 350 140" stroke="currentColor" stroke-width="1" class="stroke-draw stroke-muted" />
+                    <path d="M 50 40 L 450 40 M 50 90 L 450 90" stroke="currentColor" stroke-width="1" class="stroke-draw stroke-muted" />
+                    <path d="M 50 140 L 150 90 L 250 140 L 350 90 L 450 140" stroke="currentColor" stroke-width="1" class="stroke-draw stroke-amber" opacity="0.8" />
+
+                    <circle cx="250" cy="10" r="4" fill="var(--accent-amber)" />
+                    <circle cx="150" cy="25" r="3" fill="var(--primary-lines)" />
+                    <circle cx="350" cy="25" r="3" fill="var(--primary-lines)" />
+
+                    <line x1="50" y1="152" x2="450" y2="152" stroke="var(--accent-amber)" stroke-width="1" />
+                    <path d="M 50 148 L 50 156 M 450 148 L 450 156 M 250 148 L 250 156" stroke="var(--accent-amber)" stroke-width="1" />
+                    <text x="250" y="148" fill="var(--accent-amber)" font-size="8" font-family="IBM Plex Mono" text-anchor="middle">SPAN: 400.00mm</text>
+                </svg>
+            </figure>
+
+            <section class="status-log" aria-label="Project Status">
+                <div class="status-item completed">
+                    <span class="status-icon">✓</span>
+                    <span>Foundation Complete</span>
+                </div>
+                <div class="status-item active">
+                    <span class="status-icon">●</span>
+                    <span>Structure In Progress</span>
+                </div>
+                <div class="status-item queued">
+                    <span class="status-icon">○</span>
+                    <span>Systems Queued</span>
+                </div>
+                <div class="status-item queued">
+                    <span class="status-icon">○</span>
+                    <span>Finishes Queued</span>
+                </div>
+            </section>
+
+            <section class="progress-wrapper">
+                <div class="progress-header">
+                    <span>PROGRESS LOG</span>
+                    <span id="progressText">0%</span>
+                </div>
+                <div class="progress-bar-bg" data-progress="63" id="progressBar">
+                    <div class="progress-bar-fill" id="progressFill"></div>
+                </div>
+            </section>
+
+            <footer class="title-block">
+                <div class="tb-cell">
+                    <span class="tb-label">Project</span>
+                    <span class="tb-value">This Site</span>
+                </div>
+                <div class="tb-cell">
+                    <span class="tb-label">Status</span>
+                    <span class="tb-value" style="color: var(--accent-amber);">Active</span>
+                </div>
+                <div class="tb-cell">
+                    <span class="tb-label">Revision</span>
+                    <span class="tb-value">02.A</span>
+                </div>
+                <div class="tb-cell">
+                    <span class="tb-label">Date</span>
+                    <span class="tb-value" id="tbDate">----.--.--</span>
+                </div>
+                <div class="tb-cell">
+                    <span class="tb-label">Launch</span>
+                    <span class="tb-value" id="tbLaunch">----.--.--</span>
+                </div>
+            </footer>
+
+        </main>
     </div>
 
-    <div class="progress">
-      <div class="progress-label"><span>COMPLETION</span><span id="pctLabel">0%</span></div>
-      <div class="dim-bar">
-        <div class="track"></div>
-        <div class="cap" style="left:0;"></div>
-        <div class="cap" style="right:0;"></div>
-        <div class="fill" id="fillBar"></div>
-      </div>
-    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    <div class="title-block">
-      <div class="tb-cell">
-        <div class="tb-label">Project</div>
-        <div class="tb-value">This Site</div>
-      </div>
-      <div class="tb-cell">
-        <div class="tb-label">Status</div>
-        <div class="tb-value">Active</div>
-      </div>
-      <div class="tb-cell">
-        <div class="tb-label">Rev</div>
-        <div class="tb-value">02.A</div>
-      </div>
-      <div class="tb-cell">
-        <div class="tb-label">Date</div>
-        <div class="tb-value" id="tbDate">—</div>
-      </div>
-    </div>
-  </main>
-</div>
+            /* --- Date Formatting Helpers --- */
+            const formatDate = (date) => {
+                const yyyy = date.getFullYear();
+                const mm = String(date.getMonth() + 1).padStart(2, '0');
+                const dd = String(date.getDate()).padStart(2, '0');
+                return `${yyyy}.${mm}.${dd}`;
+            };
 
-<script>
-  // Set date
-  document.getElementById('tbDate').textContent = new Date().toLocaleDateString('en-US', { year:'numeric', month:'short', day:'2-digit' });
+            const currentDate = new Date();
+            const launchDate = new Date();
+            launchDate.setDate(currentDate.getDate() + 14);
 
-  const cardWrap = document.getElementById('cardWrap');
-  const isTouch = window.matchMedia('(hover: none)').matches;
+            document.getElementById('tbDate').textContent = formatDate(currentDate);
+            document.getElementById('tbLaunch').textContent = formatDate(launchDate);
 
-  // Real-time Smooth Angle Tracking (LERP Engine)
-  let rotation = { x: 0, y: 0 };
-  let targetRotation = { x: 0, y: 0 };
+            /* --- Animated Progress Counter --- */
+            const progressBar = document.getElementById('progressBar');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            const targetProgress = parseInt(progressBar.getAttribute('data-progress'), 10) || 0;
 
-  const MAX_TILT_ANGLE = 14; // Maximum degrees of 3D tilt
+            if (prefersReducedMotion) {
+                progressFill.style.width = `${targetProgress}%`;
+                progressText.textContent = `${targetProgress}%`;
+            } else {
+                let currentProgress = 0;
+                const duration = 2000; // 2 Seconds duration
+                const startTime = performance.now();
 
-  if (!isTouch) {
-    window.addEventListener('mousemove', (e) => {
-      // Calculate mouse angle relative to the center of the viewport
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
-      
-      const percentX = (e.clientX - centerX) / centerX;
-      const percentY = (e.clientY - centerY) / centerY;
+                const animateProgress = (currentTime) => {
+                    const elapsedTime = currentTime - startTime;
+                    const progressFraction = Math.min(elapsedTime / duration, 1);
+                    
+                    // Cubic Ease-Out formula
+                    const easeOut = 1 - Math.pow(1 - progressFraction, 3);
+                    currentProgress = Math.floor(easeOut * targetProgress);
 
-      // Calculate rotation angles
-      targetRotation.y = percentX * MAX_TILT_ANGLE;   // Rotate Y based on horizontal movement
-      targetRotation.x = -percentY * MAX_TILT_ANGLE;  // Rotate X based on vertical movement
-    });
+                    progressFill.style.width = `${easeOut * targetProgress}%`;
+                    progressText.textContent = `${currentProgress}%`;
 
-    window.addEventListener('mouseleave', () => {
-      targetRotation.x = 0;
-      targetRotation.y = 0;
-    });
+                    if (progressFraction < 1) {
+                        requestAnimationFrame(animateProgress);
+                    }
+                };
 
-    function renderLoop() {
-      const ease = 0.07; // Smoothing factor
+                requestAnimationFrame(animateProgress);
+            }
 
-      // Interpolate 3D angles
-      rotation.x += (targetRotation.x - rotation.x) * ease;
-      rotation.y += (targetRotation.y - rotation.y) * ease;
+            /* --- Interactive Parallax Tilt Effect --- */
+            const container = document.getElementById('cardContainer');
 
-      // Apply transform to the card
-      cardWrap.style.transform = `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`;
+            if (!prefersReducedMotion && window.innerWidth > 640) {
+                let mouseX = 0, mouseY = 0;
+                let currentX = 0, currentY = 0;
 
-      requestAnimationFrame(renderLoop);
-    }
-    renderLoop();
-  }
+                window.addEventListener('mousemove', (e) => {
+                    const { innerWidth, innerHeight } = window;
+                    // Normalize position to -1 -> 1
+                    mouseX = (e.clientX / innerWidth) * 2 - 1;
+                    mouseY = (e.clientY / innerHeight) * 2 - 1;
+                });
 
-  // Counter animation
-  const pctLabel = document.getElementById('pctLabel');
-  const target = 63;
-  const start = performance.now() + 300;
-  
-  function tick(now) {
-    const t = Math.min(1, Math.max(0, (now - start) / 2000));
-    const eased = 1 - Math.pow(1 - t, 3);
-    pctLabel.textContent = Math.round(eased * target) + '%';
-    if (t < 1) requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
+                const lerp = (start, end, factor) => start + (end - start) * factor;
 
-  // Motion preference check
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.querySelectorAll('.draw-line, .eyebrow::before').forEach(el => {
-      el.style.animation = 'none';
-    });
-  }
-</script>
+                const renderParallax = () => {
+                    // Maximum tilt cap (degrees)
+                    const maxTilt = 12;
+                    const targetX = mouseX * maxTilt;
+                    const targetY = -mouseY * maxTilt;
+
+                    // Smooth Linear Interpolation (LERP)
+                    currentX = lerp(currentX, targetX, 0.08);
+                    currentY = lerp(currentY, targetY, 0.08);
+
+                    container.style.transform = `rotateY(${currentX}deg) rotateX(${currentY}deg)`;
+                    requestAnimationFrame(renderParallax);
+                };
+
+                renderParallax();
+            }
+
+            /* --- Drifting Blueprint Particles --- */
+            if (!prefersReducedMotion) {
+                const canvas = document.getElementById('particleCanvas');
+                const ctx = canvas.getContext('2d');
+                let width = canvas.width = window.innerWidth;
+                let height = canvas.height = window.innerHeight;
+
+                window.addEventListener('resize', () => {
+                    width = canvas.width = window.innerWidth;
+                    height = canvas.height = window.innerHeight;
+                });
+
+                const particleCount = 18;
+                const particles = Array.from({ length: particleCount }, () => ({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    size: Math.random() * 1.5 + 0.5,
+                    vx: (Math.random() - 0.5) * 0.3,
+                    vy: (Math.random() - 0.5) * 0.3 - 0.1,
+                    alpha: Math.random() * 0.4 + 0.1
+                }));
+
+                const renderParticles = () => {
+                    ctx.clearRect(0, 0, width, height);
+
+                    particles.forEach(p => {
+                        p.x += p.vx;
+                        p.y += p.vy;
+
+                        if (p.x < 0) p.x = width;
+                        if (p.x > width) p.x = 0;
+                        if (p.y < 0) p.y = height;
+                        if (p.y > height) p.y = 0;
+
+                        ctx.fillStyle = `rgba(220, 232, 245, ${p.alpha})`;
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        ctx.fill();
+                    });
+
+                    requestAnimationFrame(renderParticles);
+                };
+
+                renderParticles();
+            }
+        });
+    </script>
 </body>
 </html>
