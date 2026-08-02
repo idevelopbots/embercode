@@ -5,386 +5,316 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Under Construction</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Lora:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --ink:#050d1a;
-    --ink-2:#0a1a2e;
-    --panel:rgba(8, 22, 38, 0.75);
-    --line:#00f0ff;
-    --line-glow:rgba(0, 240, 255, 0.4);
-    --line-dim:rgba(0, 240, 255, 0.18);
-    --line-faint:rgba(0, 240, 255, 0.05);
-    --paper:#e6f4ff;
-    --muted:#6b8cae;
-    --amber:#ffb703;
-    --amber-glow:rgba(255, 183, 3, 0.5);
+  :root {
+    --bg-dark: #091a2e;
+    --bg-blueprint: #0f2b48;
+    --paper-card: rgba(14, 38, 64, 0.75);
+    --line-main: #dce8f5;
+    --line-dim: rgba(220, 232, 245, 0.2);
+    --line-faint: rgba(220, 232, 245, 0.07);
+    --text-muted: #8ba5c4;
+    --amber-stamp: #d9822b;
+    --amber-dim: rgba(217, 130, 43, 0.3);
   }
 
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html,body{height:100%; overflow:hidden;}
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { height:100%; overflow:hidden; }
 
-  body{
-    font-family:'Inter',sans-serif;
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background: #030811;
-    position:relative;
-    color:var(--paper);
-    cursor:none;
+  body {
+    font-family: 'IBM Plex Mono', monospace;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: 
+      radial-gradient(circle at 50% 50%, #133559 0%, #081729 100%);
+    position: relative;
+    color: var(--line-main);
+    cursor: none;
   }
 
-  @media (hover:none){ body{ cursor:auto; } }
+  @media (hover: none) { body { cursor: auto; } }
 
-  /* Background canvas for dynamic nodes */
-  #bg-canvas {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-  }
-
-  /* Blueprint Grid */
-  .grid{
-    position:absolute; inset:0;
+  /* Traditional Blueprint Grid */
+  .grid {
+    position: absolute; inset: 0;
     background-image:
       linear-gradient(var(--line-faint) 1px, transparent 1px),
       linear-gradient(90deg, var(--line-faint) 1px, transparent 1px),
       linear-gradient(var(--line-dim) 1px, transparent 1px),
       linear-gradient(90deg, var(--line-dim) 1px, transparent 1px);
-    background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
-    pointer-events:none;
-    z-index:1;
-  }
-
-  /* CRT Scanline effect */
-  .scanlines {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      rgba(18, 16, 16, 0) 50%, 
-      rgba(0, 0, 0, 0.25) 50%
-    );
-    background-size: 100% 4px;
-    z-index: 2;
+    background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
     pointer-events: none;
-    opacity: 0.6;
+    z-index: 1;
   }
 
-  /* Sweep Light */
-  .sweep{
-    position:absolute; inset:-50%;
-    background:linear-gradient(115deg, transparent 40%, rgba(0, 240, 255, 0.08) 50%, transparent 60%);
-    animation:sweep 7s ease-in-out infinite alternate;
-    pointer-events:none;
-    z-index:2;
-  }
-  @keyframes sweep{
-    0%{ transform:translateX(-20%) translateY(-10%); }
-    100%{ transform:translateX(20%) translateY(10%); }
+  /* Soft Ambient Light Gradient */
+  .vignette {
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(4, 12, 22, 0.6) 100%);
+    pointer-events: none;
+    z-index: 2;
   }
 
-  /* Sheet Coordinate Margins */
-  .coord{
-    position:absolute;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:11px;
-    letter-spacing:2px;
-    color:var(--line);
-    opacity:0.4;
-    z-index:3;
-    pointer-events:none;
-    text-shadow: 0 0 5px var(--line-glow);
-  }
-  .coord.top{ top:18px; left:0; right:0; display:flex; justify-content:space-between; padding:0 40px; }
-  .coord.bottom{ bottom:18px; left:0; right:0; display:flex; justify-content:space-between; padding:0 40px; }
-  .coord.left{ left:18px; top:0; bottom:0; display:flex; flex-direction:column; justify-content:space-between; padding:60px 0; }
-  .coord.right{ right:18px; top:0; bottom:0; display:flex; flex-direction:column; justify-content:space-between; padding:60px 0; }
-  @media (max-width:760px){ .coord{ display:none !important; } }
-
-  /* Custom CAD Cursor */
-  .crosshair{
-    position:fixed;
-    top:0; left:0;
-    width:1px; height:100vh;
-    background:var(--line);
-    box-shadow: 0 0 8px var(--line);
-    pointer-events:none;
-    z-index:60;
-    transform:translateX(-50%);
+  /* Coordinate Markings */
+  .coord {
+    position: absolute;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text-muted);
     opacity: 0.5;
+    z-index: 3;
+    pointer-events: none;
   }
-  .crosshair.h{ width:100vw; height:1px; transform:translateY(-50%); }
+  .coord.top { top: 20px; left: 0; right: 0; display: flex; justify-content: space-between; padding: 0 50px; }
+  .coord.bottom { bottom: 20px; left: 0; right: 0; display: flex; justify-content: space-between; padding: 0 50px; }
+  .coord.left { left: 20px; top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 60px 0; }
+  .coord.right { right: 20px; top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 60px 0; }
+  @media (max-width: 760px) { .coord { display: none !important; } }
+
+  /* Smooth CAD Crosshair Cursor */
+  .crosshair {
+    position: fixed; top: 0; left: 0;
+    width: 1px; height: 100vh;
+    background: var(--line-dim);
+    pointer-events: none;
+    z-index: 60;
+    will-change: transform;
+  }
+  .crosshair.h { width: 100vw; height: 1px; }
   
-  .cursor-tag{
-    position:fixed;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:10px;
-    color:var(--line);
-    background:rgba(5, 13, 26, 0.9);
-    border:1px solid var(--line);
-    box-shadow: 0 0 10px var(--line-glow);
-    padding:3px 8px;
-    border-radius:3px;
-    pointer-events:none;
-    z-index:61;
-    transform:translate(16px, 16px);
-    white-space:nowrap;
-    opacity:0;
-    transition:opacity 0.2s;
+  .cursor-tag {
+    position: fixed; top: 0; left: 0;
+    font-size: 10px;
+    color: var(--line-main);
+    background: rgba(9, 26, 46, 0.85);
+    border: 1px solid var(--line-dim);
+    padding: 3px 7px;
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 61;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    will-change: transform;
   }
-  @media (hover:none){ .crosshair, .cursor-tag{ display:none; } }
+  @media (hover: none) { .crosshair, .cursor-tag { display: none; } }
 
-  /* Stamp */
-  .stamp{
-    position:absolute;
-    top:-20px; right:-10px;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:11px;
-    font-weight:700;
-    letter-spacing:2px;
-    color:var(--amber);
-    border:2px dashed var(--amber);
-    padding:8px 14px;
-    border-radius:4px;
-    transform:rotate(-5deg);
-    z-index:12;
-    background:rgba(5, 13, 26, 0.85);
-    text-align:center;
-    line-height:1.4;
-    box-shadow: 0 0 15px var(--amber-glow);
-    animation:stampIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s both;
+  /* Classic Stamp */
+  .stamp {
+    position: absolute;
+    top: -16px; right: -12px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: var(--amber-stamp);
+    border: 2px solid var(--amber-dim);
+    padding: 6px 14px;
+    border-radius: 2px;
+    transform: rotate(-4deg);
+    z-index: 12;
+    background: rgba(9, 26, 46, 0.9);
+    text-align: center;
+    line-height: 1.4;
+    animation: stampFade 0.8s ease-out 0.2s both;
   }
-  @keyframes stampIn{
-    from{ opacity:0; transform:rotate(-5deg) scale(2); }
-    to{ opacity:1; transform:rotate(-5deg) scale(1); }
+  @keyframes stampFade {
+    from { opacity: 0; transform: rotate(-4deg) scale(1.1); }
+    to { opacity: 1; transform: rotate(-4deg) scale(1); }
   }
 
-  /* Main Card Frame */
-  .sheet{
-    position:relative;
-    z-index:10;
-    width:min(680px, 92vw);
-    background:var(--panel);
-    border:1px solid var(--line-dim);
-    border-radius:8px;
-    backdrop-filter:blur(16px) saturate(180%);
-    -webkit-backdrop-filter:blur(16px) saturate(180%);
-    box-shadow: 0 30px 80px rgba(0,0,0,0.8), 0 0 40px rgba(0, 240, 255, 0.1), inset 0 0 15px rgba(0, 240, 255, 0.05);
-    padding:44px 40px 0;
-    transition: border-color 0.3s, box-shadow 0.3s;
-    animation:riseIn 0.8s cubic-bezier(.16,1,.3,1) both;
-  }
-  .sheet:hover {
-    border-color: rgba(0, 240, 255, 0.4);
-    box-shadow: 0 30px 80px rgba(0,0,0,0.9), 0 0 50px rgba(0, 240, 255, 0.15), inset 0 0 20px rgba(0, 240, 255, 0.08);
-  }
-  @keyframes riseIn{
-    from{ opacity:0; transform:translateY(30px) scale(0.98); }
-    to{ opacity:1; transform:translateY(0) scale(1); }
-  }
-
-  /* Target Corners */
-  .crop{ position:absolute; width:12px; height:12px; border:2px solid var(--line); box-shadow: 0 0 5px var(--line); }
-  .crop.tl{ top:-2px; left:-2px; border-right:none; border-bottom:none; }
-  .crop.tr{ top:-2px; right:-2px; border-left:none; border-bottom:none; }
-  .crop.bl{ bottom:-2px; left:-2px; border-right:none; border-top:none; }
-  .crop.br{ bottom:-2px; right:-2px; border-left:none; border-top:none; }
-
-  .eyebrow{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:11px;
-    letter-spacing:3px;
-    color:var(--line);
-    text-shadow: 0 0 8px var(--line-glow);
-    display:flex;
-    align-items:center;
-    gap:10px;
-  }
-  .eyebrow::before{
-    content:"";
-    width:8px; height:8px;
-    background:var(--amber);
-    border-radius:50%;
-    box-shadow: 0 0 10px var(--amber);
-    animation:pulseDot 1.6s ease-in-out infinite;
-  }
-  @keyframes pulseDot{
-    0%,100%{ opacity:0.3; transform: scale(0.8); }
-    50%{ opacity:1; transform: scale(1.2); }
-  }
-
-  h1{
-    font-family:'Space Grotesk', sans-serif;
-    font-weight:700;
-    font-size:clamp(2.2rem, 5.4vw, 3.2rem);
-    letter-spacing:-0.5px;
-    margin-top:14px;
-    color:#fff;
-    text-shadow: 0 0 20px rgba(255,255,255,0.2);
-  }
-
-  .subtitle{
-    margin-top:12px;
-    font-size:0.98rem;
-    line-height:1.6;
-    color:var(--muted);
-    max-width:460px;
-  }
-
-  /* Vector Blueprint Graphic */
-  .drawing-wrap{
-    margin:30px 0 10px;
-    display:flex;
-    justify-content:center;
-    filter: drop-shadow(0 0 8px var(--line-glow));
-  }
-  .drawing-wrap svg{ width:100%; max-width:360px; height:auto; }
-  .draw-line{
-    fill:none;
-    stroke:var(--line);
-    stroke-width:1.8;
-    stroke-linecap:round;
-    stroke-linejoin:round;
-    stroke-dasharray:1;
-    stroke-dashoffset:1;
-    pathLength:1;
-    animation:draw 5.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  }
-  .draw-line.d1{ animation-delay:0s; }
-  .draw-line.d2{ animation-delay:0.2s; }
-  .draw-line.d3{ animation-delay:0.4s; }
-  .draw-line.d4{ animation-delay:0.6s; }
-  .draw-line.d5{ animation-delay:0.8s; }
-  .draw-line.d6{ animation-delay:1s; stroke:var(--amber); stroke-dasharray:3 2; }
-  @keyframes draw{
-    0%{ stroke-dashoffset:1; opacity:0.2; }
-    30%, 80%{ stroke-dashoffset:0; opacity:1; }
-    95%, 100%{ stroke-dashoffset:1; opacity:0.2; }
-  }
-  .ground{
-    stroke:var(--muted);
-    stroke-width:1;
-    opacity:0.3;
-  }
-
-  /* Status Modules */
-  .status-log{
-    margin-top:26px;
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px 24px;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:12px;
-  }
-  .status-row{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    color:var(--muted);
-    padding: 6px 10px;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.03);
+  /* Main Sheet Frame */
+  .sheet {
+    position: relative;
+    z-index: 10;
+    width: min(660px, 92vw);
+    background: var(--paper-card);
+    border: 1px solid var(--line-dim);
     border-radius: 4px;
-    transition: all 0.2s;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 
+      0 30px 60px rgba(0, 0, 0, 0.5),
+      inset 0 0 0 1px rgba(220, 232, 245, 0.05);
+    padding: 44px 40px 0;
+    will-change: transform;
+    animation: riseIn 1s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
-  .status-row:hover {
-    background: rgba(0, 240, 255, 0.05);
-    border-color: var(--line-dim);
+  @keyframes riseIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
-  .status-row .dot{
-    width:6px; height:6px;
-    border-radius:50%;
-    background:var(--muted);
-    opacity:0.4;
-  }
-  .status-row.done .dot{ background:var(--line); opacity:1; box-shadow: 0 0 6px var(--line); }
-  .status-row.done{ color:var(--paper); }
-  .status-row.active .dot{
-    background:var(--amber);
-    opacity:1;
-    box-shadow: 0 0 8px var(--amber);
-    animation:pulseDot 1.6s ease-in-out infinite;
-  }
-  .status-row.active{ color:#fff; }
-  .status-row .tag{ margin-left:auto; opacity:0.6; font-size:10px; text-transform: uppercase;}
 
-  /* Progress Indicators */
-  .progress{ margin:28px 0 8px; }
-  .progress-label{
-    display:flex; justify-content:space-between;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:11px;
-    letter-spacing:1.5px;
-    color:var(--muted);
-    margin-bottom:8px;
+  /* Architectural Crop Corners */
+  .crop { position: absolute; width: 14px; height: 14px; border: 1px solid var(--line-main); opacity: 0.4; }
+  .crop.tl { top: -6px; left: -6px; border-right: none; border-bottom: none; }
+  .crop.tr { top: -6px; right: -6px; border-left: none; border-bottom: none; }
+  .crop.bl { bottom: -6px; left: -6px; border-right: none; border-top: none; }
+  .crop.br { bottom: -6px; right: -6px; border-left: none; border-top: none; }
+
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
-  .dim-bar{
-    position:relative;
-    height:16px;
+  .eyebrow::before {
+    content: "";
+    width: 6px; height: 6px;
+    background: var(--amber-stamp);
+    border-radius: 50%;
+    animation: smoothPulse 2.4s ease-in-out infinite;
   }
-  .dim-bar .track{
-    position:absolute; top:50%; left:0; right:0;
-    height:2px; background:var(--line-dim);
-    transform:translateY(-50%);
+  @keyframes smoothPulse {
+    0%, 100% { opacity: 0.3; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1.1); }
   }
-  .dim-bar .fill{
-    position:absolute; top:50%; left:0; height:4px;
-    background:var(--line);
-    transform:translateY(-50%);
-    width:0%;
-    box-shadow:0 0 12px var(--line);
-    animation:fillBar 1.8s 0.4s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    letter-spacing: -0.5px;
+    margin-top: 14px;
+    color: #fff;
   }
-  @keyframes fillBar{ to{ width:63%; } }
-  .dim-bar .cap{
-    position:absolute; top:0; width:1px; height:16px; background:var(--line);
+
+  .subtitle {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    margin-top: 10px;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    max-width: 480px;
   }
+
+  /* Smooth Line Drawing SVG */
+  .drawing-wrap {
+    margin: 32px 0 12px;
+    display: flex;
+    justify-content: center;
+    opacity: 0.9;
+  }
+  .drawing-wrap svg { width: 100%; max-width: 340px; height: auto; }
+  .draw-line {
+    fill: none;
+    stroke: var(--line-main);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    pathLength: 1;
+    animation: smoothDraw 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+  .draw-line.d1 { animation-delay: 0s; }
+  .draw-line.d2 { animation-delay: 0.3s; }
+  .draw-line.d3 { animation-delay: 0.6s; }
+  .draw-line.d4 { animation-delay: 0.9s; }
+  .draw-line.d5 { animation-delay: 1.2s; }
+  .draw-line.d6 { animation-delay: 1.5s; stroke: var(--amber-stamp); stroke-dasharray: 3 3; }
+  @keyframes smoothDraw {
+    0% { stroke-dashoffset: 1; opacity: 0.1; }
+    35%, 75% { stroke-dashoffset: 0; opacity: 1; }
+    90%, 100% { stroke-dashoffset: 1; opacity: 0.1; }
+  }
+  .ground { stroke: var(--text-muted); stroke-width: 1; opacity: 0.3; }
+
+  /* Status List */
+  .status-log {
+    margin-top: 26px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 20px;
+    font-size: 11.5px;
+  }
+  .status-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-muted);
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--line-faint);
+  }
+  .status-row .dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    opacity: 0.4;
+  }
+  .status-row.done .dot { background: var(--line-main); opacity: 1; }
+  .status-row.done { color: var(--line-main); }
+  .status-row.active .dot { background: var(--amber-stamp); opacity: 1; animation: smoothPulse 2.4s ease-in-out infinite; }
+  .status-row.active { color: #fff; }
+  .status-row .tag { margin-left: auto; opacity: 0.5; font-size: 10px; }
+
+  /* Smooth Progress Bar */
+  .progress { margin: 26px 0 8px; }
+  .progress-label {
+    display: flex; justify-content: space-between;
+    font-size: 10.5px;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .dim-bar {
+    position: relative;
+    height: 12px;
+  }
+  .dim-bar .track {
+    position: absolute; top: 50%; left: 0; right: 0;
+    height: 1px; background: var(--line-dim);
+    transform: translateY(-50%);
+  }
+  .dim-bar .fill {
+    position: absolute; top: 50%; left: 0; height: 3px;
+    background: var(--line-main);
+    transform: translateY(-50%);
+    width: 0%;
+    animation: fillBar 2.2s 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes fillBar { to { width: 63%; } }
+  .dim-bar .cap { position: absolute; top: 0; width: 1px; height: 12px; background: var(--line-dim); }
 
   /* Architectural Title Block */
-  .title-block{
-    margin-top:34px;
-    border-top:1px solid var(--line-dim);
-    display:grid;
-    grid-template-columns:1.3fr 1fr 1fr 1fr;
-    background: rgba(0,0,0,0.2);
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;
+  .title-block {
+    margin-top: 32px;
+    border-top: 1px solid var(--line-dim);
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr 1fr;
   }
-  .tb-cell{
-    padding:12px 14px;
-    border-right:1px solid var(--line-dim);
+  .tb-cell {
+    padding: 12px 14px;
+    border-right: 1px solid var(--line-dim);
   }
-  .tb-cell:last-child{ border-right:none; }
-  .tb-label{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:9px;
-    letter-spacing:1.5px;
-    color:var(--muted);
-    text-transform:uppercase;
-    margin-bottom:4px;
+  .tb-cell:last-child { border-right: none; }
+  .tb-label {
+    font-size: 8.5px;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 4px;
   }
-  .tb-value{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:11.5px;
-    color:var(--paper);
-    font-weight: 500;
+  .tb-value {
+    font-size: 11px;
+    color: var(--line-main);
   }
-  @media (max-width:600px){
-    .title-block{ grid-template-columns:1fr 1fr; }
-    .status-log{ grid-template-columns:1fr; }
-    .sheet{ padding:30px 20px 0; }
+  @media (max-width: 600px) {
+    .title-block { grid-template-columns: 1fr 1fr; }
+    .status-log { grid-template-columns: 1fr; }
+    .sheet { padding: 34px 24px 0; }
   }
 </style>
 </head>
 <body>
 
-<canvas id="bg-canvas"></canvas>
 <div class="grid"></div>
-<div class="scanlines"></div>
-<div class="sweep"></div>
+<div class="vignette"></div>
 
 <div class="coord top"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span></div>
 <div class="coord bottom"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span></div>
@@ -400,12 +330,12 @@
   <div class="crop tr"></div>
   <div class="crop bl"></div>
   <div class="crop br"></div>
-  <div class="stamp">PRELIMINARY<br>NOT FOR RELEASE</div>
+  <div class="stamp">PRELIMINARY<br>DRAFT ONLY</div>
 
-  <div class="eyebrow">SHEET A&#8209;101 &nbsp;&middot;&nbsp; SYSTEM ARCHITECTURE</div>
+  <div class="eyebrow">SHEET A&#8209;101 &nbsp;&middot;&nbsp; DRAFTING BOARD</div>
 
   <h1>Under construction</h1>
-  <p class="subtitle">This page is currently on the drafting board. We are finalizing core components before initial deployment.</p>
+  <p class="subtitle">We are finalizing the foundational design work. The site structure is actively being drafted—check back shortly.</p>
 
   <div class="drawing-wrap" aria-hidden="true">
     <svg viewBox="0 0 240 190" xmlns="http://www.w3.org/2000/svg">
@@ -430,13 +360,13 @@
 
   <div class="status-log">
     <div class="status-row done"><span class="dot"></span>Foundation<span class="tag">Poured</span></div>
-    <div class="status-row active"><span class="dot"></span>Structure<span class="tag">In Progress</span></div>
+    <div class="status-row active"><span class="dot"></span>Structure<span class="tag">In progress</span></div>
     <div class="status-row"><span class="dot"></span>Systems<span class="tag">Queued</span></div>
     <div class="status-row"><span class="dot"></span>Finishes<span class="tag">Queued</span></div>
   </div>
 
   <div class="progress">
-    <div class="progress-label"><span>DEPLOYMENT PROGRESS</span><span id="pctLabel">0%</span></div>
+    <div class="progress-label"><span>COMPLETION</span><span id="pctLabel">0%</span></div>
     <div class="dim-bar">
       <div class="track"></div>
       <div class="cap" style="left:0;"></div>
@@ -448,7 +378,7 @@
   <div class="title-block">
     <div class="tb-cell">
       <div class="tb-label">Project</div>
-      <div class="tb-value">Main Site</div>
+      <div class="tb-value">This Site</div>
     </div>
     <div class="tb-cell">
       <div class="tb-label">Status</div>
@@ -456,7 +386,7 @@
     </div>
     <div class="tb-cell">
       <div class="tb-label">Rev</div>
-      <div class="tb-value">03.B</div>
+      <div class="tb-value">02.A</div>
     </div>
     <div class="tb-cell">
       <div class="tb-label">Date</div>
@@ -466,126 +396,82 @@
 </main>
 
 <script>
-  // Dynamic Background Particle Grid
-  const canvas = document.getElementById('bg-canvas');
-  const ctx = canvas.getContext('2d');
-  let width, height;
-  let particles = [];
-  let mouse = { x: -1000, y: -1000 };
-
-  function resizeCanvas() {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-  }
-
-  class Particle {
-    constructor() {
-      this.x = Math.random() * width;
-      this.y = Math.random() * height;
-      this.vx = (Math.random() - 0.5) * 0.3;
-      this.vy = (Math.random() - 0.5) * 0.3;
-      this.size = Math.random() * 1.5 + 0.5;
-    }
-    update() {
-      this.x += this.vx;
-      this.y += this.vy;
-      if (this.x < 0) this.x = width;
-      if (this.x > width) this.x = 0;
-      if (this.y < 0) this.y = height;
-      if (this.y > height) this.y = 0;
-    }
-    draw() {
-      ctx.fillStyle = 'rgba(0, 240, 255, 0.25)';
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  }
-
-  function initParticles() {
-    resizeCanvas();
-    particles = Array.from({ length: 45 }, () => new Particle());
-  }
-
-  function animateParticles() {
-    ctx.clearRect(0, 0, width, height);
-    
-    // Draw connecting lines between particles
-    for (let i = 0; i < particles.length; i++) {
-      particles[i].update();
-      particles[i].draw();
-
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist < 120) {
-          ctx.strokeStyle = `rgba(0, 240, 255, ${0.15 * (1 - dist / 120)})`;
-          ctx.lineWidth = 0.5;
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.stroke();
-        }
-      }
-    }
-    requestAnimationFrame(animateParticles);
-  }
-
-  window.addEventListener('resize', resizeCanvas);
-  initParticles();
-  animateParticles();
-
-  // Date
+  // Set current date
   document.getElementById('tbDate').textContent = new Date().toLocaleDateString('en-US', { year:'numeric', month:'short', day:'2-digit' });
 
-  // Custom CAD cursor
   const cx = document.getElementById('cx');
   const cy = document.getElementById('cy');
   const tag = document.getElementById('ctag');
+  const sheet = document.getElementById('sheet');
   const isTouch = window.matchMedia('(hover: none)').matches;
+
+  // LERP Motion Engine for Smoothness
+  let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+  let cursor = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+  let tilt = { x: 0, y: 0 };
+  let targetTilt = { x: 0, y: 0 };
 
   if (!isTouch) {
     window.addEventListener('mousemove', (e) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
-      cx.style.left = e.clientX + 'px';
-      cy.style.top = e.clientY + 'px';
-      tag.style.left = e.clientX + 'px';
-      tag.style.top = e.clientY + 'px';
-      tag.style.opacity = '1';
-      tag.textContent = 'X ' + String(e.clientX).padStart(4,'0') + '  Y ' + String(e.clientY).padStart(4,'0');
-    });
-    window.addEventListener('mouseleave', () => { tag.style.opacity = '0'; });
-  }
 
-  // Smooth Card Perspective Tilt
-  const sheet = document.getElementById('sheet');
-  if (!isTouch) {
-    window.addEventListener('mousemove', (e) => {
       const r = sheet.getBoundingClientRect();
-      const dx = (e.clientX - (r.left + r.width/2)) / (r.width/2);
-      const dy = (e.clientY - (r.top + r.height/2)) / (r.height/2);
-      sheet.style.transform = `perspective(1000px) rotateY(${dx*4}deg) rotateX(${-dy*3}deg)`;
+      const dx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
+      const dy = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
+
+      targetTilt.x = dx * 2.5; // Smooth subtle degrees
+      targetTilt.y = -dy * 1.8;
+      
+      tag.style.opacity = '1';
     });
+
+    window.addEventListener('mouseleave', () => {
+      tag.style.opacity = '0';
+      targetTilt.x = 0;
+      targetTilt.y = 0;
+    });
+
+    function smoothRender() {
+      // Linear interpolation (LERP) formula: current += (target - current) * factor
+      const ease = 0.08; 
+      
+      cursor.x += (mouse.x - cursor.x) * ease;
+      cursor.y += (mouse.y - cursor.y) * ease;
+
+      tilt.x += (targetTilt.x - tilt.x) * ease;
+      tilt.y += (targetTilt.y - tilt.y) * ease;
+
+      // Render smoothed positions
+      cx.style.transform = `translateX(${cursor.x}px)`;
+      cy.style.transform = `translateY(${cursor.y}px)`;
+      tag.style.transform = `translate(${cursor.x + 14}px, ${cursor.y + 14}px)`;
+      tag.textContent = 'X ' + String(Math.round(cursor.x)).padStart(4, '0') + '  Y ' + String(Math.round(cursor.y)).padStart(4, '0');
+
+      sheet.style.transform = `perspective(1000px) rotateY(${tilt.x}deg) rotateX(${tilt.y}deg)`;
+
+      requestAnimationFrame(smoothRender);
+    }
+    smoothRender();
   }
 
-  // Synchronized counter animation
+  // Synchronized Counter Progress Animation
   const pctLabel = document.getElementById('pctLabel');
   const target = 63;
-  const start = performance.now() + 400;
-  function tick(now){
-    const t = Math.min(1, Math.max(0, (now - start) / 1800));
+  const start = performance.now() + 300;
+  
+  function tick(now) {
+    const t = Math.min(1, Math.max(0, (now - start) / 2200));
+    // Soft cubic ease-out curve
     const eased = 1 - Math.pow(1 - t, 3);
     pctLabel.textContent = Math.round(eased * target) + '%';
     if (t < 1) requestAnimationFrame(tick);
   }
   requestAnimationFrame(tick);
 
-  // Reduced motion override
+  // Accessible reduced motion override
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.querySelectorAll('.draw-line, .sweep, .eyebrow::before').forEach(el => {
+    document.querySelectorAll('.draw-line, .eyebrow::before').forEach(el => {
       el.style.animation = 'none';
     });
   }
