@@ -138,7 +138,7 @@
             border-radius: 12px;
         }
 
-        /* Clean Divided Stack Layout */
+        /* Divided Stack Layout */
         .command-list {
             display: flex;
             flex-direction: column;
@@ -231,28 +231,67 @@
 
     <script>
         // =========================================================
-        // ✏️ ADD YOUR COMMAND CARDS HERE IN THE JS CODE!
+        // ✏️ ADD / EDIT YOUR COMMAND CARDS HERE IN THE CODE!
+        // Categories available: "Social", "Utility", "Moderation"
         // =========================================================
         const MY_COMMANDS = [
-            // General Category
-            { title: "/help", category: "General", description: "Lists all available commands and bot features." },
-            { title: "/ping", category: "General", description: "Checks the bot latency and API response time." },
+            // --- SOCIAL ---
+            { 
+                title: "/profile", 
+                category: "Social", 
+                description: "Displays a user's profile card, level, and custom bio." 
+            },
+            { 
+                title: "/rank", 
+                category: "Social", 
+                description: "Shows your current rank and XP standing on the server leaderboard." 
+            },
 
-            // Moderation Category
-            { title: "/ban", category: "Moderation", description: "Bans a specified user from the Discord server." },
-            { title: "/kick", category: "Moderation", description: "Kicks a member out of the server." },
-            { title: "/warn", category: "Moderation", description: "Issues an official warning to a user." },
+            // --- UTILITY ---
+            { 
+                title: "/help", 
+                category: "Utility", 
+                description: "Lists all available commands and bot features." 
+            },
+            { 
+                title: "/ping", 
+                category: "Utility", 
+                description: "Checks the bot latency and API response time." 
+            },
+            { 
+                title: "/serverinfo", 
+                category: "Utility", 
+                description: "Provides detailed information and statistics about the server." 
+            },
 
-            // Music Category
-            { title: "/play", category: "Music", description: "Plays audio from a YouTube or Spotify URL." },
-            { title: "/skip", category: "Music", description: "Skips the current playing song." },
+            // --- MODERATION ---
+            { 
+                title: "/ban", 
+                category: "Moderation", 
+                description: "Bans a specified member from the server." 
+            },
+            { 
+                title: "/kick", 
+                category: "Moderation", 
+                description: "Kicks a member out of the server." 
+            },
+            { 
+                title: "/warn", 
+                category: "Moderation", 
+                description: "Issues an official warning to a user." 
+            },
 
             // Add more below:
             /*
-            { title: "/command-name", category: "Category Name", description: "Type description here." },
+            { title: "/command-name", category: "Social", description: "Your description here." },
+            { title: "/command-name", category: "Utility", description: "Your description here." },
+            { title: "/command-name", category: "Moderation", description: "Your description here." },
             */
         ];
         // =========================================================
+
+        // Fixed display order for categories
+        const CATEGORY_ORDER = ["Social", "Utility", "Moderation"];
 
         const categoryContainer = document.getElementById('category-container');
         const emptyState = document.getElementById('empty-state');
@@ -263,7 +302,7 @@
             categoryContainer.innerHTML = '';
             const query = searchBar.value.toLowerCase().trim();
 
-            // Filter commands based on search
+            // Filter commands based on search query
             const filteredCommands = MY_COMMANDS.filter(cmd => 
                 cmd.title.toLowerCase().includes(query) ||
                 cmd.category.toLowerCase().includes(query) ||
@@ -278,16 +317,26 @@
             }
             emptyState.style.display = 'none';
 
-            // Group filtered commands by category
+            // Group commands by category
             const categories = {};
             filteredCommands.forEach(cmd => {
-                const cat = cmd.category.trim() || "Uncategorized";
+                const cat = cmd.category.trim() || "Other";
                 if (!categories[cat]) categories[cat] = [];
                 categories[cat].push(cmd);
             });
 
-            // Create a divided section for each category
-            Object.keys(categories).forEach(catName => {
+            // Get categories to display (following predefined order)
+            const activeCategories = CATEGORY_ORDER.filter(cat => categories[cat] && categories[cat].length > 0);
+            
+            // Catch any unexpected categories not in CATEGORY_ORDER
+            Object.keys(categories).forEach(cat => {
+                if (!activeCategories.includes(cat) && categories[cat].length > 0) {
+                    activeCategories.push(cat);
+                }
+            });
+
+            // Build divided category sections
+            activeCategories.forEach(catName => {
                 const section = document.createElement('section');
                 section.className = 'category-section';
 
