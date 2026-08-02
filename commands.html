@@ -70,7 +70,40 @@
             flex: 1;
         }
 
-        .section-card {
+        .top-controls {
+            background: #1e293b;
+            border-radius: 16px;
+            padding: 20px 24px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .top-controls h2 {
+            font-size: 1.5rem;
+            color: #a855f7;
+        }
+
+        .search-input {
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: #f8fafc;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            width: 280px;
+        }
+
+        .search-input:focus {
+            border-color: #a855f7;
+        }
+
+        /* Category Divider Section */
+        .category-section {
             background: #1e293b;
             border-radius: 16px;
             padding: 24px;
@@ -80,96 +113,75 @@
             gap: 16px;
         }
 
-        .commands-controls {
+        .category-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
             border-bottom: 1px solid #334155;
             padding-bottom: 12px;
-            flex-wrap: wrap;
         }
 
-        .commands-controls h2 {
-            font-size: 1.5rem;
-            color: #a855f7;
-            border: none;
-            padding: 0;
-            margin: 0;
+        .category-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #6366f1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .search-input {
-            background: #0f172a;
-            border: 1px solid #334155;
-            color: #f8fafc;
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            outline: none;
-            width: 250px;
+        .category-count {
+            background: rgba(99, 102, 241, 0.15);
+            color: #818cf8;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
         }
 
-        .search-input:focus {
-            border-color: #a855f7;
-        }
-
-        /* Commands Grid */
-        .command-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+        /* Clean Divided Stack Layout */
+        .command-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .command-card {
             background: #0f172a;
             border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 20px;
+            border-left: 4px solid #a855f7;
+            border-radius: 8px;
+            padding: 16px 20px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            transition: transform 0.2s, border-color 0.2s;
+            gap: 6px;
+            transition: border-color 0.2s, transform 0.2s;
         }
 
         .command-card:hover {
-            transform: translateY(-2px);
             border-color: #a855f7;
+            transform: translateX(4px);
         }
 
         .command-title {
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: #a855f7;
             font-family: monospace;
-            word-break: break-all;
         }
 
         .command-description {
             color: #cbd5e1;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            white-space: pre-wrap;
-            word-break: break-word;
-        }
-
-        .command-tag {
-            align-self: flex-start;
-            background: rgba(99, 102, 241, 0.15);
-            color: #818cf8;
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 4px 8px;
-            border-radius: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-size: 0.95rem;
+            line-height: 1.4;
         }
 
         .empty-state {
             text-align: center;
             color: #64748b;
             padding: 40px;
-            grid-column: 1 / -1;
             font-size: 1rem;
+            background: #1e293b;
+            border-radius: 16px;
         }
 
         footer {
@@ -201,18 +213,16 @@
     </header>
 
     <main class="page-container">
-        <section class="section-card">
-            <div class="commands-controls">
-                <h2>Bot Commands (<span id="command-count">0</span>)</h2>
-                <input type="text" id="search-bar" class="search-input" placeholder="🔍 Search commands...">
-            </div>
-
-            <div class="command-grid" id="command-grid">
-                <div class="empty-state" id="empty-state">
-                    No commands found.
-                </div>
-            </div>
+        <section class="top-controls">
+            <h2>Bot Commands (<span id="total-count">0</span>)</h2>
+            <input type="text" id="search-bar" class="search-input" placeholder="🔍 Search commands...">
         </section>
+
+        <div id="category-container" style="display: flex; flex-direction: column; gap: 24px;"></div>
+
+        <div class="empty-state" id="empty-state" style="display: none;">
+            No commands found.
+        </div>
     </main>
 
     <footer>
@@ -221,99 +231,112 @@
 
     <script>
         // =========================================================
-        // ✏️ ADD YOUR COMMAND CARDS IN THIS CODE ARRAY BELOW!
+        // ✏️ ADD YOUR COMMAND CARDS HERE IN THE JS CODE!
         // =========================================================
         const MY_COMMANDS = [
-            {
-                title: "/help",
-                category: "General",
-                description: "Lists all available commands and bot features."
-            },
-            {
-                title: "/ban",
-                category: "Moderation",
-                description: "Bans a specified user from the Discord server."
-            },
-            {
-                title: "/kick",
-                category: "Moderation",
-                description: "Kicks a member out of the server."
-            },
-            {
-                title: "/play",
-                category: "Music",
-                description: "Plays audio from a YouTube or Spotify URL."
-            },
-            {
-                title: "/ping",
-                category: "Utility",
-                description: "Checks the bot latency and API response time."
-            },
-            // 💡 Copy and paste this block below to add a new command:
+            // General Category
+            { title: "/help", category: "General", description: "Lists all available commands and bot features." },
+            { title: "/ping", category: "General", description: "Checks the bot latency and API response time." },
+
+            // Moderation Category
+            { title: "/ban", category: "Moderation", description: "Bans a specified user from the Discord server." },
+            { title: "/kick", category: "Moderation", description: "Kicks a member out of the server." },
+            { title: "/warn", category: "Moderation", description: "Issues an official warning to a user." },
+
+            // Music Category
+            { title: "/play", category: "Music", description: "Plays audio from a YouTube or Spotify URL." },
+            { title: "/skip", category: "Music", description: "Skips the current playing song." },
+
+            // Add more below:
             /*
-            {
-                title: "/command-name",
-                category: "Category Name",
-                description: "Type description here."
-            },
+            { title: "/command-name", category: "Category Name", description: "Type description here." },
             */
         ];
         // =========================================================
 
-        const commandGrid = document.getElementById('command-grid');
+        const categoryContainer = document.getElementById('category-container');
         const emptyState = document.getElementById('empty-state');
-        const commandCount = document.getElementById('command-count');
+        const totalCount = document.getElementById('total-count');
         const searchBar = document.getElementById('search-bar');
 
-        function renderCommands() {
-            commandGrid.innerHTML = '';
+        function renderDividedCommands() {
+            categoryContainer.innerHTML = '';
             const query = searchBar.value.toLowerCase().trim();
 
+            // Filter commands based on search
             const filteredCommands = MY_COMMANDS.filter(cmd => 
                 cmd.title.toLowerCase().includes(query) ||
                 cmd.category.toLowerCase().includes(query) ||
                 cmd.description.toLowerCase().includes(query)
             );
 
-            commandCount.textContent = filteredCommands.length;
+            totalCount.textContent = filteredCommands.length;
 
             if (filteredCommands.length === 0) {
                 emptyState.style.display = 'block';
-                commandGrid.appendChild(emptyState);
                 return;
             }
-
             emptyState.style.display = 'none';
 
+            // Group filtered commands by category
+            const categories = {};
             filteredCommands.forEach(cmd => {
-                const card = document.createElement('div');
-                card.className = 'command-card';
+                const cat = cmd.category.trim() || "Uncategorized";
+                if (!categories[cat]) categories[cat] = [];
+                categories[cat].push(cmd);
+            });
 
-                const titleEl = document.createElement('div');
-                titleEl.className = 'command-title';
-                titleEl.textContent = cmd.title;
-                card.appendChild(titleEl);
+            // Create a divided section for each category
+            Object.keys(categories).forEach(catName => {
+                const section = document.createElement('section');
+                section.className = 'category-section';
 
-                if (cmd.category && cmd.category.trim()) {
-                    const tag = document.createElement('span');
-                    tag.className = 'command-tag';
-                    tag.textContent = cmd.category.trim();
-                    card.appendChild(tag);
-                }
+                // Category Header
+                const header = document.createElement('div');
+                header.className = 'category-header';
 
-                const descEl = document.createElement('div');
-                descEl.className = 'command-description';
-                descEl.textContent = cmd.description;
-                card.appendChild(descEl);
+                const title = document.createElement('div');
+                title.className = 'category-title';
+                title.textContent = catName;
 
-                commandGrid.appendChild(card);
+                const count = document.createElement('span');
+                count.className = 'category-count';
+                count.textContent = `${categories[catName].length} command${categories[catName].length > 1 ? 's' : ''}`;
+
+                header.appendChild(title);
+                header.appendChild(count);
+                section.appendChild(header);
+
+                // Command List Block
+                const list = document.createElement('div');
+                list.className = 'command-list';
+
+                categories[catName].forEach(cmd => {
+                    const card = document.createElement('div');
+                    card.className = 'command-card';
+
+                    const cmdTitle = document.createElement('div');
+                    cmdTitle.className = 'command-title';
+                    cmdTitle.textContent = cmd.title;
+
+                    const cmdDesc = document.createElement('div');
+                    cmdDesc.className = 'command-description';
+                    cmdDesc.textContent = cmd.description;
+
+                    card.appendChild(cmdTitle);
+                    card.appendChild(cmdDesc);
+                    list.appendChild(card);
+                });
+
+                section.appendChild(list);
+                categoryContainer.appendChild(section);
             });
         }
 
-        searchBar.addEventListener('input', renderCommands);
+        searchBar.addEventListener('input', renderDividedCommands);
 
         // Initial render
-        renderCommands();
+        renderDividedCommands();
     </script>
 </body>
 </html>
