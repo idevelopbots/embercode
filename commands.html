@@ -1,1 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas - Commands</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
+        body {
+            background: #0f172a;
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: rgba(15, 23, 42, 0.9);
+            border-bottom: 1px solid #1e293b;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #a855f7, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        nav a:hover, nav a.active {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .page-container {
+            max-width: 1200px;
+            width: 95%;
+            margin: 30px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            flex: 1;
+        }
+
+        .section-card {
+            background: #1e293b;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .section-card h2 {
+            font-size: 1.5rem;
+            color: #a855f7;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input[type="text"],
+        .form-group textarea {
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: #f8fafc;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group textarea:focus {
+            border-color: #a855f7;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: linear-gradient(90deg, #a855f7, #6366f1);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-secondary {
+            background: #334155;
+            color: #f8fafc;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Commands Header & Search Bar */
+        .commands-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .commands-controls h2 {
+            border: none;
+            padding: 0;
+            margin: 0;
+            color: #6366f1;
+        }
+
+        .search-input {
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: #f8fafc;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            outline: none;
+            width: 250px;
+        }
+
+        .search-input:focus {
+            border-color: #6366f1;
+        }
+
+        /* Commands Grid */
+        .command-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .command-card {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .command-card:hover {
+            transform: translateY(-2px);
+            border-color: #a855f7;
+        }
+
+        .command-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .command-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #a855f7;
+            font-family: monospace;
+            word-break: break-all;
+        }
+
+        .btn-delete {
+            background: transparent;
+            border: none;
+            color: #64748b;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: color 0.2s;
+        }
+
+        .btn-delete:hover {
+            color: #ef4444;
+        }
+
+        .command-description {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .command-tag {
+            align-self: flex-start;
+            background: rgba(99, 102, 241, 0.15);
+            color: #818cf8;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #64748b;
+            padding: 40px;
+            grid-column: 1 / -1;
+            font-size: 1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+            font-size: 0.9rem;
+            background: #0f172a;
+            border-top: 1px solid #1e293b;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .search-input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">Canvas</a>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="commands.html" class="active">Commands</a>
+            <a href="tos.html">Terms of Service</a>
+            <a href="privacypolicy.html">Privacy Policy</a>
+        </nav>
+    </header>
+
+    <main class="page-container">
+        <section class="section-card">
+            <h2>Command Manager</h2>
+
+            <form id="cmd-form" onsubmit="event.preventDefault();">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cmd-title">Command Name / Title</label>
+                        <input type="text" id="cmd-title" placeholder="e.g. /ban, /kick, /help" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cmd-category">Category</label>
+                        <input type="text" id="cmd-category" placeholder="e.g. Moderation, General, Music">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 12px;">
+                    <label for="cmd-description">Description</label>
+                    <textarea id="cmd-description" placeholder="Describe how to use this command..." required></textarea>
+                </div>
+
+                <div class="button-group" style="margin-top: 16px;">
+                    <button type="submit" id="add-cmd-btn" class="btn">➕ Add Command Card</button>
+                    <button type="button" id="quick-mod-btn" class="btn btn-secondary">⚡ Quick Preset: Moderation</button>
+                    <button type="button" id="clear-all-btn" class="btn btn-secondary" style="margin-left: auto;">🗑️ Clear All</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="section-card">
+            <div class="commands-controls">
+                <h2>Bot Commands (<span id="command-count">0</span>)</h2>
+                <input type="text" id="search-bar" class="search-input" placeholder="🔍 Search commands...">
+            </div>
+
+            <div class="command-grid" id="command-grid">
+                <div class="empty-state" id="empty-state">
+                    No commands added yet. Fill out the form above to add your first command card!
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Canvas Bot. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const cmdTitle = document.getElementById('cmd-title');
+        const cmdCategory = document.getElementById('cmd-category');
+        const cmdDescription = document.getElementById('cmd-description');
+        const addCmdBtn = document.getElementById('add-cmd-btn');
+        const commandGrid = document.getElementById('command-grid');
+        const emptyState = document.getElementById('empty-state');
+        const commandCount = document.getElementById('command-count');
+        const searchBar = document.getElementById('search-bar');
+        const clearAllBtn = document.getElementById('clear-all-btn');
+        const quickModBtn = document.getElementById('quick-mod-btn');
+
+        // Store commands list
+        let commands = JSON.parse(localStorage.getItem('canvas_commands')) || [
+            { title: '/help', category: 'General', description: 'Lists all available bot commands.' },
+            { title: '/ban', category: 'Moderation', description: 'Bans a member from the server.' },
+            { title: '/play', category: 'Music', description: 'Plays audio from a link or search query.' }
+        ];
+
+        function saveCommands() {
+            localStorage.setItem('canvas_commands', JSON.stringify(commands));
+        }
+
+        function renderCommands() {
+            commandGrid.innerHTML = '';
+            const query = searchBar.value.toLowerCase().trim();
+
+            const filteredCommands = commands.filter(cmd => 
+                cmd.title.toLowerCase().includes(query) ||
+                cmd.category.toLowerCase().includes(query) ||
+                cmd.description.toLowerCase().includes(query)
+            );
+
+            commandCount.textContent = filteredCommands.length;
+
+            if (filteredCommands.length === 0) {
+                emptyState.style.display = 'block';
+                commandGrid.appendChild(emptyState);
+                return;
+            }
+
+            emptyState.style.display = 'none';
+
+            filteredCommands.forEach((cmd, index) => {
+                const card = document.createElement('div');
+                card.className = 'command-card';
+
+                const header = document.createElement('div');
+                header.className = 'command-card-header';
+
+                const titleEl = document.createElement('div');
+                titleEl.className = 'command-title';
+                titleEl.textContent = cmd.title.startsWith('/') || cmd.title.startsWith('!') ? cmd.title : '/' + cmd.title;
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'btn-delete';
+                deleteBtn.innerHTML = '✕';
+                deleteBtn.title = 'Remove Command';
+                deleteBtn.addEventListener('click', () => {
+                    commands.splice(commands.indexOf(cmd), 1);
+                    saveCommands();
+                    renderCommands();
+                });
+
+                header.appendChild(titleEl);
+                header.appendChild(deleteBtn);
+                card.appendChild(header);
+
+                if (cmd.category.trim()) {
+                    const tag = document.createElement('span');
+                    tag.className = 'command-tag';
+                    tag.textContent = cmd.category.trim();
+                    card.appendChild(tag);
+                }
+
+                const descEl = document.createElement('div');
+                descEl.className = 'command-description';
+                descEl.textContent = cmd.description;
+                card.appendChild(descEl);
+
+                commandGrid.appendChild(card);
+            });
+        }
+
+        // Add Command Event
+        document.getElementById('cmd-form').addEventListener('submit', () => {
+            const title = cmdTitle.value.trim();
+            const category = cmdCategory.value.trim() || 'General';
+            const description = cmdDescription.value.trim();
+
+            if (!title || !description) return;
+
+            commands.push({ title, category, description });
+            saveCommands();
+            renderCommands();
+
+            cmdTitle.value = '';
+            cmdCategory.value = '';
+            cmdDescription.value = '';
+            cmdTitle.focus();
+        });
+
+        // Search Filter Event
+        searchBar.addEventListener('input', renderCommands);
+
+        // Clear All Event
+        clearAllBtn.addEventListener('click', () => {
+            if (commands.length === 0) return;
+            if (confirm('Are you sure you want to delete all command cards?')) {
+                commands = [];
+                saveCommands();
+                renderCommands();
+            }
+        });
+
+        // Quick Preset Addition
+        quickModBtn.addEventListener('click', () => {
+            const presets = [
+                { title: '/kick', category: 'Moderation', description: 'Kicks a specified member from the Discord server.' },
+                { title: '/mute', category: 'Moderation', description: 'Temporarily timeouts or mutes a target user.' },
+                { title: '/warn', category: 'Moderation', description: 'Issues an official warning to a user.' }
+            ];
+
+            presets.forEach(p => commands.push(p));
+            saveCommands();
+            renderCommands();
+        });
+
+        // Initial render
+        renderCommands();
+    </script>
+</body>
+</html>
