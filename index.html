@@ -1,694 +1,461 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liberty County Public Works • Site Under Construction</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;1,400&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Under Construction</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", sans-serif;
+    }
 
-    <style>
-        :root {
-            /* ER:LC Tactical & Municipal Palette */
-            --bg-color: #050b14;                     /* Dark Police Tactical Navy */
-            --card-bg: rgba(10, 22, 40, 0.88);        /* Glassmorphic HQ Glass */
-            --primary-lines: #e3edf7;               /* Signal Blueprint Line */
-            --muted-text: #819cb9;                  /* Civil Engineering Muted */
-            --accent-amber: #f39c12;                 /* Caution / Construction Amber */
-            --accent-red: #e74c3c;                   /* Emergency Response Red */
-            --accent-blue: #0075ff;                  /* Law Enforcement Siren Blue */
-            
-            --grid-line: rgba(227, 237, 247, 0.04);
-            --grid-line-bold: rgba(227, 237, 247, 0.10);
-            --border-color: rgba(0, 117, 255, 0.25);  /* Subtle Blue Lightstroke */
-            
-            --font-heading: 'Space Grotesk', sans-serif;
-            --font-mono: 'IBM Plex Mono', monospace;
-            --font-serif: 'Lora', serif;
-        }
+    body {
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #070b16;
+      position: relative;
+      color: white;
+    }
 
-        /* --- Base & Resets --- */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    /* Animated Background */
+    body::before {
+      content: "";
+      position: absolute;
+      width: 300%;
+      height: 300%;
+      background: 
+        radial-gradient(circle at 20% 20%, #5b8cff55, transparent 30%),
+        radial-gradient(circle at 80% 30%, #8d5bff55, transparent 35%),
+        radial-gradient(circle at 50% 90%, #2effd355, transparent 30%),
+        linear-gradient(135deg, #08111f, #0d1529, #090d18);
+      animation: bgMove 25s linear infinite;
+      z-index: -3;
+    }
 
-        html, body {
-            width: 100%;
-            height: 100%;
-            overflow-x: hidden;
-            background-color: var(--bg-color);
-            color: var(--primary-lines);
-            font-family: var(--font-mono);
-            -webkit-font-smoothing: antialiased;
-        }
+    @keyframes bgMove {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(-8%, 4%) rotate(180deg); }
+      100% { transform: translate(0, 0) rotate(360deg); }
+    }
 
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            perspective: 1200px;
-            position: relative;
-            padding: 2rem 1rem;
-        }
+    /* Stars */
+    .stars {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -2;
+    }
 
-        /* --- Drafting Grid Background --- */
-        .blueprint-background {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            background-image: 
-                linear-gradient(to right, var(--grid-line-bold) 1px, transparent 1px),
-                linear-gradient(to bottom, var(--grid-line-bold) 1px, transparent 1px),
-                linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
-                linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-            background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
-            background-position: center center;
-        }
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 4s infinite ease-in-out;
+      opacity: 0.2;
+    }
 
-        /* Dual Red/Blue Radial Emergency Beacon Spotlight Glow */
-        .radial-spotlight {
-            position: fixed;
-            inset: 0;
-            z-index: 1;
-            pointer-events: none;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(0, 117, 255, 0.12) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(231, 76, 60, 0.10) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(243, 156, 18, 0.05) 0%, rgba(5, 11, 20, 0.95) 100%);
-        }
+    @keyframes twinkle {
+      50% {
+        opacity: 1;
+        transform: scale(2);
+      }
+    }
 
-        /* Particles Canvas */
-        #particleCanvas {
-            position: fixed;
-            inset: 0;
-            z-index: 2;
-            pointer-events: none;
-        }
+    /* Floating Glow */
+    .glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.55;
+      animation: float 12s ease-in-out infinite;
+    }
 
-        /* Viewport Coordinates */
-        .coord-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 3;
-            pointer-events: none;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 1rem;
-            font-size: 0.7rem;
-            color: var(--muted-text);
-            opacity: 0.6;
-        }
+    .glow:nth-child(1) {
+      width: 320px;
+      height: 320px;
+      background: #4b79ff;
+      left: -80px;
+      top: -50px;
+    }
 
-        .coord-row {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-        }
+    .glow:nth-child(2) {
+      width: 280px;
+      height: 280px;
+      background: #9b59ff;
+      right: -80px;
+      bottom: -80px;
+      animation-delay: 3s;
+    }
 
-        .coord-cols {
-            position: fixed;
-            top: 1rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 8vw;
-            font-size: 0.7rem;
-            color: var(--muted-text);
-            opacity: 0.6;
-        }
+    .glow:nth-child(3) {
+      width: 250px;
+      height: 250px;
+      background: #00ffc3;
+      bottom: 25%;
+      left: 40%;
+      animation-delay: 6s;
+    }
 
-        /* --- Main Card (Glassmorphic) --- */
-        .card-container {
-            position: relative;
-            z-index: 10;
-            width: 100%;
-            max-width: 720px;
-            transform-style: preserve-3d;
-            will-change: transform;
-        }
+    @keyframes float {
+      50% {
+        transform: translateY(-40px) scale(1.08);
+      }
+    }
 
-        .card {
-            position: relative;
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 3.5rem 3rem 2.5rem;
-            box-shadow: 
-                0 30px 60px rgba(0, 0, 0, 0.6),
-                0 0 30px rgba(0, 117, 255, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.15),
-                inset 0 0 40px rgba(5, 11, 20, 0.85);
-            transform-style: preserve-3d;
-            overflow: hidden;
-        }
+    /* Card */
+    .card {
+      width: min(92%, 720px);
+      padding: 60px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 0 80px rgba(0, 0, 0, 0.5), 0 0 50px rgba(110, 120, 255, 0.15);
+      text-align: center;
+      animation: appear 1.2s ease;
+    }
 
-        /* Reflection Sweep */
-        .card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -150%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                60deg,
-                transparent 30%,
-                rgba(227, 237, 247, 0.03) 48%,
-                rgba(227, 237, 247, 0.08) 50%,
-                rgba(227, 237, 247, 0.03) 52%,
-                transparent 70%
-            );
-            transform: rotate(30deg);
-            pointer-events: none;
-            animation: sweep 10s infinite ease-in-out;
-        }
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
 
-        @keyframes sweep {
-            0% { transform: translate(-30%, -30%) rotate(0deg); }
-            20% { transform: translate(30%, 30%) rotate(0deg); }
-            100% { transform: translate(30%, 30%) rotate(0deg); }
-        }
+    .icon {
+      font-size: 90px;
+      margin-bottom: 20px;
+      animation: spin 12s linear infinite;
+      filter: drop-shadow(0 0 15px #ffffff40);
+    }
 
-        /* Corner Crop Marks */
-        .crop-mark {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            border-color: var(--primary-lines);
-            border-style: solid;
-            opacity: 0.4;
-            pointer-events: none;
-        }
-        .crop-tl { top: 8px; left: 8px; border-width: 1px 0 0 1px; }
-        .crop-tr { top: 8px; right: 8px; border-width: 1px 1px 0 0; }
-        .crop-bl { bottom: 8px; left: 8px; border-width: 0 0 1px 1px; }
-        .crop-br { bottom: 8px; right: 8px; border-width: 0 1px 1px 0; }
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
 
-        /* Stamp */
-        .stamp {
-            position: absolute;
-            top: 2rem;
-            right: 2.5rem;
-            border: 2px dashed var(--accent-amber);
-            color: var(--accent-amber);
-            padding: 0.35rem 0.6rem;
-            font-size: 0.65rem;
-            font-weight: 600;
-            letter-spacing: 0.15em;
-            text-align: center;
-            line-height: 1.2;
-            transform: rotate(5deg) translateZ(30px);
-            opacity: 0.9;
-            user-select: none;
-            pointer-events: none;
-            box-shadow: 0 0 10px rgba(243, 156, 18, 0.2);
-        }
+    h1 {
+      font-size: clamp(42px, 7vw, 72px);
+      font-weight: 900;
+      letter-spacing: -2px;
+      margin-bottom: 15px;
+      background: linear-gradient(90deg, #7ca7ff, #ffffff, #9c6cff);
+      -webkit-background-clip: tex<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Under Construction</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", sans-serif;
+    }
 
-        /* --- Typography & Header --- */
-        .eyebrow {
-            font-size: 0.75rem;
-            letter-spacing: 0.2em;
-            color: var(--muted-text);
-            text-transform: uppercase;
-            margin-bottom: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transform: translateZ(15px);
-        }
+    body {
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #070b16;
+      position: relative;
+      color: white;
+    }
 
-        .eyebrow::before {
-            content: '';
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            background-color: var(--accent-blue);
-            box-shadow: 0 0 6px var(--accent-blue);
-        }
+    /* Animated Background */
+    body::before {
+      content: "";
+      position: absolute;
+      width: 300%;
+      height: 300%;
+      background: 
+        radial-gradient(circle at 20% 20%, #5b8cff55, transparent 30%),
+        radial-gradient(circle at 80% 30%, #8d5bff55, transparent 35%),
+        radial-gradient(circle at 50% 90%, #2effd355, transparent 30%),
+        linear-gradient(135deg, #08111f, #0d1529, #090d18);
+      animation: bgMove 25s linear infinite;
+      z-index: -3;
+    }
 
-        .main-heading {
-            font-family: var(--font-heading);
-            font-size: clamp(2rem, 4vw, 2.75rem);
-            font-weight: 700;
-            line-height: 1.15;
-            color: var(--primary-lines);
-            letter-spacing: -0.02em;
-            margin-bottom: 1rem;
-            transform: translateZ(25px);
-        }
+    @keyframes bgMove {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(-8%, 4%) rotate(180deg); }
+      100% { transform: translate(0, 0) rotate(360deg); }
+    }
 
-        .subtitle {
-            font-family: var(--font-serif);
-            font-size: 1.05rem;
-            line-height: 1.6;
-            color: var(--muted-text);
-            margin-bottom: 2rem;
-            max-width: 90%;
-            transform: translateZ(10px);
-        }
+    /* Stars */
+    .stars {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -2;
+    }
 
-        /* --- SVG Drawing Section --- */
-        .blueprint-art {
-            width: 100%;
-            height: auto;
-            margin: 1.5rem 0 2rem;
-            transform: translateZ(20px);
-        }
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 4s infinite ease-in-out;
+      opacity: 0.2;
+    }
 
-        .blueprint-art svg {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
+    @keyframes twinkle {
+      50% {
+        opacity: 1;
+        transform: scale(2);
+      }
+    }
 
-        .stroke-draw {
-            stroke: var(--primary-lines);
-            stroke-dasharray: 600;
-            stroke-dashoffset: 600;
-            animation: drawLine 3.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
+    /* Floating Glow */
+    .glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.55;
+      animation: float 12s ease-in-out infinite;
+    }
 
-        .stroke-amber { stroke: var(--accent-amber); }
-        .stroke-red { stroke: var(--accent-red); }
-        .stroke-blue { stroke: var(--accent-blue); }
-        .stroke-muted { stroke: var(--muted-text); }
+    .glow:nth-child(1) {
+      width: 320px;
+      height: 320px;
+      background: #4b79ff;
+      left: -80px;
+      top: -50px;
+    }
 
-        @keyframes drawLine {
-            to { stroke-dashoffset: 0; }
-        }
+    .glow:nth-child(2) {
+      width: 280px;
+      height: 280px;
+      background: #9b59ff;
+      right: -80px;
+      bottom: -80px;
+      animation-delay: 3s;
+    }
 
-        /* --- Project Status Log --- */
-        .status-log {
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-            margin-bottom: 2rem;
-            font-size: 0.85rem;
-            transform: translateZ(15px);
-        }
+    .glow:nth-child(3) {
+      width: 250px;
+      height: 250px;
+      background: #00ffc3;
+      bottom: 25%;
+      left: 40%;
+      animation-delay: 6s;
+    }
 
-        .status-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
+    @keyframes float {
+      50% {
+        transform: translateY(-40px) scale(1.08);
+      }
+    }
 
-        .status-item.completed { color: var(--primary-lines); }
-        .status-item.active { color: var(--accent-amber); font-weight: 600; }
-        .status-item.queued { color: rgba(129, 156, 185, 0.4); }
+    /* Card */
+    .card {
+      width: min(92%, 720px);
+      padding: 60px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 0 80px rgba(0, 0, 0, 0.5), 0 0 50px rgba(110, 120, 255, 0.15);
+      text-align: center;
+      animation: appear 1.2s ease;
+    }
 
-        .status-icon {
-            font-size: 0.9rem;
-            width: 16px;
-            text-align: center;
-        }
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
 
-        /* --- Dynamic Progress System --- */
-        .progress-wrapper {
-            margin-bottom: 2.5rem;
-            transform: translateZ(15px);
-        }
+    .icon {
+      font-size: 90px;
+      margin-bottom: 20px;
+      animation: spin 12s linear infinite;
+      filter: drop-shadow(0 0 15px #ffffff40);
+    }
 
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.75rem;
-            color: var(--muted-text);
-            margin-bottom: 0.5rem;
-            letter-spacing: 0.05em;
-        }
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
 
-        .progress-bar-bg {
-            width: 100%;
-            height: 6px;
-            background: rgba(227, 237, 247, 0.08);
-            border-radius: 3px;
-            overflow: hidden;
-            position: relative;
-            border: 1px solid rgba(0, 117, 255, 0.2);
-        }
+    h1 {
+      font-size: clamp(42px, 7vw, 72px);
+      font-weight: 900;
+      letter-spacing: -2px;
+      margin-bottom: 15px;
+      background: linear-gradient(90deg, #7ca7ff, #ffffff, #9c6cff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 300%;
+      animation: gradientText 8s linear infinite;
+    }
 
-        .progress-bar-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--accent-blue), var(--accent-amber));
-            border-radius: 3px;
-            transition: width 0.1s ease-out;
-            position: relative;
-            box-shadow: 0 0 10px rgba(0, 117, 255, 0.5);
-        }
+    @keyframes gradientText {
+      100% { background-position: 300%; }
+    }
 
-        /* --- Title Block --- */
-        .title-block {
-            border: 1px solid var(--border-color);
-            background: rgba(5, 11, 20, 0.75);
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            transform: translateZ(10px);
-        }
+    p {
+      font-size: 18px;
+      line-height: 1.8;
+      opacity: 0.82;
+      max-width: 560px;
+      margin: auto;
+    }
 
-        .tb-cell {
-            padding: 0.6rem 0.5rem;
-            border-right: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            gap: 0.2rem;
-        }
+    /* Progress */
+    .progress {
+      margin: 40px auto 20px;
+      height: 10px;
+      width: 100%;
+      border-radius: 100px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+    }
 
-        .tb-cell:last-child {
-            border-right: none;
-        }
+    .progress span {
+      display: block;
+      height: 100%;
+      width: 65%;
+      background: linear-gradient(90deg, #5b8cff, #7e68ff, #00ffd0);
+      background-size: 250%;
+      animation: load 5s ease-in-out infinite, moveGradient 5s linear infinite;
+      border-radius: 100px;
+    }
 
-        .tb-label {
-            font-size: 0.55rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--muted-text);
-        }
+    @keyframes load {
+      0% { width: 10%; }
+      50% { width: 80%; }
+      100% { width: 65%; }
+    }
 
-        .tb-value {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--primary-lines);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+    @keyframes moveGradient {
+      100% { background-position: 250%; }
+    }
 
-        /* --- Mobile Optimization --- */
-        @media (max-width: 640px) {
-            .coord-overlay, .coord-cols {
-                display: none;
-            }
+    .status {
+      font-size: 15px;
+      opacity: 0.75;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
 
-            .card {
-                padding: 2.5rem 1.5rem 1.5rem;
-            }
+    /* Footer */
+    .footer {
+      margin-top: 45px;
+      font-size: 14px;
+      opacity: 0.5;
+    }
 
-            .stamp {
-                top: 1rem;
-                right: 1rem;
-                font-size: 0.55rem;
-            }
-
-            .subtitle {
-                max-width: 100%;
-                font-size: 0.95rem;
-            }
-
-            .title-block {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .tb-cell {
-                border-bottom: 1px solid var(--border-color);
-            }
-
-            .tb-cell:nth-child(2n) {
-                border-right: none;
-            }
-
-            .tb-cell:last-child {
-                grid-column: span 2;
-                border-bottom: none;
-            }
-        }
-
-        /* --- Accessibility: Reduced Motion --- */
-        @media (prefers-reduced-motion: reduce) {
-            .card::before {
-                animation: none;
-            }
-
-            .stroke-draw {
-                animation: none !important;
-                stroke-dashoffset: 0 !important;
-            }
-
-            #particleCanvas {
-                display: none;
-            }
-
-            .card-container {
-                transform: none !important;
-            }
-        }
-    </style>
+    /* Responsive */
+    @media (max-width: 700px) {
+      .card {
+        padding: 40px 25px;
+      }
+      .icon {
+        font-size: 70px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="blueprint-background"></div>
-    <div class="radial-spotlight"></div>
-    <canvas id="particleCanvas"></canvas>
+  <div class="glow"></div>
+  <div class="glow"></div>
+  <div class="glow"></div>
+  <div class="stars"></div>
 
-    <div class="coord-cols">
-        <span>A</span><span>B</span><span>C</span><span>D</span><span>E</span>
+  <div class="card">
+    <div class="icon">🚧</div>
+    <h1>Under Construction</h1>
+    <p>
+      We're crafting something incredible behind the scenes.
+      Every detail is being polished to create an amazing experience.
+    </p>
+    <div class="progress">
+      <span></span>
     </div>
-    <div class="coord-overlay">
-        <div class="coord-row"><span>1</span><span>1</span></div>
-        <div class="coord-row"><span>2</span><span>2</span></div>
-        <div class="coord-row"><span>3</span><span>3</span></div>
-        <div class="coord-row"><span>4</span><span>4</span></div>
-    </div>
+    <div class="status">Building the Future...</div>
+    <div class="footer">© 2026 • Please check back soon.</div>
+  </div>
 
-    <div class="card-container" id="cardContainer">
-        <main class="card">
-            
-            <div class="crop-mark crop-tl"></div>
-            <div class="crop-mark crop-tr"></div>
-            <div class="crop-mark crop-bl"></div>
-            <div class="crop-mark crop-br"></div>
+  <script>
+    // Generate Stars
+    const stars = document.querySelector(".stars");
+    for (let i = 0; i < 160; i++) {
+      const star = document.createElement("div");
+      star.className = "star";
+      star.style.left = Math.random() * 100 + "%";
+      star.style.top = Math.random() * 100 + "%";
+      star.style.animationDelay = Math.random() * 5 + "s";
+      star.style.animationDuration = (2 + Math.random() * 5) + "s";
+      stars.appendChild(star);
+    }
 
-            <div class="stamp">
-                DOT / PUBLIC WORKS<br>DRAFT ONLY
-            </div>
+    // Smooth Mouse Glow
+    document.addEventListener("mousemove", (e) => {
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
+      document.querySelectorAll(".glow").forEach((g, i) => {
+        const move = (i + 1) * 20;
+        g.style.transform = `translate(${(x - 0.5) * move}px, ${(y - 0.5) * move}px)`;
+      });
+    });
+  </script>
 
-            <header>
-                <div class="eyebrow">SHEET A-101 • LIBERTY COUNTY PUBLIC WORKS</div>
-                <h1 class="main-heading">Building Something Exceptional</h1>
-                <p class="subtitle">Liberty County Department of Transportation is actively upgrading municipal infrastructure. Every sector detail is being refined prior to public deployment.</p>
-            </header>
-
-            <figure class="blueprint-art" aria-label="Technical architectural blueprint drawing of Liberty County Public Works Complex">
-                <svg viewBox="0 0 500 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <line x1="20" y1="140" x2="480" y2="140" stroke="currentColor" class="stroke-muted" stroke-width="1" stroke-dasharray="4 4" opacity="0.4"/>
-                    <line x1="50" y1="10" x2="50" y2="150" stroke="currentColor" class="stroke-muted" stroke-width="1" stroke-dasharray="4 4" opacity="0.3"/>
-                    <line x1="250" y1="10" x2="250" y2="150" stroke="currentColor" class="stroke-muted" stroke-width="1" stroke-dasharray="4 4" opacity="0.3"/>
-                    <line x1="450" y1="10" x2="450" y2="150" stroke="currentColor" class="stroke-muted" stroke-width="1" stroke-dasharray="4 4" opacity="0.3"/>
-
-                    <path d="M 50 140 L 50 40 L 150 40 L 250 15 L 350 40 L 450 40 L 450 140 Z" stroke="currentColor" stroke-width="1.5" class="stroke-draw" />
-                    
-                    <path d="M 80 140 L 80 70 L 140 70 L 140 140" stroke="currentColor" stroke-width="1" class="stroke-draw stroke-blue" opacity="0.8" />
-                    <path d="M 170 140 L 170 70 L 230 70 L 230 140" stroke="currentColor" stroke-width="1" class="stroke-draw stroke-muted" />
-                    <path d="M 270 140 L 270 70 L 330 70 L 330 140" stroke="currentColor" stroke-width="1" class="stroke-draw stroke-muted" />
-                    <path d="M 360 140 L 360 70 L 420 70 L 420 140" stroke="currentColor" stroke-width="1" class="stroke-draw stroke-red" opacity="0.8" />
-
-                    <path d="M 50 40 L 450 40 M 150 40 L 150 15 L 350 15 L 350 40" stroke="currentColor" stroke-width="1" class="stroke-draw stroke-muted" />
-                    <path d="M 250 15 L 250 0 M 245 5 L 255 5 M 240 10 L 260 10" stroke="currentColor" stroke-width="1" class="stroke-draw stroke-amber" opacity="0.9" />
-
-                    <circle cx="240" cy="5" r="2.5" fill="var(--accent-blue)" />
-                    <circle cx="260" cy="5" r="2.5" fill="var(--accent-red)" />
-                    <circle cx="250" cy="15" r="3" fill="var(--accent-amber)" />
-                    <circle cx="150" cy="40" r="3" fill="var(--primary-lines)" />
-                    <circle cx="350" cy="40" r="3" fill="var(--primary-lines)" />
-
-                    <line x1="50" y1="152" x2="450" y2="152" stroke="var(--accent-amber)" stroke-width="1" />
-                    <path d="M 50 148 L 50 156 M 450 148 L 450 156 M 250 148 L 250 156" stroke="var(--accent-amber)" stroke-width="1" />
-                    <text x="250" y="148" fill="var(--accent-amber)" font-size="8" font-family="IBM Plex Mono" text-anchor="middle">STATION ELEVATION: 400.00 FT</text>
-                </svg>
-            </figure>
-
-            <section class="status-log" aria-label="Project Status">
-                <div class="status-item completed">
-                    <span class="status-icon" style="color: var(--accent-blue);">✓</span>
-                    <span>Site Zoning & Civic Survey Complete</span>
-                </div>
-                <div class="status-item active">
-                    <span class="status-icon">●</span>
-                    <span>Apparatus Bay & Communications In Progress</span>
-                </div>
-                <div class="status-item queued">
-                    <span class="status-icon">○</span>
-                    <span>CAD Dispatch & Radio Link Queued</span>
-                </div>
-                <div class="status-item queued">
-                    <span class="status-icon">○</span>
-                    <span>Final Inspection & Opening Queued</span>
-                </div>
-            </section>
-
-            <section class="progress-wrapper">
-                <div class="progress-header">
-                    <span>SECTOR INFRASTRUCTURE PROGRESS</span>
-                    <span id="progressText">0%</span>
-                </div>
-                <div class="progress-bar-bg" data-progress="63" id="progressBar">
-                    <div class="progress-bar-fill" id="progressFill"></div>
-                </div>
-            </section>
-
-            <footer class="title-block">
-                <div class="tb-cell">
-                    <span class="tb-label">Project</span>
-                    <span class="tb-value">Liberty Co. HQ</span>
-                </div>
-                <div class="tb-cell">
-                    <span class="tb-label">Status</span>
-                    <span class="tb-value" style="color: var(--accent-amber);">Active</span>
-                </div>
-                <div class="tb-cell">
-                    <span class="tb-label">Revision</span>
-                    <span class="tb-value">02.A</span>
-                </div>
-                <div class="tb-cell">
-                    <span class="tb-label">Date</span>
-                    <span class="tb-value" id="tbDate">----.--.--</span>
-                </div>
-                <div class="tb-cell">
-                    <span class="tb-label">Launch</span>
-                    <span class="tb-value" id="tbLaunch">----.--.--</span>
-                </div>
-            </footer>
-
-        </main>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-            /* --- Date Formatting Helpers --- */
-            const formatDate = (date) => {
-                const yyyy = date.getFullYear();
-                const mm = String(date.getMonth() + 1).padStart(2, '0');
-                const dd = String(date.getDate()).padStart(2, '0');
-                return `${yyyy}.${mm}.${dd}`;
-            };
-
-            const currentDate = new Date();
-            const launchDate = new Date();
-            launchDate.setDate(currentDate.getDate() + 14);
-
-            document.getElementById('tbDate').textContent = formatDate(currentDate);
-            document.getElementById('tbLaunch').textContent = formatDate(launchDate);
-
-            /* --- Animated Progress Counter --- */
-            const progressBar = document.getElementById('progressBar');
-            const progressFill = document.getElementById('progressFill');
-            const progressText = document.getElementById('progressText');
-            const targetProgress = parseInt(progressBar.getAttribute('data-progress'), 10) || 0;
-
-            if (prefersReducedMotion) {
-                progressFill.style.width = `${targetProgress}%`;
-                progressText.textContent = `${targetProgress}%`;
-            } else {
-                let currentProgress = 0;
-                const duration = 2000;
-                const startTime = performance.now();
-
-                const animateProgress = (currentTime) => {
-                    const elapsedTime = currentTime - startTime;
-                    const progressFraction = Math.min(elapsedTime / duration, 1);
-                    
-                    const easeOut = 1 - Math.pow(1 - progressFraction, 3);
-                    currentProgress = Math.floor(easeOut * targetProgress);
-
-                    progressFill.style.width = `${easeOut * targetProgress}%`;
-                    progressText.textContent = `${currentProgress}%`;
-
-                    if (progressFraction < 1) {
-                        requestAnimationFrame(animateProgress);
-                    }
-                };
-
-                requestAnimationFrame(animateProgress);
-            }
-
-            /* --- Interactive Parallax Tilt Effect --- */
-            const container = document.getElementById('cardContainer');
-
-            if (!prefersReducedMotion && window.innerWidth > 640) {
-                let mouseX = 0, mouseY = 0;
-                let currentX = 0, currentY = 0;
-
-                window.addEventListener('mousemove', (e) => {
-                    const { innerWidth, innerHeight } = window;
-                    mouseX = (e.clientX / innerWidth) * 2 - 1;
-                    mouseY = (e.clientY / innerHeight) * 2 - 1;
-                });
-
-                const lerp = (start, end, factor) => start + (end - start) * factor;
-
-                const renderParallax = () => {
-                    const maxTilt = 12;
-                    const targetX = mouseX * maxTilt;
-                    const targetY = -mouseY * maxTilt;
-
-                    currentX = lerp(currentX, targetX, 0.08);
-                    currentY = lerp(currentY, targetY, 0.08);
-
-                    container.style.transform = `rotateY(${currentX}deg) rotateX(${currentY}deg)`;
-                    requestAnimationFrame(renderParallax);
-                };
-
-                renderParallax();
-            }
-
-            /* --- Drifting Blueprint Particles --- */
-            if (!prefersReducedMotion) {
-                const canvas = document.getElementById('particleCanvas');
-                const ctx = canvas.getContext('2d');
-                let width = canvas.width = window.innerWidth;
-                let height = canvas.height = window.innerHeight;
-
-                window.addEventListener('resize', () => {
-                    width = canvas.width = window.innerWidth;
-                    height = canvas.height = window.innerHeight;
-                });
-
-                const particleCount = 18;
-                const particles = Array.from({ length: particleCount }, () => ({
-                    x: Math.random() * width,
-                    y: Math.random() * height,
-                    size: Math.random() * 1.5 + 0.5,
-                    vx: (Math.random() - 0.5) * 0.3,
-                    vy: (Math.random() - 0.5) * 0.3 - 0.1,
-                    alpha: Math.random() * 0.4 + 0.1
-                }));
-
-                const renderParticles = () => {
-                    ctx.clearRect(0, 0, width, height);
-
-                    particles.forEach(p => {
-                        p.x += p.vx;
-                        p.y += p.vy;
-
-                        if (p.x < 0) p.x = width;
-                        if (p.x > width) p.x = 0;
-                        if (p.y < 0) p.y = height;
-                        if (p.y > height) p.y = 0;
-
-                        ctx.fillStyle = `rgba(227, 237, 247, ${p.alpha})`;
-                        ctx.beginPath();
-                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                        ctx.fill();
-                    });
-
-                    requestAnimationFrame(renderParticles);
-                };
-
-                renderParticles();
-            }
-        });
-    </script>
 </body>
-</html>
+</html>;
+      -webkit-text-fill-color: transparent;
+      background-size: 300%;
+      animation: gradientText 8s linear infinite;
+    }
+
+    @keyframes gradientText {
+      100% { background-position: 300%; }
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 1.8;
+      opacity: 0.82;
+      max-width: 560px;
+      margin: auto;
+    }
+
+    /* Progress */
+    .progress {
+      margin: 40px auto 20px;
+      height: 10px
