@@ -3,214 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Canvas - Home</title>
-
+    <title>Core - Your Own Companion</title>
     <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #5865f2;
+            --accent-hover: #4752c4;
+            --btn-secondary: #334155;
+            --btn-secondary-hover: #475569;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
 
         body {
-            background: linear-gradient(
-                -45deg,
-                #0f172a,
-                #1e1b4b,
-                #311042,
-                #6d28d9,
-                #4338ca,
-                #0f172a
-            );
-            background-size: 400% 400%;
-            animation: gradientMove 18s ease infinite;
-            color: #f8fafc;
+            background-color: var(--bg-color);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-        }
-
-        @keyframes gradientMove {
-            0% {
-                background-position: 0% 50%;
-            }
-            25% {
-                background-position: 100% 50%;
-            }
-            50% {
-                background-position: 100% 100%;
-            }
-            75% {
-                background-position: 0% 100%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
+            justify-content: space-between;
+            align-items: center;
         }
 
         header {
+            width: 100%;
+            padding: 20px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 8%;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            max-width: 1200px;
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            background: linear-gradient(90deg, #a855f7, #6366f1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--text-main);
             text-decoration: none;
-        }
-
-        nav {
-            display: flex;
-            gap: 20px;
         }
 
         nav a {
-            color: #cbd5e1;
+            color: var(--text-muted);
             text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-            padding: 8px 16px;
-            border-radius: 8px;
+            margin-left: 20px;
+            transition: color 0.2s;
         }
 
-        nav a:hover,
-        nav a.active {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.1);
+        nav a:hover {
+            color: var(--text-main);
         }
 
         .hero {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
             text-align: center;
-            padding: 60px 20px;
+            padding: 80px 20px;
+            max-width: 800px;
         }
 
         .hero h1 {
-            font-size: 3.2rem;
-            max-width: 800px;
-            margin-bottom: 40px;
-            line-height: 1.2;
-            background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .btn-group {
             display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
+            gap: 16px;
             justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 32px;
         }
 
         .btn {
-            padding: 16px 32px;
-            border-radius: 12px;
-            font-size: 1.1rem;
+            display: inline-block;
+            padding: 14px 28px;
+            border-radius: 8px;
             font-weight: 600;
             text-decoration: none;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
         }
 
         .btn-primary {
-            background: linear-gradient(90deg, #6366f1, #a855f7);
-            color: white;
+            background-color: var(--accent);
+            color: #ffffff;
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
+            background-color: var(--accent-hover);
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
+            background-color: var(--btn-secondary);
+            color: var(--text-main);
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
+            background-color: var(--btn-secondary-hover);
         }
 
         footer {
-            text-align: center;
-            padding: 20px;
-            color: #64748b;
+            padding: 40px 20px;
+            color: var(--text-muted);
             font-size: 0.9rem;
-            background: rgba(15, 23, 42, 0.8);
+            text-align: center;
+            width: 100%;
         }
 
-        @media (max-width: 600px) {
-            .hero h1 {
-                font-size: 2.2rem;
-            }
+        footer a {
+            color: var(--text-muted);
+            text-decoration: underline;
+        }
 
-            .btn-group {
-                flex-direction: column;
-                width: 100%;
-                max-width: 300px;
-            }
-
-            .btn {
-                justify-content: center;
-            }
+        footer a:hover {
+            color: var(--text-main);
         }
     </style>
 </head>
-
 <body>
-    <header>
-        <a href="index.html" class="logo">Canvas</a>
 
+    <header>
+        <a href="index.html" class="logo">Core</a>
         <nav>
-            <a href="index.html" class="active">Home</a>
-            <a href="tos.html">Terms of Service</a>
-            <a href="privacypolicy.html">Privacy Policy</a>
+            <a href="privacy.html">Terms of Service</a>
+            <a href="tos.html">Privacy Policy</a>
         </nav>
     </header>
 
     <main class="hero">
-        <h1>The tools you need, all packed into one bot.</h1>
-
+        <h1>Your own companion</h1>
         <div class="btn-group">
-            <a href="https://discord.com/oauth2/authorize?client_id=1532874424913760296&permissions=8&scope=bot%20applications.commands"
-                class="btn btn-primary"
-                target="_blank"
-                rel="noopener noreferrer">
-                Invite Canvas
-            </a>
-
-            <a href="https://discord.gg/9RwkpP5daS"
-                class="btn btn-secondary"
-                target="_blank"
-                rel="noopener noreferrer">
-                Support Server
-            </a>
+            <a href="https://discord.com/oauth2/authorize?client_id=1535386335559286834&permissions=8&scope=bot%20applications.commands" class="btn btn-primary" target="_blank" rel="noopener">Invite Core</a>
+            <a href="https://discord.gg/yyRD7F4P7b" class="btn btn-secondary" target="_blank" rel="noopener">Support Server</a>
         </div>
     </main>
 
     <footer>
-        <p>&copy; 2026 Canvas Bot. All rights reserved.</p>
+        <p>&copy; 2026 Core Bot. All rights reserved. | <a href="privacy.html">Terms</a> &bull; <a href="tos.html">Privacy</a></p>
     </footer>
+
 </body>
 </html>
