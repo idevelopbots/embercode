@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commands - Core</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #5865f2;
+            --code-bg: #0f172a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        header {
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--text-main);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto 40px auto;
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            border-bottom: 1px solid #334155;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-top: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 5px;
+        }
+
+        .command-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .command-card {
+            background-color: rgba(15, 23, 42, 0.5);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .command-name {
+            font-family: monospace;
+            font-size: 1.1rem;
+            color: var(--accent);
+            background-color: var(--code-bg);
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .command-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+
+        .command-usage {
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        .command-usage code {
+            color: #cbd5e1;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">Core</a>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="commands.html" class="active">Commands</a>
+            <a href="tos.html">Terms of Service</a>
+            <a href="privacypolicy.html">Privacy Policy</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="header">
+            <h1>Bot Commands</h1>
+            <p class="subtitle">Explore all available commands for Core.</p>
+        </div>
+
+        <div class="command-list">
+            
+            <div class="command-card">
+                <div class="command-name">/ping</div>
+                <div class="command-desc">Checks the bot's current latency and response time.</div>
+                <div class="command-usage">Usage: <code>/ping</code></div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-name">/help [category]</div>
+                <div class="command-desc">Displays a list of available commands or detailed info on a specific category.</div>
+                <div class="command-usage">Usage: <code>/help category:general</code></div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
