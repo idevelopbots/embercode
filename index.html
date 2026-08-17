@@ -3,161 +3,304 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Velocity - Your Own Companion</title>
+    <title>Connecticut Driver's Manual - State of Connecticut DMV</title>
     <style>
         :root {
-            --bg-color: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
-            --card-bg: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #f1f5f9;
-            --accent: #5865f2;
-            --accent-hover: #4752c4;
-            --btn-secondary: #334155;
-            --btn-secondary-hover: #475569;
+            --primary-color: #003366;
+            --secondary-color: #0055a5;
+            --accent-color: #d9534f;
+            --bg-color: #f4f6f9;
+            --text-color: #333333;
+            --sidebar-width: 300px;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
 
         body {
-            background: var(--bg-color);
-            background-attachment: fixed;
-            color: var(--text-main);
-            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
         }
 
-        header {
-            width: 100%;
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
+        /* Sidebar Navigation */
+        nav {
+            width: var(--sidebar-width);
+            background-color: var(--primary-color);
+            color: #ffffff;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+            padding: 20px 0;
         }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-main);
+        nav h2 {
+            font-size: 1.2rem;
+            padding: 0 20px 15px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 15px;
+        }
+
+        nav ul {
+            list-style: none;
+        }
+
+        nav ul li a {
+            display: block;
+            padding: 10px 20px;
+            color: #dce7f3;
             text-decoration: none;
+            font-size: 0.95rem;
+            transition: background 0.2s, color 0.2s;
         }
 
-        nav a {
-            color: var(--text-muted);
-            text-decoration: none;
-            margin-left: 20px;
-            transition: color 0.2s;
-        }
-
-        nav a:hover {
-            color: var(--text-main);
-        }
-
-        .hero {
-            text-align: center;
-            padding: 80px 20px;
-            max-width: 800px;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 24px;
-            background: linear-gradient(135deg, #ffffff 0%, #ffe4e6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 32px;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 14px 28px;
-            border-radius: 8px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: background-color 0.2s, transform 0.1s;
-        }
-
-        .btn:active {
-            transform: scale(0.98);
-        }
-
-        .btn-primary {
-            background-color: var(--accent);
+        nav ul li a:hover {
+            background-color: var(--secondary-color);
             color: #ffffff;
         }
 
-        .btn-primary:hover {
-            background-color: var(--accent-hover);
-        }
-
-        .btn-secondary {
-            background-color: var(--btn-secondary);
-            color: var(--text-main);
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--btn-secondary-hover);
-        }
-
-        footer {
-            padding: 40px 20px;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            text-align: center;
+        /* Main Content Container */
+        main {
+            margin-left: var(--sidebar-width);
+            padding: 40px;
+            max-width: 900px;
             width: 100%;
         }
 
-        footer a {
-            color: var(--text-muted);
-            text-decoration: underline;
+        header {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            border-left: 6px solid var(--primary-color);
         }
 
-        footer a:hover {
-            color: var(--text-main);
+        header h1 {
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-weight: 600;
+            color: #666;
+        }
+
+        .message-box {
+            background-color: #eef5fc;
+            border-left: 4px solid var(--secondary-color);
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .message-box h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        section {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 1.6rem;
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+            margin: 20px 0 10px 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table, th, td {
+            border: 1px solid #dddddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .checklist li::before {
+            content: "✓ ";
+            color: green;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            nav {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            main {
+                margin-left: 0;
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <a href="index.html" class="logo">Velocity</a>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="tos.html">Terms of Service</a>
-            <a href="privacypolicy.html" class="active">Privacy Policy</a>
-            <a href="commands.html">Commands</a>
-            <a href="invite.html">Invite Velocity</a>
-            <a href="catalog.html">Server Catalog</a>
-        </nav>
-    </header>
+    <nav>
+        <h2>CT DMV Manual</h2>
+        <ul>
+            <li><a href="#welcome">Message from Governor</a></li>
+            <li><a href="#ch1">Ch 1: Obtaining a License</a></li>
+            <li><a href="#teen-driving">Teen Driving Rules</a></li>
+            <li><a href="#permit-reqs">Learner's Permit Requirements</a></li>
+            <li><a href="#driver-ed">Driver Education</a></li>
+            <li><a href="#road-test">Preparing for Road Test</a></li>
+        </ul>
+    </nav>
 
-    <main class="hero">
-        <h1>Your own companion</h1>
-        <div class="btn-group">
-            <a href="https://discord.com/oauth2/authorize?client_id=1539005630910570577&permissions=8&scope=bot%20applications.commands" class="btn btn-primary" target="_blank" rel="noopener">Invite Velocity</a>
-            <a href="https://discord.gg/rgyJPSFwbY" class="btn btn-secondary" target="_blank" rel="noopener">Support Server</a>
-        </div>
+    <main>
+        <header>
+            <h1>State of Connecticut Driver's Manual</h1>
+            <p>Department of Motor Vehicles</p>
+            <p><small>Ned Lamont, Governor | Antonio “Tony” Guerrera, Commissioner</small></p>
+        </header>
+
+        <section id="welcome" class="message-box">
+            <h3>An Important Message from Governor Ned Lamont and Commissioner Antonio “Tony” Guerrera</h3>
+            <p>Connecticut takes pride in its highway safety initiatives and efforts to make the roads safer for all who use them. This work involves driver licensing and ensuring that new and renewing drivers are aware of safety’s critical role when behind the wheel.</p>
+            <p>For the state’s youngest drivers, obtaining your license is a time of joy and freedom, but it comes with great responsibility. Connecticut has imposed tougher teen driving laws for 16- and 17-year-old drivers to keep you safe as you gain experience.</p>
+            <p><strong>Remember, driving is a privilege and not a right.</strong> Please buckle up—seatbelts save lives.</p>
+        </section>
+
+        <section id="ch1">
+            <h2>CHAPTER 1: Obtaining a Connecticut Driver’s License</h2>
+            <p>This manual provides information needed to drive a passenger vehicle. A non-commercial driver’s license is designated as <strong>Class D</strong>. Unless restrictions appear on the license, a Class D license may be used to operate any motor vehicle except a commercial motor vehicle.</p>
+            
+            <h3>Obtaining a Learner’s Permit</h3>
+            <p>To obtain a learner's permit in Connecticut, you must meet the following criteria:</p>
+            <ul>
+                <li>You must be at least <strong>16 years of age</strong>.</li>
+                <li>You must pass both a <strong>vision test</strong> and a <strong>25-question knowledge test</strong> (minimum 20 correct answers to pass).</li>
+            </ul>
+            <p><em>Note: The permit is valid until you obtain a driver’s license or 2 years from the date of issuance.</em></p>
+        </section>
+
+        <section id="teen-driving">
+            <h2>Managing Your Teen’s Driving Experience</h2>
+            <ul>
+                <li><strong>Crashes Kill Teens:</strong> Motor vehicle crashes are the #1 cause of death for 15–19 year olds. The first 6 months of independent driving are the most dangerous.</li>
+                <li><strong>Passenger Restrictions:</strong> Enforce state laws on passenger restrictions. Crash risks increase with each additional teen passenger.</li>
+                <li><strong>Night Driving Curfew:</strong> Fatal crashes are significantly more likely to occur at night due to reduced visibility and fatigue.</li>
+                <li><strong>Zero Tolerance:</strong> Connecticut has a Zero-Tolerance Law for teens drinking and driving.</li>
+            </ul>
+        </section>
+
+        <section id="driver-ed">
+            <h2>Driver Education Requirements (16 & 17-Year-Olds)</h2>
+            <p>All 16- and 17-year-old applicants must complete a driver training program through one of the following paths:</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Training Option</th>
+                        <th>Classroom Hours</th>
+                        <th>On-the-Road Training</th>
+                        <th>Wait Period for Test</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Commercial / Secondary School</td>
+                        <td>30 Hours</td>
+                        <td>40 Hours</td>
+                        <td>120 Days</td>
+                    </tr>
+                    <tr>
+                        <td>Home Training Program</td>
+                        <td>30 Hours (incl. 8-hr Safe Driving Course)</td>
+                        <td>40 Hours</td>
+                        <td>180 Days</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Parent Training Requirement</h3>
+            <p>A parent or legal guardian of a 16- or 17-year-old permit holder must complete <strong>2 hours of instruction</strong> regarding teen driving laws and safety.</p>
+        </section>
+
+        <section id="road-test">
+            <h2>Preparing for Your Driver's Test</h2>
+            <p>Things you should demonstrate and remember during your test:</p>
+            <ul class="checklist">
+                <li>Follow all examiner directions promptly.</li>
+                <li>Check surrounding traffic, pedestrians, and mirrors before moving.</li>
+                <li>Apply the brake before shifting into gear from "Park".</li>
+                <li>Maintain a safe "space cushion" around your vehicle.</li>
+                <li>Use turn signals appropriately every time you turn or change lanes.</li>
+                <li>Smoothly stop and maintain control when backing up or parking.</li>
+            </ul>
+        </section>
+
+        <footer>
+            <p>Connecticut Department of Motor Vehicles | Revised Edition</p>
+            <p>For current updates and scheduling, visit <a href="https://ct.gov/dmv" target="_blank">ct.gov/dmv</a></p>
+        </footer>
     </main>
-
-    <footer>
-        <p>&copy; 2026 Velocity Bot. All rights reserved. | <a href="privacy.html">Terms</a> &bull; <a href="privacypolicy.html">Privacy</a></p>
-    </footer>
 
 </body>
 </html>
