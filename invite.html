@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Automatic redirect after 3 seconds -->
+    <meta http-equiv="refresh" content="3;url=https://discord.com/oauth2/authorize?client_id=1539005630910570577&permissions=8&scope=bot%20applications.commands">
+    <title>Redirecting - Velocity</title>
+    <style>
+        :root {
+            --bg-color: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #5865f2;
+            --code-bg: #0f172a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background: var(--bg-color);
+            background-attachment: fixed;
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        nav a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        nav a:hover, nav a.active {
+            color: #ffffff;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 90%;
+            margin: auto;
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
+        .redirect-btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: #ffffff;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .redirect-btn:hover {
+            background-color: #4752c4;
+            transform: translateY(-1px);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: var(--accent);
+            border-radius: 50%;
+            margin: 0 auto 20px auto;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">Velocity</a>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="commands.html">Commands</a>
+            <a href="tos.html">Terms of Service</a>
+            <a href="privacypolicy.html">Privacy Policy</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="spinner"></div>
+        <h1>Redirecting...</h1>
+        <p>You are being redirected to authorize <strong>Velocity</strong> on Discord. If you are not redirected automatically within a few seconds, click the button below.</p>
+        <a href="https://discord.com/oauth2/authorize?client_id=1539005630910570577&permissions=8&scope=bot%20applications.commands" class="redirect-btn">Add to Discord</a>
+    </div>
+
+    <script>
+        // JavaScript fallback redirect to ensure immediate execution
+        setTimeout(function() {
+            window.location.href = "https://discord.com/oauth2/authorize?client_id=1539005630910570577&permissions=8&scope=bot%20applications.commands";
+        }, 3000);
+    </script>
+</body>
+</html>
