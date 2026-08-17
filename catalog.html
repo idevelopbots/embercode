@@ -1,1 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velocity - Server Catalog</title>
+    <style>
+        :root {
+            --bg-color: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #cbd5e1;
+            --accent: #5865f2;
+            --accent-hover: #4752c4;
+            --btn-secondary: #334155;
+            --btn-secondary-hover: #475569;
+        }
 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background: var(--bg-color);
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header {
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-left: 20px;
+            transition: color 0.2s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--text-main);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 40px 20px;
+            flex-grow: 1;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #ffffff 0%, #ffe4e6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .server-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .server-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .server-banner {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            background-color: var(--btn-secondary);
+        }
+
+        .card-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .server-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .server-description {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            text-align: center;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--btn-secondary);
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--btn-secondary-hover);
+        }
+
+        footer {
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        footer a {
+            color: var(--text-muted);
+            text-decoration: underline;
+        }
+
+        footer a:hover {
+            color: var(--text-main);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">Velocity</a>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="tos.html">Terms of Service</a>
+            <a href="privacypolicy.html">Privacy Policy</a>
+            <a href="commands.html">Commands</a>
+            <a href="invite.html">Invite Velocity</a>
+            <a href="catalog.html" class="active">Server Catalog</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1 class="page-title">Server Catalog</h1>
+
+        <div class="catalog-grid">
+            
+            <!-- Server Card 1 -->
+            <article class="server-card">
+                <img src="https://picsum.photos/600/200?random=1" alt="Velocity Official Lounge Banner" class="server-banner">
+                <div class="card-body">
+                    <h2 class="server-title">Velocity Official Lounge</h2>
+                    <p class="server-description">The official home community for Velocity Bot. Connect with developers, test new features early, and share feedback.</p>
+                    <div class="btn-group">
+                        <a href="https://discord.gg/rgyJPSFwbY" class="btn btn-primary" target="_blank" rel="noopener">Join Server</a>
+                        <a href="https://discord.gg/rgyJPSFwbY" class="btn btn-secondary" target="_blank" rel="noopener">Invite Link</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Server Card 2 -->
+            <article class="server-card">
+                <img src="https://picsum.photos/600/200?random=2" alt="Aesthetic Oasis Banner" class="server-banner">
+                <div class="card-body">
+                    <h2 class="server-title">Aesthetic Oasis</h2>
+                    <p class="server-description">A chilled-out community focused on graphic design, digital art sharing, music streaming, and late-night voice chats.</p>
+                    <div class="btn-group">
+                        <a href="#" class="btn btn-primary" target="_blank" rel="noopener">Join Server</a>
+                        <a href="#" class="btn btn-secondary" target="_blank" rel="noopener">Invite Link</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Server Card 3 -->
+            <article class="server-card">
+                <img src="https://picsum.photos/600/200?random=3" alt="Nexus Gaming Network Banner" class="server-banner">
+                <div class="card-body">
+                    <h2 class="server-title">Nexus Gaming Network</h2>
+                    <p class="server-description">Looking for group? Find teammates for multiplayer games, participate in weekly tournaments, and win prize giveaways.</p>
+                    <div class="btn-group">
+                        <a href="#" class="btn btn-primary" target="_blank" rel="noopener">Join Server</a>
+                        <a href="#" class="btn btn-secondary" target="_blank" rel="noopener">Invite Link</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Server Card 4 -->
+            <article class="server-card">
+                <img src="https://picsum.photos/600/200?random=4" alt="DevPulse Community Banner" class="server-banner">
+                <div class="card-body">
+                    <h2 class="server-title">DevPulse Community</h2>
+                    <p class="server-description">A hub for programmers, web designers, and software engineers to collaborate on open-source projects and get code reviews.</p>
+                    <div class="btn-group">
+                        <a href="#" class="btn btn-primary" target="_blank" rel="noopener">Join Server</a>
+                        <a href="#" class="btn btn-secondary" target="_blank" rel="noopener">Invite Link</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Server Card 5 -->
+            <article class="server-card">
+                <img src="https://picsum.photos/600/200?random=5" alt="Lo-Fi & Chill Station Banner" class="server-banner">
+                <div class="card-body">
+                    <h2 class="server-title">Lo-Fi & Chill Station</h2>
+                    <p class="server-description">24/7 lo-fi beats, dedicated study channels, and productivity timers to keep you focused during work and study sessions.</p>
+                    <div class="btn-group">
+                        <a href="#" class="btn btn-primary" target="_blank" rel="noopener">Join Server</a>
+                        <a href="#" class="btn btn-secondary" target="_blank" rel="noopener">Invite Link</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Server Card 6 -->
+            <article class="server-card">
+                <img src="https://picsum.photos/600/200?random=6" alt="Pixel Art Central Banner" class="server-banner">
+                <div class="card-body">
+                    <h2 class="server-title">Pixel Art Central</h2>
+                    <p class="server-description">Share your retro creations, participate in monthly sprite challenges, and learn techniques from experienced pixel artists.</p>
+                    <div class="btn-group">
+                        <a href="#" class="btn btn-primary" target="_blank" rel="noopener">Join Server</a>
+                        <a href="#" class="btn btn-secondary" target="_blank" rel="noopener">Invite Link</a>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Velocity Bot. All rights reserved. | <a href="tos.html">Terms</a> &bull; <a href="privacypolicy.html">Privacy</a></p>
+    </footer>
+
+</body>
+</html>
