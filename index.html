@@ -3,273 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CT DMV Driver's Guide - ADHD Friendly Edition</title>
+    <title>Velocity - Your Own Companion</title>
     <style>
         :root {
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text: #1e293b;
-            --primary: #2563eb;
-            --accent-yellow: #fef08a;
-            --accent-red: #fecdd3;
-            --border: #e2e8f0;
-        }
-
-        body.dark-mode {
-            --bg: #0f172a;
+            --bg-color: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
             --card-bg: #1e293b;
-            --text: #f1f5f9;
-            --primary: #60a5fa;
-            --accent-yellow: #854d0e;
-            --accent-red: #881337;
-            --border: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #f1f5f9;
+            --accent: #5865f2;
+            --accent-hover: #4752c4;
+            --btn-secondary: #334155;
+            --btn-secondary-hover: #475569;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            line-height: 1.7;
-            padding-bottom: 60px;
-            transition: background-color 0.3s, color 0.3s;
+            background: var(--bg-color);
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        /* ADHD Reading Guide Bar */
-        #reading-ruler {
-            position: fixed;
-            height: 35px;
-            width: 100%;
-            background-color: rgba(250, 204, 21, 0.25);
-            pointer-events: none;
-            z-index: 9999;
-            display: none;
-            border-top: 2px solid #eab308;
-            border-bottom: 2px solid #eab308;
-        }
-
-        /* Header Bar Controls */
         header {
-            position: sticky;
-            top: 0;
-            background: var(--card-bg);
-            border-bottom: 2px solid var(--border);
-            padding: 15px 20px;
-            z-index: 1000;
+            width: 100%;
+            padding: 20px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
+            max-width: 1200px;
         }
 
-        .controls {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        button {
-            padding: 8px 14px;
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            background: var(--bg);
-            color: var(--text);
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        button:hover {
-            border-color: var(--primary);
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 25px;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-
-        h1 {
+        .logo {
             font-size: 1.5rem;
-            color: var(--primary);
+            font-weight: 700;
+            color: var(--text-main);
+            text-decoration: none;
         }
 
-        h2 {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-left: 20px;
+            transition: color 0.2s;
         }
 
-        .badge {
-            background: var(--primary);
-            color: white;
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-size: 0.8rem;
+        nav a:hover, nav a.active {
+            color: var(--text-main);
         }
 
-        /* Chunked Highlighting */
-        .highlight-box {
-            background: var(--accent-yellow);
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            font-weight: 500;
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            max-width: 800px;
         }
 
-        .alert-box {
-            background: var(--accent-red);
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            font-weight: 500;
-        }
-
-        ul {
-            padding-left: 20px;
-        }
-
-        li {
-            margin-bottom: 10px;
-        }
-
-        b, strong {
-            color: var(--primary);
-        }
-
-        .bionic-bold {
+        .hero h1 {
+            font-size: 3.5rem;
             font-weight: 800;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #ffffff 0%, #ffe4e6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 32px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--btn-secondary);
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--btn-secondary-hover);
+        }
+
+        footer {
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        footer a {
+            color: var(--text-muted);
+            text-decoration: underline;
+        }
+
+        footer a:hover {
+            color: var(--text-main);
         }
     </style>
 </head>
 <body>
 
-    <div id="reading-ruler"></div>
-
     <header>
-        <h1>⚡ CT DMV Quick-Guide</h1>
-        <div class="controls">
-            <button onclick="toggleDarkMode()">🌙 Dark Mode</button>
-            <button onclick="toggleRuler()">📏 Reading Line</button>
-            <button onclick="toggleBionic()">👁️ Bionic Focus</button>
-        </div>
+        <a href="index.html" class="logo">Velocity</a>
+        <nav>
+            <a href="index.html" class="active">Home</a>
+            <a href="tos.html">Terms of Service</a>
+            <a href="privacypolicy.html">Privacy Policy</a>
+            <a href="commands.html">Commands</a>
+            <a href="invite.html">Invite Velocity</a>
+            <a href="catalog.html">Server Catalog</a>
+        </nav>
     </header>
 
-    <div class="container">
-
-        <!-- Core Summary Card -->
-        <div class="card">
-            <h2><span class="badge">TL;DR</span> ⚡ Quick Start Summary</h2>
-            <div class="highlight-box">
-                🎯 <b>Goal:</b> Get your CT Class D Driver's License.
-            </div>
-            <ul>
-                <li>Must be <b>16+ years old</b> to apply.</li>
-                <li>Pass a <b>Vision Test</b> + <b>25-Question Test</b> (Need 20 correct).</li>
-                <li>Hold permit for <b>120 days</b> (if taking driving school) or <b>180 days</b> (if home trained).</li>
-            </ul>
+    <main class="hero">
+        <h1>Your own companion</h1>
+        <div class="btn-group">
+            <a href="https://discord.com/oauth2/authorize?client_id=1539005630910570577&permissions=8&scope=bot%20applications.commands" class="btn btn-primary" target="_blank" rel="noopener">Invite Velocity</a>
+            <a href="https://discord.gg/rgyJPSFwbY" class="btn btn-secondary" target="_blank" rel="noopener">Support Server</a>
         </div>
+    </main>
 
-        <!-- Section: Permit Rules -->
-        <div class="card">
-            <h2>📌 Permit Rules & Restrictions</h2>
-            <p class="bionic-target">For 16 & 17-Year-Olds, passenger restrictions strictly apply for safety:</p>
-            
-            <div class="alert-box">
-                🚨 <b>Who can ride with you while learning?</b>
-                <ul>
-                    <li>A licensed Driving Instructor.</li>
-                    <li><b>OR</b> 1 designated supervisor (20+ years old, licensed 4+ years uninterrupted).</li>
-                </ul>
-            </div>
-        </div>
+    <footer>
+        <p>&copy; 2026 Velocity Bot. All rights reserved. | <a href="tos.html">Terms</a> &bull; <a href="privacypolicy.html">Privacy</a></p>
+    </footer>
 
-        <!-- Section: Training Breakdown -->
-        <div class="card">
-            <h2>⏱️ Required Hours Breakdown</h2>
-            <div class="highlight-box">
-                Every teen driver needs <b>40 total hours</b> behind the wheel!
-            </div>
-            <ul>
-                <li><b>Classroom Training:</b> 30 Hours total.</li>
-                <li><b>Parent Class:</b> 2 Mandatory hours for parent/guardian.</li>
-                <li><b>Safe Driving Class:</b> 8 Hours required for home-trained applicants.</li>
-            </ul>
-        </div>
-
-        <!-- Section: Road Test Checklist -->
-        <div class="card">
-            <h2>✅ Checklist: Pass Your Road Test</h2>
-            <ul>
-                <li>[ ] Clear all windows and adjust mirrors before shifting into gear.</li>
-                <li>[ ] Press the foot brake <b>BEFORE</b> shifting out of Park.</li>
-                <li>[ ] Maintain a safe <b>space cushion</b> around your car.</li>
-                <li>[ ] Signal every single turn and lane change.</li>
-                <li>[ ] Bring car to a completely smooth stop without sudden jerks.</li>
-            </ul>
-        </div>
-
-    </div>
-
-    <script>
-        // Reading Ruler Script
-        const ruler = document.getElementById('reading-ruler');
-        let rulerActive = false;
-
-        function toggleRuler() {
-            rulerActive = !rulerActive;
-            ruler.style.display = rulerActive ? 'block' : 'none';
-        }
-
-        document.addEventListener('mousemove', (e) => {
-            if (rulerActive) {
-                ruler.style.top = (e.clientY - 17) + 'px';
-            }
-        });
-
-        // Dark Mode Toggle
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-        }
-
-        // Simple Bionic Reading Toggle Simulation
-        let bionicActive = false;
-        function toggleBionic() {
-            bionicActive = !bionicActive;
-            const targets = document.querySelectorAll('.bionic-target, li, p');
-            
-            targets.forEach(el => {
-                if (bionicActive) {
-                    const words = el.innerText.split(' ');
-                    el.innerHTML = words.map(word => {
-                        const mid = Math.ceil(word.length / 2);
-                        return `<span class="bionic-bold">${word.slice(0, mid)}</span>${word.slice(mid)}`;
-                    }).join(' ');
-                } else {
-                    el.innerHTML = el.innerText;
-                }
-            });
-        }
-    </script>
 </body>
 </html>
