@@ -3,160 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Velocity - Your Own Companion</title>
+    <title>Website Template</title>
     <style>
-        :root {
-            --bg-color: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
-            --card-bg: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #f1f5f9;
-            --accent: #5865f2;
-            --accent-hover: #4752c4;
-            --btn-secondary: #334155;
-            --btn-secondary-hover: #475569;
-        }
-
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            box-sizing: border-box;
         }
 
         body {
-            background: var(--bg-color);
-            background-attachment: fixed;
-            color: var(--text-main);
+            background-color: #000000;
+            font-family: Arial, sans-serif;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
         }
 
-        header {
+        .banner {
             width: 100%;
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
+            height: 280px;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 1)), 
+                        url('https://i.ibb.co/G48W022Q/DASHBOARD-14.png') center/cover no-repeat;
+            position: relative;
         }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-main);
-            text-decoration: none;
-        }
-
-        nav a {
-            color: var(--text-muted);
-            text-decoration: none;
-            margin-left: 20px;
-            transition: color 0.2s;
-        }
-
-        nav a:hover, nav a.active {
-            color: var(--text-main);
-        }
-
-        .hero {
-            text-align: center;
-            padding: 80px 20px;
+        .content-area {
             max-width: 800px;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 24px;
-            background: linear-gradient(135deg, #ffffff 0%, #ffe4e6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 32px;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 14px 28px;
-            border-radius: 8px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: background-color 0.2s, transform 0.1s;
-        }
-
-        .btn:active {
-            transform: scale(0.98);
-        }
-
-        .btn-primary {
-            background-color: var(--accent);
-            color: #ffffff;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--accent-hover);
-        }
-
-        .btn-secondary {
-            background-color: var(--btn-secondary);
-            color: var(--text-main);
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--btn-secondary-hover);
-        }
-
-        footer {
-            padding: 40px 20px;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            text-align: center;
-            width: 100%;
-        }
-
-        footer a {
-            color: var(--text-muted);
-            text-decoration: underline;
-        }
-
-        footer a:hover {
-            color: var(--text-main);
+            margin: 0 auto;
+            padding: 20px;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <a href="index.html" class="logo">Velocity</a>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="tos.html">Terms of Service</a>
-            <a href="privacypolicy.html">Privacy Policy</a>
-            <a href="commands.html" class="active">Commands</a>
-            <a href="invite.html">Invite Velocity</a>
-        </nav>
-    </header>
+    <div class="banner"></div>
 
-    <main class="hero">
-        <h1>Your own companion</h1>
-        <div class="btn-group">
-            <a href="https://discord.com/oauth2/authorize?client_id=1539005630910570577&permissions=8&scope=bot%20applications.commands" class="btn btn-primary" target="_blank" rel="noopener">Invite Velocity</a>
-            <a href="https://discord.gg/PrhrDdbdX2" class="btn btn-secondary" target="_blank" rel="noopener">Support Server</a>
-        </div>
+    <main class="content-area">
+        <!-- Main content goes here -->
     </main>
-
-    <footer>
-        <p>&copy; 2026 Velocity Bot. All rights reserved. | <a href="tos.html">Terms</a> &bull; <a href="privacypolicy.html">Privacy</a></p>
-    </footer>
 
 </body>
 </html>
