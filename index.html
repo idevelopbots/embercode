@@ -1,44 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Template</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: #000000;
-            font-family: Arial, sans-serif;
-            min-height: 100vh;
-        }
-
-        .banner {
-            width: 100%;
-            height: 280px;
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 1)), 
-                        url('https://i.ibb.co/G48W022Q/DASHBOARD-14.png') center/cover no-repeat;
-            position: relative;
-        }
-
-        .content-area {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Waypoint Bot - Home</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(120deg, #ffffff, #e6e6e6, #ffffff);
+        background-size: 400% 400%;
+        animation: gradientMove 12s ease infinite;
+    }
+    @keyframes gradientMove {
+        0% {background-position: 0% 50%;}
+        50% {background-position: 100% 50%;}
+        100% {background-position: 0% 50%;}
+    }
+    nav {
+        background: rgba(0,0,0,0.7);
+        padding: 15px;
+        display: flex;
+        gap: 20px;
+    }
+    nav a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    .container {
+        text-align: center;
+        margin-top: 100px;
+    }
+    .btn {
+        display: inline-block;
+        margin: 15px;
+        padding: 15px 25px;
+        background: #000;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: 0.3s;
+    }
+    .btn:hover {
+        background: #333;
+    }
+</style>
 </head>
 <body>
 
-    <div class="banner"></div>
+<nav>
+    <a href="index.html">Home</a>
+    <a href="tos.html">Terms of Service</a>
+    <a href="privacy.html">Privacy Policy</a>
+</nav>
 
-    <main class="content-area">
-        <!-- Main content goes here -->
-    </main>
+<div class="container">
+    <h1>Waypoint Bot</h1>
+    <p>Your server’s navigation assistant.</p>
+
+    <a class="btn" href="https://discord.gg/3QV3XEteHx">Support Server</a>
+    <a class="btn" href="https://discord.com/oauth2/authorize?client_id=1542990189566099606&permissions=8&integration_type=0&scope=bot+applications.commands">Invite Bot</a>
+</div>
 
 </body>
 </html>
