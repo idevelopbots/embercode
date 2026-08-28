@@ -80,6 +80,7 @@ nav a:hover {
     transition: transform 0.15s ease-out;
     transform-style: preserve-3d;
 }
+
 h1 {
     font-size: 3rem;
     margin-bottom: 20px;
@@ -127,4 +128,43 @@ p {
     <p>Server administrators may request deletion of stored configuration data at any time.</p>
 
     <h2>5. Changes</h2>
-    <p>This policy may be updated
+    <p>This policy may be updated as Waypoint evolves. Continued use of the bot implies acceptance of updated terms.</p>
+</div>
+
+<script>
+document.addEventListener("mousemove", (e) => {
+    const panel = document.querySelector(".content");
+    if (!panel) return;
+
+    const rect = panel.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotateX = ((y - centerY) / centerY) * 10;
+    const rotateY = ((x - centerX) / centerX) * -10;
+
+    panel.style.transform = `
+        perspective(800px)
+        rotateX(${rotateX}deg)
+        rotateY(${rotateY}deg)
+        scale(1.03)
+    `;
+});
+
+document.addEventListener("mouseleave", () => {
+    const panel = document.querySelector(".content");
+    if (!panel) return;
+    panel.style.transform = `
+        perspective(800px)
+        rotateX(0deg)
+        rotateY(0deg)
+        scale(1)
+    `;
+});
+</script>
+
+</body>
+</html>
