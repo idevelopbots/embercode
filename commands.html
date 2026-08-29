@@ -1,191 +1,239 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-<meta charset="UTF-8">
-<title>Waypoint - Commands</title>
-<link rel="icon" type="image/png" href="https://i.ibb.co/1JsTfYVW/HSRP-6.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waypoint — Commands Reference</title>
+    <link rel="icon" type="image/png" href="https://i.ibb.co/1JsTfYVW/HSRP-6.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .mesh-bg {
+            background-color: #030712;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(147, 51, 234, 0.12) 0px, transparent 50%),
+                radial-gradient(at 50% 100%, rgba(14, 165, 233, 0.1) 0px, transparent 50%);
+        }
+        
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
 
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.2);
+        }
 
-/* Background */
-body {
-    font-family: "Inter", sans-serif;
-    background: radial-gradient(circle at top left, #ffffff, #dfe9f3, #cfd9df, #e2ebf0);
-    background-size: 400% 400%;
-    animation: bgMove 20s infinite alternate ease;
-    overflow-x: hidden;
-}
-@keyframes bgMove {
-    0% { background-position: 0% 0%; }
-    100% { background-position: 100% 100%; }
-}
+        .text-gradient {
+            background: linear-gradient(135deg, #ffffff 20%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-/* Particles */
-.particle {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background: rgba(255,255,255,0.7);
-    border-radius: 50%;
-    animation: float 12s infinite ease-in-out;
-}
-@keyframes float {
-    0% { transform: translateY(0) translateX(0); opacity: 0.4; }
-    50% { opacity: 1; }
-    100% { transform: translateY(-200px) translateX(80px); opacity: 0.2; }
-}
-.particle:nth-child(1) { top: 80%; left: 10%; animation-delay: 0s; }
-.particle:nth-child(2) { top: 60%; left: 30%; animation-delay: 2s; }
-.particle:nth-child(3) { top: 70%; left: 50%; animation-delay: 4s; }
-.particle:nth-child(4) { top: 85%; left: 70%; animation-delay: 1s; }
-.particle:nth-child(5) { top: 65%; left: 90%; animation-delay: 3s; }
+        .btn-shimmer {
+            background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 50%, #4f46e5 100%);
+            background-size: 200% auto;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-shimmer:hover {
+            background-position: right center;
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
+        }
 
-/* Navigation */
-nav {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    padding: 20px 40px;
-    display: flex;
-    gap: 30px;
-    backdrop-filter: blur(20px);
-    background: rgba(255,255,255,0.15);
-    border-bottom: 1px solid rgba(255,255,255,0.3);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-}
-nav a {
-    color: #000;
-    font-weight: 600;
-    text-decoration: none;
-    font-size: 1.1rem;
-    transition: 0.3s;
-}
-nav a:hover {
-    color: #444;
-    transform: translateY(-2px);
-}
-
-/* Content panel */
-.content {
-    max-width: 900px;
-    margin: 180px auto;
-    padding: 50px;
-    backdrop-filter: blur(25px);
-    background: rgba(255,255,255,0.25);
-    border-radius: 25px;
-    border: 1px solid rgba(255,255,255,0.4);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-    color: #000;
-    transition: transform 0.15s ease-out;
-    transform-style: preserve-3d;
-}
-
-h1 {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    text-shadow: 0 2px 10px rgba(255,255,255,0.7);
-}
-
-.command {
-    margin-top: 25px;
-    padding: 20px;
-    background: rgba(255,255,255,0.35);
-    border-radius: 15px;
-    border: 1px solid rgba(255,255,255,0.5);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-}
-
-.command h2 {
-    font-size: 1.4rem;
-    margin-bottom: 10px;
-}
-
-.command p {
-    font-size: 1.1rem;
-    line-height: 1.5rem;
-}
-</style>
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+    </style>
 </head>
 
-<body>
+<body class="mesh-bg bg-grid min-h-screen text-slate-100 flex flex-col justify-between overflow-x-hidden font-sans selection:bg-indigo-500 selection:text-white">
 
-<div class="particle"></div>
-<div class="particle"></div>
-<div class="particle"></div>
-<div class="particle"></div>
-<div class="particle"></div>
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[140px] pointer-events-none -z-10 animate-pulse-slow"></div>
+    <div class="absolute bottom-10 right-10 w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
 
-<nav>
-    <a href="index.html">Home</a>
-    <a href="tos.html">Terms of Service</a>
-    <a href="privacy.html">Privacy Policy</a>
-    <a href="commands.html">Commands</a>
-</nav>
+    <header class="fixed top-0 left-0 right-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
+                    <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <span class="font-bold tracking-tight text-lg text-white">Waypoint</span>
+            </a>
 
-<div class="content">
-    <h1>Waypoint — Commands</h1>
+            <nav class="hidden md:flex items-center gap-1 glass-panel px-3 py-1.5 rounded-full">
+                <a href="index.html" class="px-4 py-1.5 rounded-full text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-colors">Home</a>
+                <a href="commands.html" class="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white transition-colors">Commands</a>
+                <a href="tos.html" class="px-4 py-1.5 rounded-full text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-colors">Terms</a>
+                <a href="privacy.html" class="px-4 py-1.5 rounded-full text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-colors">Privacy</a>
+            </nav>
 
-    <div class="command">
-        <h2>/invite</h2>
-        <p>Invite Waypoint to your server.</p>
-    </div>
+            <div class="flex items-center gap-3">
+                <a href="https://discord.gg/3QV3XEteHx" class="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-white transition-colors px-4 py-2">
+                    Support
+                </a>
+                <a href="https://discord.com/oauth2/authorize?client_id=1542990189566099606&permissions=8&integration_type=0&scope=bot+applications.commands" class="btn-shimmer text-white text-sm font-semibold px-5 py-2.5 rounded-xl shadow-lg flex items-center gap-2">
+                    <span>Add to Discord</span>
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </a>
+            </div>
+        </div>
+    </header>
 
-    <div class="command">
-        <h2>/vm-enable</h2>
-        <p>Enable VoiceMaster.</p>
-    </div>
+    <main class="flex-grow flex items-center justify-center px-4 pt-32 pb-16">
+        <div id="tilt-container" class="glass-panel w-full max-w-4xl rounded-3xl p-8 sm:p-14 text-left transition-transform duration-100 ease-out relative">
+            
+            <div class="flex items-center justify-between pb-8 mb-8 border-b border-white/10">
+                <div>
+                    <span class="text-xs font-mono tracking-widest text-indigo-400 uppercase">System Manual</span>
+                    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-gradient mt-1">Commands Reference</h1>
+                </div>
+                <div class="hidden sm:block text-right font-mono text-xs text-slate-500">
+                    <div>Prefix: / (Slash Commands)</div>
+                    <div>Total: 5 Active</div>
+                </div>
+            </div>
 
-    <div class="command">
-        <h2>/vm-disable</h2>
-        <p>Disable VoiceMaster.</p>
-    </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                
+                <div class="glass-card rounded-2xl p-5 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <code class="font-mono text-sm font-bold text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-lg border border-indigo-500/20">/invite</code>
+                            <span class="text-[10px] font-mono text-slate-500 uppercase">General</span>
+                        </div>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Generate secure authorization links to deploy Waypoint directly into your own Discord server infrastructure.
+                        </p>
+                    </div>
+                </div>
 
-    <div class="command">
-        <h2>/welcome (channel)</h2>
-        <p>Set your welcome channel to welcome  new users..</p>
-    </div>
+                <div class="glass-card rounded-2xl p-5 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <code class="font-mono text-sm font-bold text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-lg border border-indigo-500/20">/vm-enable</code>
+                            <span class="text-[10px] font-mono text-slate-500 uppercase">Voice</span>
+                        </div>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Activate the automated VoiceMaster module to provision dynamic, user-managed voice channels on demand.
+                        </p>
+                    </div>
+                </div>
 
-    <div class="command">
-        <h2>/ping</h2>
-        <p>Check bot latency and responsiveness.</p>
-    </div>
-</div>
+                <div class="glass-card rounded-2xl p-5 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <code class="font-mono text-sm font-bold text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-lg border border-indigo-500/20">/vm-disable</code>
+                            <span class="text-[10px] font-mono text-slate-500 uppercase">Voice</span>
+                        </div>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Deactivate the VoiceMaster module and clean up any remaining automated temporary voice channel hubs.
+                        </p>
+                    </div>
+                </div>
 
-<script>
-document.addEventListener("mousemove", (e) => {
-    const panel = document.querySelector(".content");
-    if (!panel) return;
+                <div class="glass-card rounded-2xl p-5 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <code class="font-mono text-sm font-bold text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-lg border border-indigo-500/20">/welcome &lt;channel&gt;</code>
+                            <span class="text-[10px] font-mono text-slate-500 uppercase">Config</span>
+                        </div>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Configure a dedicated text channel to automatically greet and onboard newly joined community members.
+                        </p>
+                    </div>
+                </div>
 
-    const rect = panel.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+                <div class="glass-card rounded-2xl p-5 flex flex-col justify-between sm:col-span-2">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <code class="font-mono text-sm font-bold text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-lg border border-indigo-500/20">/ping</code>
+                            <span class="text-[10px] font-mono text-slate-500 uppercase">Utility</span>
+                        </div>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Perform a real-time diagnostic ping test to verify bot response latency and gateway connectivity metrics.
+                        </p>
+                    </div>
+                </div>
 
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
+            </div>
 
-    const rotateX = ((y - centerY) / centerY) * 10;
-    const rotateY = ((x - centerX) / centerX) * -10;
+        </div>
+    </main>
 
-    panel.style.transform = `
-        perspective(800px)
-        rotateX(${rotateX}deg)
-        rotateY(${rotateY}deg)
-        scale(1.03)
-    `;
-});
+    <footer class="py-6 text-center text-xs text-slate-500 font-mono">
+        <p>&copy; 2026 Waypoint Systems. All enterprise rights reserved.</p>
+    </footer>
 
-document.addEventListener("mouseleave", () => {
-    const panel = document.querySelector(".content");
-    if (!panel) return;
-    panel.style.transform = `
-        perspective(800px)
-        rotateX(0deg)
-        rotateY(0deg)
-        scale(1)
-    `;
-});
-</script>
+    <script>
+        const panel = document.getElementById("tilt-container");
 
+        document.addEventListener("mousemove", (e) => {
+            if (!panel) return;
+
+            const rect = panel.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const rotateX = ((y - centerY) / centerY) * -3;
+            const rotateY = ((x - centerX) / centerX) * 3;
+
+            panel.style.transform = `
+                perspective(1000px)
+                rotateX(${rotateX}deg)
+                rotateY(${rotateY}deg)
+                scale3d(1.005, 1.005, 1.005)
+            `;
+        });
+
+        document.addEventListener("mouseleave", () => {
+            if (!panel) return;
+            panel.style.transform = `
+                perspective(1000px)
+                rotateX(0deg)
+                rotateY(0deg)
+                scale3d(1, 1, 1)
+            `;
+        });
+    </script>
 </body>
 </html>
