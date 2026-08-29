@@ -6,6 +6,7 @@
     <title>Waypoint — Commands Reference</title>
     <link rel="icon" type="image/png" href="https://i.ibb.co/1JsTfYVW/HSRP-6.png">
     
+    <!-- Fonts & Tailwind CSS CDN for Enterprise-grade Styling -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -83,9 +84,11 @@
 
 <body class="mesh-bg bg-grid min-h-screen text-slate-100 flex flex-col justify-between overflow-x-hidden font-sans selection:bg-indigo-500 selection:text-white">
 
+    <!-- Ambient Glow Background Blobs -->
     <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[140px] pointer-events-none -z-10 animate-pulse-slow"></div>
     <div class="absolute bottom-10 right-10 w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
 
+    <!-- Navigation Bar -->
     <header class="fixed top-0 left-0 right-0 z-50 px-6 py-4">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-3 group">
@@ -116,8 +119,9 @@
         </div>
     </header>
 
+    <!-- Content Container -->
     <main class="flex-grow flex items-center justify-center px-4 pt-32 pb-16">
-        <div id="tilt-container" class="glass-panel w-full max-w-4xl rounded-3xl p-8 sm:p-14 text-left transition-transform duration-100 ease-out relative">
+        <div id="tilt-container" class="glass-panel w-full max-w-5xl rounded-3xl p-8 sm:p-14 text-left transition-transform duration-100 ease-out relative">
             
             <div class="flex items-center justify-between pb-8 mb-8 border-b border-white/10">
                 <div>
@@ -126,68 +130,73 @@
                 </div>
                 <div class="hidden sm:block text-right font-mono text-xs text-slate-500">
                     <div>Prefix: / (Slash Commands)</div>
-                    <div>Total: 5 Active</div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Commands Grid (3 Columns on Desktop) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 
+                <!-- Command 1 -->
                 <div class="glass-card rounded-2xl p-5 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3">
-                            <code class="font-mono text-sm font-bold text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-lg border border-indigo-500/20">/invite</code>
+                            <code class="font-mono text-xs font-bold text-indigo-400 bg-indigo-500/10 px-2.5 py-1 rounded-lg border border-indigo-500/20">/invite</code>
                             <span class="text-[10px] font-mono text-slate-500 uppercase">General</span>
                         </div>
                         <p class="text-sm text-slate-400 leading-relaxed">
-                            Generate secure authorization links to deploy Waypoint directly into your own Discord server infrastructure.
+                            Generate secure authorization links to deploy Waypoint into your server.
                         </p>
                     </div>
                 </div>
 
+                <!-- Command 2 -->
                 <div class="glass-card rounded-2xl p-5 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3">
-                            <code class="font-mono text-sm font-bold text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-lg border border-indigo-500/20">/vm-enable</code>
+                            <code class="font-mono text-xs font-bold text-indigo-400 bg-indigo-500/10 px-2.5 py-1 rounded-lg border border-indigo-500/20">/vm-enable</code>
                             <span class="text-[10px] font-mono text-slate-500 uppercase">Voice</span>
                         </div>
                         <p class="text-sm text-slate-400 leading-relaxed">
-                            Activate the automated VoiceMaster module to provision dynamic, user-managed voice channels on demand.
+                            Activate automated VoiceMaster modules for dynamic channels.
                         </p>
                     </div>
                 </div>
 
+                <!-- Command 3 -->
                 <div class="glass-card rounded-2xl p-5 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3">
-                            <code class="font-mono text-sm font-bold text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-lg border border-indigo-500/20">/vm-disable</code>
+                            <code class="font-mono text-xs font-bold text-indigo-400 bg-indigo-500/10 px-2.5 py-1 rounded-lg border border-indigo-500/20">/vm-disable</code>
                             <span class="text-[10px] font-mono text-slate-500 uppercase">Voice</span>
                         </div>
                         <p class="text-sm text-slate-400 leading-relaxed">
-                            Deactivate the VoiceMaster module and clean up any remaining automated temporary voice channel hubs.
+                            Deactivate VoiceMaster and cleanup temporary channel hubs.
                         </p>
                     </div>
                 </div>
 
+                <!-- Command 4 -->
                 <div class="glass-card rounded-2xl p-5 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3">
-                            <code class="font-mono text-sm font-bold text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-lg border border-indigo-500/20">/welcome &lt;channel&gt;</code>
+                            <code class="font-mono text-xs font-bold text-indigo-400 bg-indigo-500/10 px-2.5 py-1 rounded-lg border border-indigo-500/20">/welcome &lt;channel&gt;</code>
                             <span class="text-[10px] font-mono text-slate-500 uppercase">Config</span>
                         </div>
                         <p class="text-sm text-slate-400 leading-relaxed">
-                            Configure a dedicated text channel to automatically greet and onboard newly joined community members.
+                            Configure a dedicated text channel to automatically greet new members.
                         </p>
                     </div>
                 </div>
 
-                <div class="glass-card rounded-2xl p-5 flex flex-col justify-between sm:col-span-2">
+                <!-- Command 5 -->
+                <div class="glass-card rounded-2xl p-5 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3">
-                            <code class="font-mono text-sm font-bold text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-lg border border-indigo-500/20">/ping</code>
+                            <code class="font-mono text-xs font-bold text-indigo-400 bg-indigo-500/10 px-2.5 py-1 rounded-lg border border-indigo-500/20">/ping</code>
                             <span class="text-[10px] font-mono text-slate-500 uppercase">Utility</span>
                         </div>
                         <p class="text-sm text-slate-400 leading-relaxed">
-                            Perform a real-time diagnostic ping test to verify bot response latency and gateway connectivity metrics.
+                            Perform a real-time diagnostic test to verify bot response latency.
                         </p>
                     </div>
                 </div>
@@ -197,10 +206,12 @@
         </div>
     </main>
 
+    <!-- Footer -->
     <footer class="py-6 text-center text-xs text-slate-500 font-mono">
         <p>&copy; 2026 Waypoint Systems. All enterprise rights reserved.</p>
     </footer>
 
+    <!-- Interactive 3D Tilt Script -->
     <script>
         const panel = document.getElementById("tilt-container");
 
