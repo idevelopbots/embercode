@@ -164,22 +164,29 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-medium text-slate-400 mb-1 font-mono">Author Name</label>
-                                <input type="text" id="input-author" placeholder="e.g. Welcome {user}" class="w-full text-sm rounded-xl px-3.5 py-2.5">
+                                <input type="text" id="input-author" class="w-full text-sm rounded-xl px-3.5 py-2.5">
                             </div>
                             <div>
-                                <label class="block text-xs font-medium text-slate-400 mb-1 font-mono">Author Icon URL</label>
-                                <input type="text" id="input-author-icon" placeholder="https://..." class="w-full text-sm rounded-xl px-3.5 py-2.5">
+                                <div class="flex items-center justify-between mb-1">
+                                    <label class="text-xs font-medium text-slate-400 font-mono">Author Icon URL</label>
+                                    <label class="text-[11px] font-mono text-indigo-400 hover:text-indigo-300 cursor-pointer flex items-center gap-1">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
+                                        Upload File
+                                        <input type="file" id="file-author-icon" accept="image/*" class="hidden">
+                                    </label>
+                                </div>
+                                <input type="text" id="input-author-icon" class="w-full text-sm rounded-xl px-3.5 py-2.5">
                             </div>
                         </div>
 
                         <div>
                             <label class="block text-xs font-medium text-slate-400 mb-1 font-mono">Embed Title</label>
-                            <input type="text" id="input-title" placeholder="Welcome to {guild.name}!" class="w-full text-sm rounded-xl px-3.5 py-2.5">
+                            <input type="text" id="input-title" class="w-full text-sm rounded-xl px-3.5 py-2.5">
                         </div>
 
                         <div>
                             <label class="block text-xs font-medium text-slate-400 mb-1 font-mono">Description (Markdown Supported)</label>
-                            <textarea id="input-description" rows="4" placeholder="Hey {user}, glad to have you here! We are now at {members} members." class="w-full text-sm rounded-xl px-3.5 py-2.5 resize-none"></textarea>
+                            <textarea id="input-description" rows="4" class="w-full text-sm rounded-xl px-3.5 py-2.5 resize-none"></textarea>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -191,24 +198,45 @@
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-xs font-medium text-slate-400 mb-1 font-mono">Thumbnail URL</label>
-                                <input type="text" id="input-thumbnail" placeholder="https://..." class="w-full text-sm rounded-xl px-3.5 py-2.5">
+                                <div class="flex items-center justify-between mb-1">
+                                    <label class="text-xs font-medium text-slate-400 font-mono">Thumbnail URL</label>
+                                    <label class="text-[11px] font-mono text-indigo-400 hover:text-indigo-300 cursor-pointer flex items-center gap-1">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
+                                        Upload File
+                                        <input type="file" id="file-thumbnail" accept="image/*" class="hidden">
+                                    </label>
+                                </div>
+                                <input type="text" id="input-thumbnail" class="w-full text-sm rounded-xl px-3.5 py-2.5">
                             </div>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-medium text-slate-400 mb-1 font-mono">Image URL</label>
-                            <input type="text" id="input-image" placeholder="https://..." class="w-full text-sm rounded-xl px-3.5 py-2.5">
+                            <div class="flex items-center justify-between mb-1">
+                                <label class="text-xs font-medium text-slate-400 font-mono">Image URL</label>
+                                <label class="text-[11px] font-mono text-indigo-400 hover:text-indigo-300 cursor-pointer flex items-center gap-1">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
+                                    Upload File
+                                    <input type="file" id="file-image" accept="image/*" class="hidden">
+                                </label>
+                            </div>
+                            <input type="text" id="input-image" class="w-full text-sm rounded-xl px-3.5 py-2.5">
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-medium text-slate-400 mb-1 font-mono">Footer Text</label>
-                                <input type="text" id="input-footer" placeholder="Server: {guild.name}" class="w-full text-sm rounded-xl px-3.5 py-2.5">
+                                <input type="text" id="input-footer" class="w-full text-sm rounded-xl px-3.5 py-2.5">
                             </div>
                             <div>
-                                <label class="block text-xs font-medium text-slate-400 mb-1 font-mono">Footer Icon URL</label>
-                                <input type="text" id="input-footer-icon" placeholder="https://..." class="w-full text-sm rounded-xl px-3.5 py-2.5">
+                                <div class="flex items-center justify-between mb-1">
+                                    <label class="text-xs font-medium text-slate-400 font-mono">Footer Icon URL</label>
+                                    <label class="text-[11px] font-mono text-indigo-400 hover:text-indigo-300 cursor-pointer flex items-center gap-1">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
+                                        Upload File
+                                        <input type="file" id="file-footer-icon" accept="image/*" class="hidden">
+                                    </label>
+                                </div>
+                                <input type="text" id="input-footer-icon" class="w-full text-sm rounded-xl px-3.5 py-2.5">
                             </div>
                         </div>
                     </div>
@@ -231,7 +259,7 @@
                                         <span class="text-xs text-[#949ba4]">Today at 4:45 PM</span>
                                     </div>
 
-                                    <div id="discord-embed" class="relative bg-[#2b2d31] rounded-lg p-4 max-w-md border-l-[4px] border-[#5865F2] shadow-md text-sm">
+                                    <div id="discord-embed" class="relative bg-[#2b2d31] rounded-lg p-4 max-w-md border-l-[4px] border-[#5865F2] shadow-md text-sm hidden">
                                         
                                         <div id="preview-author-container" class="hidden items-center gap-2 mb-2">
                                             <img id="preview-author-icon" src="" class="w-5 h-5 rounded-full hidden" alt="">
@@ -240,7 +268,7 @@
 
                                         <div id="preview-title" class="font-bold text-white mb-1.5 hidden hover:underline cursor-pointer"></div>
 
-                                        <div id="preview-description" class="text-[#dbdee1] text-xs leading-relaxed whitespace-pre-wrap mb-3"></div>
+                                        <div id="preview-description" class="text-[#dbdee1] text-xs leading-relaxed whitespace-pre-wrap mb-3 hidden"></div>
 
                                         <div id="preview-thumb-container" class="float-right ml-4 mb-2 hidden">
                                             <img id="preview-thumbnail" src="" class="w-20 h-20 rounded object-cover" alt="">
@@ -317,14 +345,22 @@
         // Embed Live Builder Logic
         const inputAuthor = document.getElementById('input-author');
         const inputAuthorIcon = document.getElementById('input-author-icon');
+        const fileAuthorIcon = document.getElementById('file-author-icon');
+        
         const inputTitle = document.getElementById('input-title');
         const inputDescription = document.getElementById('input-description');
         const inputColor = document.getElementById('input-color');
         const inputColorHex = document.getElementById('input-color-hex');
+        
         const inputThumbnail = document.getElementById('input-thumbnail');
+        const fileThumbnail = document.getElementById('file-thumbnail');
+        
         const inputImage = document.getElementById('input-image');
+        const fileImage = document.getElementById('file-image');
+        
         const inputFooter = document.getElementById('input-footer');
         const inputFooterIcon = document.getElementById('input-footer-icon');
+        const fileFooterIcon = document.getElementById('file-footer-icon');
 
         const discordEmbed = document.getElementById('discord-embed');
         const previewAuthorContainer = document.getElementById('preview-author-container');
@@ -341,17 +377,31 @@
         const previewFooter = document.getElementById('preview-footer');
         const btnCopyJson = document.getElementById('btn-copy-json');
 
-        // Visually leave variables as their exact literal string tags (e.g., {user}, {guild.name}, {members}) styled as clean inline code badges
+        // File upload handler to automatically populate input with local object URL
+        function setupFileUpload(fileInput, textInput) {
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const objectUrl = URL.createObjectURL(file);
+                    textInput.value = objectUrl;
+                    updatePreview();
+                }
+            });
+        }
+
+        setupFileUpload(fileAuthorIcon, inputAuthorIcon);
+        setupFileUpload(fileThumbnail, inputThumbnail);
+        setupFileUpload(fileImage, inputImage);
+        setupFileUpload(fileFooterIcon, inputFooterIcon);
+
         function parseVariablesToHTML(text) {
             if (!text) return '';
             
-            // Escape HTML entities first to prevent injection
             let escaped = text
                 .replace(/&/g, "&amp;")
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;");
 
-            // Replace variables with exact literal tag badges
             return escaped
                 .replace(/\{user\}/g, '<span style="background: rgba(88, 101, 242, 0.3); color: #dee0fc; padding: 1px 5px; border-radius: 4px; font-family: monospace; font-size: 11px; font-weight: 500; border: 1px solid rgba(255, 255, 255, 0.1);">{user}</span>')
                 .replace(/\{guild\.name\}/g, '<span style="background: rgba(88, 101, 242, 0.3); color: #dee0fc; padding: 1px 5px; border-radius: 4px; font-family: monospace; font-size: 11px; font-weight: 500; border: 1px solid rgba(255, 255, 255, 0.1);">{guild.name}</span>')
@@ -359,8 +409,23 @@
         }
 
         function updatePreview() {
-            // Author
             const authorVal = inputAuthor.value.trim();
+            const titleVal = inputTitle.value.trim();
+            const descVal = inputDescription.value.trim();
+            const thumbVal = inputThumbnail.value.trim();
+            const imgVal = inputImage.value.trim();
+            const footerVal = inputFooter.value.trim();
+
+            const hasContent = authorVal || titleVal || descVal || thumbVal || imgVal || footerVal;
+
+            if (!hasContent) {
+                discordEmbed.style.display = 'none';
+                return;
+            }
+
+            discordEmbed.style.display = 'block';
+
+            // Author
             if (authorVal !== '') {
                 previewAuthor.innerHTML = parseVariablesToHTML(authorVal);
                 previewAuthorContainer.style.display = 'flex';
@@ -375,23 +440,19 @@
             }
 
             // Title
-            const titleVal = inputTitle.value.trim();
             if (titleVal !== '') {
                 previewTitle.innerHTML = parseVariablesToHTML(titleVal);
                 previewTitle.style.display = 'block';
             } else {
-                previewTitle.innerHTML = '<span style="color: #949ba4; font-weight: normal;">Title Name</span>';
-                previewTitle.style.display = 'block';
+                previewTitle.style.display = 'none';
             }
 
             // Description
-            const descVal = inputDescription.value.trim();
             if (descVal !== '') {
                 previewDescription.innerHTML = parseVariablesToHTML(descVal);
                 previewDescription.style.display = 'block';
             } else {
-                previewDescription.innerHTML = '<span style="color: #949ba4;">Embed Description</span>';
-                previewDescription.style.display = 'block';
+                previewDescription.style.display = 'none';
             }
 
             // Color
@@ -399,23 +460,22 @@
             inputColorHex.value = inputColor.value;
 
             // Thumbnail
-            if (inputThumbnail.value.trim() !== '') {
-                previewThumbnail.src = inputThumbnail.value;
+            if (thumbVal !== '') {
+                previewThumbnail.src = thumbVal;
                 previewThumbContainer.style.display = 'block';
             } else {
                 previewThumbContainer.style.display = 'none';
             }
 
             // Image
-            if (inputImage.value.trim() !== '') {
-                previewImage.src = inputImage.value;
+            if (imgVal !== '') {
+                previewImage.src = imgVal;
                 previewImageContainer.style.display = 'block';
             } else {
                 previewImageContainer.style.display = 'none';
             }
 
             // Footer
-            const footerVal = inputFooter.value.trim();
             if (footerVal !== '') {
                 previewFooter.innerHTML = parseVariablesToHTML(footerVal);
                 previewFooterContainer.style.display = 'flex';
@@ -430,7 +490,6 @@
             }
         }
 
-        // Color input synchronization
         inputColor.addEventListener('input', () => {
             inputColorHex.value = inputColor.value;
             updatePreview();
@@ -443,15 +502,12 @@
             }
         });
 
-        // Add event listeners to all text fields
         [inputAuthor, inputAuthorIcon, inputTitle, inputDescription, inputThumbnail, inputImage, inputFooter, inputFooterIcon].forEach(element => {
             element.addEventListener('input', updatePreview);
         });
 
-        // Initial placeholder render
         updatePreview();
 
-        // Copy JSON functionality (keeps raw string variables intact for your bot parser)
         btnCopyJson.addEventListener('click', () => {
             const embedObj = {
                 title: inputTitle.value || undefined,
