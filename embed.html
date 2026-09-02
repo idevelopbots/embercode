@@ -341,7 +341,7 @@
         const previewFooter = document.getElementById('preview-footer');
         const btnCopyJson = document.getElementById('btn-copy-json');
 
-        // Mock data to visually replace variables with styled HTML badge elements inside the preview
+        // Visually replace variables with their exact literal variable tag names (e.g., {user}, {guild.name}, {members}) styled as badges
         function parseVariablesToHTML(text) {
             if (!text) return '';
             
@@ -351,11 +351,11 @@
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;");
 
-            // Replace variables with Discord-style mention/badge spans in the preview
+            // Replace variables with exact visual tag badges
             return escaped
-                .replace(/\{user\}/g, '<span style="background: rgba(88, 101, 242, 0.3); color: #dee0fc; padding: 0px 4px; border-radius: 4px; font-weight: 500;">@Alex</span>')
-                .replace(/\{guild\.name\}/g, '<span style="color: #ffffff; font-weight: 600;">Harmony Community</span>')
-                .replace(/\{members\}/g, '<span style="color: #ffffff; font-weight: 600;">1,428</span>');
+                .replace(/\{user\}/g, '<span style="background: rgba(88, 101, 242, 0.3); color: #dee0fc; padding: 1px 5px; border-radius: 4px; font-family: monospace; font-size: 11px; font-weight: 500; border: 1px solid rgba(255, 255, 255, 0.1);">[User]</span>')
+                .replace(/\{guild\.name\}/g, '<span style="background: rgba(88, 101, 242, 0.3); color: #dee0fc; padding: 1px 5px; border-radius: 4px; font-family: monospace; font-size: 11px; font-weight: 500; border: 1px solid rgba(255, 255, 255, 0.1);">[Guild Name]</span>')
+                .replace(/\{members\}/g, '<span style="background: rgba(88, 101, 242, 0.3); color: #dee0fc; padding: 1px 5px; border-radius: 4px; font-family: monospace; font-size: 11px; font-weight: 500; border: 1px solid rgba(255, 255, 255, 0.1);">[Members Count]</span>');
         }
 
         function updatePreview() {
@@ -389,7 +389,7 @@
                 previewDescription.innerHTML = parseVariablesToHTML(descVal);
                 previewDescription.style.display = 'block';
             } else {
-                previewDescription.innerHTML = 'Use the controls on the left to configure this embed message preview. You can use variables like <span style="background: rgba(88, 101, 242, 0.3); color: #dee0fc; padding: 0px 4px; border-radius: 4px;">{user}</span>, <span style="color: #fff;">{guild.name}</span>, and <span style="color: #fff;">{members}</span>!';
+                previewDescription.innerHTML = '<span style="color: #949ba4; font-style: italic;">Embed Description</span>';
             }
 
             // Color
