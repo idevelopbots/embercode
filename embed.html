@@ -341,7 +341,7 @@
         const previewFooter = document.getElementById('preview-footer');
         const btnCopyJson = document.getElementById('btn-copy-json');
 
-        // Visually replace variables with their exact literal variable tag names (e.g., {user}, {guild.name}, {members}) styled as badges
+        // Visually leave variables as their exact literal string tags (e.g., {user}, {guild.name}, {members}) styled as clean inline code badges
         function parseVariablesToHTML(text) {
             if (!text) return '';
             
@@ -351,11 +351,11 @@
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;");
 
-            // Replace variables with exact visual tag badges
+            // Replace variables with exact literal tag badges
             return escaped
-                .replace(/\{user\}/g, '<span style="background: rgba(88, 101, 242, 0.3); color: #dee0fc; padding: 1px 5px; border-radius: 4px; font-family: monospace; font-size: 11px; font-weight: 500; border: 1px solid rgba(255, 255, 255, 0.1);">[User]</span>')
-                .replace(/\{guild\.name\}/g, '<span style="background: rgba(88, 101, 242, 0.3); color: #dee0fc; padding: 1px 5px; border-radius: 4px; font-family: monospace; font-size: 11px; font-weight: 500; border: 1px solid rgba(255, 255, 255, 0.1);">[Guild Name]</span>')
-                .replace(/\{members\}/g, '<span style="background: rgba(88, 101, 242, 0.3); color: #dee0fc; padding: 1px 5px; border-radius: 4px; font-family: monospace; font-size: 11px; font-weight: 500; border: 1px solid rgba(255, 255, 255, 0.1);">[Members Count]</span>');
+                .replace(/\{user\}/g, '<span style="background: rgba(88, 101, 242, 0.3); color: #dee0fc; padding: 1px 5px; border-radius: 4px; font-family: monospace; font-size: 11px; font-weight: 500; border: 1px solid rgba(255, 255, 255, 0.1);">{user}</span>')
+                .replace(/\{guild\.name\}/g, '<span style="background: rgba(88, 101, 242, 0.3); color: #dee0fc; padding: 1px 5px; border-radius: 4px; font-family: monospace; font-size: 11px; font-weight: 500; border: 1px solid rgba(255, 255, 255, 0.1);">{guild.name}</span>')
+                .replace(/\{members\}/g, '<span style="background: rgba(88, 101, 242, 0.3); color: #dee0fc; padding: 1px 5px; border-radius: 4px; font-family: monospace; font-size: 11px; font-weight: 500; border: 1px solid rgba(255, 255, 255, 0.1);">{members}</span>');
         }
 
         function updatePreview() {
@@ -380,7 +380,8 @@
                 previewTitle.innerHTML = parseVariablesToHTML(titleVal);
                 previewTitle.style.display = 'block';
             } else {
-                previewTitle.style.display = 'none';
+                previewTitle.innerHTML = '<span style="color: #949ba4; font-weight: normal;">Title Name</span>';
+                previewTitle.style.display = 'block';
             }
 
             // Description
@@ -389,7 +390,8 @@
                 previewDescription.innerHTML = parseVariablesToHTML(descVal);
                 previewDescription.style.display = 'block';
             } else {
-                previewDescription.innerHTML = '<span style="color: #949ba4; font-style: italic;">Embed Description</span>';
+                previewDescription.innerHTML = '<span style="color: #949ba4;">Embed Description</span>';
+                previewDescription.style.display = 'block';
             }
 
             // Color
