@@ -142,13 +142,16 @@
     <main class="flex-grow flex items-center justify-center px-4 pt-32 pb-16">
         <div id="tilt-container" class="glass-panel w-full max-w-6xl rounded-3xl p-6 sm:p-10 text-left transition-transform duration-100 ease-out relative">
             
-            <div class="flex items-center justify-between pb-6 mb-8 border-b border-white/10">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-8 border-b border-white/10 gap-4">
                 <div>
                     <span class="text-xs font-mono tracking-widest text-slate-400 uppercase">Interactive Tool</span>
                     <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-gradient mt-1">Embed Builder</h1>
                 </div>
-                <div class="hidden sm:block text-right font-mono text-xs text-slate-500">
-                    <div>Visual Discord Customizer</div>
+                <div class="flex flex-wrap gap-2 items-center">
+                    <span class="text-xs font-mono text-slate-400">Variables:</span>
+                    <code class="text-[11px] font-mono bg-white/10 text-white px-2 py-1 rounded border border-white/15">{user}</code>
+                    <code class="text-[11px] font-mono bg-white/10 text-white px-2 py-1 rounded border border-white/15">{guild.name}</code>
+                    <code class="text-[11px] font-mono bg-white/10 text-white px-2 py-1 rounded border border-white/15">{members}</code>
                 </div>
             </div>
 
@@ -161,7 +164,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-medium text-slate-400 mb-1 font-mono">Author Name</label>
-                                <input type="text" id="input-author" placeholder="e.g. Harmony Updates" class="w-full text-sm rounded-xl px-3.5 py-2.5">
+                                <input type="text" id="input-author" placeholder="e.g. Welcome {user}" class="w-full text-sm rounded-xl px-3.5 py-2.5">
                             </div>
                             <div>
                                 <label class="block text-xs font-medium text-slate-400 mb-1 font-mono">Author Icon URL</label>
@@ -171,12 +174,12 @@
 
                         <div>
                             <label class="block text-xs font-medium text-slate-400 mb-1 font-mono">Embed Title</label>
-                            <input type="text" id="input-title" placeholder="Enter embed title..." class="w-full text-sm rounded-xl px-3.5 py-2.5">
+                            <input type="text" id="input-title" placeholder="Welcome to {guild.name}!" class="w-full text-sm rounded-xl px-3.5 py-2.5">
                         </div>
 
                         <div>
                             <label class="block text-xs font-medium text-slate-400 mb-1 font-mono">Description (Markdown Supported)</label>
-                            <textarea id="input-description" rows="4" placeholder="Write main embed description here..." class="w-full text-sm rounded-xl px-3.5 py-2.5 resize-none"></textarea>
+                            <textarea id="input-description" rows="4" placeholder="Hey {user}, glad to have you here! We are now at {members} members." class="w-full text-sm rounded-xl px-3.5 py-2.5 resize-none"></textarea>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -201,7 +204,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-medium text-slate-400 mb-1 font-mono">Footer Text</label>
-                                <input type="text" id="input-footer" placeholder="e.g. Harmony Bot • Today" class="w-full text-sm rounded-xl px-3.5 py-2.5">
+                                <input type="text" id="input-footer" placeholder="Server: {guild.name}" class="w-full text-sm rounded-xl px-3.5 py-2.5">
                             </div>
                             <div>
                                 <label class="block text-xs font-medium text-slate-400 mb-1 font-mono">Footer Icon URL</label>
@@ -260,7 +263,7 @@
 
                         <div class="mt-6">
                             <button id="btn-copy-json" class="btn-shimmer w-full text-sm font-semibold py-3 rounded-xl shadow-lg flex items-center justify-center gap-2">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round5" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
                                 <span>Copy Embed JSON</span>
                             </button>
                         </div>
@@ -338,10 +341,28 @@
         const previewFooter = document.getElementById('preview-footer');
         const btnCopyJson = document.getElementById('btn-copy-json');
 
+        // Mock data to visually replace variables with styled HTML badge elements inside the preview
+        function parseVariablesToHTML(text) {
+            if (!text) return '';
+            
+            // Escape HTML entities first to prevent injection
+            let escaped = text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;");
+
+            // Replace variables with Discord-style mention/badge spans in the preview
+            return escaped
+                .replace(/\{user\}/g, '<span style="background: rgba(88, 101, 242, 0.3); color: #dee0fc; padding: 0px 4px; border-radius: 4px; font-weight: 500;">@Alex</span>')
+                .replace(/\{guild\.name\}/g, '<span style="color: #ffffff; font-weight: 600;">Harmony Community</span>')
+                .replace(/\{members\}/g, '<span style="color: #ffffff; font-weight: 600;">1,428</span>');
+        }
+
         function updatePreview() {
             // Author
-            if (inputAuthor.value.trim() !== '') {
-                previewAuthor.textContent = inputAuthor.value;
+            const authorVal = inputAuthor.value.trim();
+            if (authorVal !== '') {
+                previewAuthor.innerHTML = parseVariablesToHTML(authorVal);
                 previewAuthorContainer.style.display = 'flex';
                 if (inputAuthorIcon.value.trim() !== '') {
                     previewAuthorIcon.src = inputAuthorIcon.value;
@@ -354,19 +375,21 @@
             }
 
             // Title
-            if (inputTitle.value.trim() !== '') {
-                previewTitle.textContent = inputTitle.value;
+            const titleVal = inputTitle.value.trim();
+            if (titleVal !== '') {
+                previewTitle.innerHTML = parseVariablesToHTML(titleVal);
                 previewTitle.style.display = 'block';
             } else {
                 previewTitle.style.display = 'none';
             }
 
             // Description
-            if (inputDescription.value.trim() !== '') {
-                previewDescription.textContent = inputDescription.value;
+            const descVal = inputDescription.value.trim();
+            if (descVal !== '') {
+                previewDescription.innerHTML = parseVariablesToHTML(descVal);
                 previewDescription.style.display = 'block';
             } else {
-                previewDescription.textContent = 'Use the controls on the left to configure this embed message preview.';
+                previewDescription.innerHTML = 'Use the controls on the left to configure this embed message preview. You can use variables like <span style="background: rgba(88, 101, 242, 0.3); color: #dee0fc; padding: 0px 4px; border-radius: 4px;">{user}</span>, <span style="color: #fff;">{guild.name}</span>, and <span style="color: #fff;">{members}</span>!';
             }
 
             // Color
@@ -390,8 +413,9 @@
             }
 
             // Footer
-            if (inputFooter.value.trim() !== '') {
-                previewFooter.textContent = inputFooter.value;
+            const footerVal = inputFooter.value.trim();
+            if (footerVal !== '') {
+                previewFooter.innerHTML = parseVariablesToHTML(footerVal);
                 previewFooterContainer.style.display = 'flex';
                 if (inputFooterIcon.value.trim() !== '') {
                     previewFooterIcon.src = inputFooterIcon.value;
@@ -425,29 +449,7 @@
         // Initial placeholder render
         updatePreview();
 
-        // Copy JSON functionality
+        // Copy JSON functionality (keeps raw string variables intact for your bot parser)
         btnCopyJson.addEventListener('click', () => {
             const embedObj = {
                 title: inputTitle.value || undefined,
-                description: inputDescription.value || undefined,
-                color: parseInt(inputColor.value.replace('#', ''), 16),
-                author: inputAuthor.value ? { name: inputAuthor.value, icon_url: inputAuthorIcon.value || undefined } : undefined,
-                thumbnail: inputThumbnail.value ? { url: inputThumbnail.value } : undefined,
-                image: inputImage.value ? { url: inputImage.value } : undefined,
-                footer: inputFooter.value ? { text: inputFooter.value, icon_url: inputFooterIcon.value || undefined } : undefined
-            };
-
-            // Clean undefined fields
-            JSON.stringify(embedObj, (key, value) => (value === undefined ? undefined : value), 2);
-
-            navigator.clipboard.writeText(JSON.stringify(embedObj, null, 2)).then(() => {
-                const originalText = btnCopyJson.innerHTML;
-                btnCopyJson.innerHTML = `<span>Copied JSON to Clipboard!</span>`;
-                setTimeout(() => {
-                    btnCopyJson.innerHTML = originalText;
-                }, 2000);
-            });
-        });
-    </script>
-</body>
-</html>
