@@ -453,3 +453,24 @@
         btnCopyJson.addEventListener('click', () => {
             const embedObj = {
                 title: inputTitle.value || undefined,
+                description: inputDescription.value || undefined,
+                color: parseInt(inputColor.value.replace('#', ''), 16),
+                author: inputAuthor.value ? { name: inputAuthor.value, icon_url: inputAuthorIcon.value || undefined } : undefined,
+                thumbnail: inputThumbnail.value ? { url: inputThumbnail.value } : undefined,
+                image: inputImage.value ? { url: inputImage.value } : undefined,
+                footer: inputFooter.value ? { text: inputFooter.value, icon_url: inputFooterIcon.value || undefined } : undefined
+            };
+
+            const jsonString = JSON.stringify(embedObj, (key, value) => (value === undefined ? undefined : value), 2);
+
+            navigator.clipboard.writeText(jsonString).then(() => {
+                const originalText = btnCopyJson.innerHTML;
+                btnCopyJson.innerHTML = `<span>Copied JSON to Clipboard!</span>`;
+                setTimeout(() => {
+                    btnCopyJson.innerHTML = originalText;
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
