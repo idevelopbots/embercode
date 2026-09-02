@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Waypoint — Terms of Service</title>
-    <link rel="icon" type="image/png" href="https://i.ibb.co/1JsTfYVW/HSRP-6.png">
+    <title>harmony tos</title>
+    <link rel="icon" type="image/webp" href="https://i.postimg.cc/vcrRFrf9/eb051f76774f67b04c498c78ab9c5f7f.webp">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,6 +21,14 @@
                     },
                     animation: {
                         'pulse-slow': 'pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'drift': 'drift 22s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        drift: {
+                            '0%': { backgroundPosition: '0% 50%, 100% 50%, 50% 100%' },
+                            '50%': { backgroundPosition: '100% 30%, 0% 70%, 40% 20%' },
+                            '100%': { backgroundPosition: '0% 50%, 100% 50%, 50% 100%' },
+                        }
                     }
                 }
             }
@@ -28,15 +36,17 @@
     </script>
     <style>
         .mesh-bg {
-            background-color: #030712;
+            background-color: #050505;
             background-image: 
-                radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(147, 51, 234, 0.12) 0px, transparent 50%),
-                radial-gradient(at 50% 100%, rgba(14, 165, 233, 0.1) 0px, transparent 50%);
+                radial-gradient(at 0% 0%, rgba(255, 255, 255, 0.14) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(255, 255, 255, 0.10) 0px, transparent 50%),
+                radial-gradient(at 50% 100%, rgba(255, 255, 255, 0.08) 0px, transparent 50%);
+            background-size: 200% 200%, 200% 200%, 200% 200%;
+            animation: drift 22s ease-in-out infinite;
         }
         
         .glass-panel {
-            background: rgba(17, 24, 39, 0.7);
+            background: rgba(17, 17, 20, 0.7);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -51,13 +61,14 @@
         }
 
         .btn-shimmer {
-            background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 50%, #4f46e5 100%);
+            background: linear-gradient(90deg, #ffffff 0%, #94a3b8 50%, #ffffff 100%);
             background-size: 200% auto;
+            color: #050505;
             transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .btn-shimmer:hover {
             background-position: right center;
-            box-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.35);
         }
 
         .bg-grid {
@@ -69,20 +80,18 @@
     </style>
 </head>
 
-<body class="mesh-bg bg-grid min-h-screen text-slate-100 flex flex-col justify-between overflow-x-hidden font-sans selection:bg-indigo-500 selection:text-white">
+<body class="mesh-bg bg-grid min-h-screen text-slate-100 flex flex-col justify-between overflow-x-hidden font-sans selection:bg-white selection:text-black">
 
-    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[140px] pointer-events-none -z-10 animate-pulse-slow"></div>
-    <div class="absolute bottom-10 right-10 w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/5 rounded-full blur-[140px] pointer-events-none -z-10 animate-pulse-slow"></div>
+    <div class="absolute bottom-10 right-10 w-[400px] h-[400px] bg-white/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
 
     <header class="fixed top-0 left-0 right-0 z-50 px-6 py-4">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-3 group">
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
-                    <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                    </svg>
+                <div class="w-9 h-9 rounded-xl overflow-hidden bg-transparent flex items-center justify-center group-hover:scale-105 transition-transform">
+                    <img src="https://i.postimg.cc/vcrRFrf9/eb051f76774f67b04c498c78ab9c5f7f.webp" alt="Logo" class="w-full h-full object-contain">
                 </div>
-                <span class="font-bold tracking-tight text-lg text-white">Waypoint</span>
+                <span class="font-bold tracking-tight text-lg text-white">Harmony</span>
             </a>
 
             <nav class="hidden md:flex items-center gap-1 glass-panel px-3 py-1.5 rounded-full">
@@ -96,9 +105,9 @@
                 <a href="https://discord.gg/3QV3XEteHx" class="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-white transition-colors px-4 py-2">
                     Support
                 </a>
-                <a href="https://discord.com/oauth2/authorize?client_id=1542990189566099606&permissions=8&integration_type=0&scope=bot+applications.commands" class="btn-shimmer text-white text-sm font-semibold px-5 py-2.5 rounded-xl shadow-lg flex items-center gap-2">
+                <a href="https://discord.com/oauth2/authorize?client_id=1544796656711761960&permissions=8&integration_type=0&scope=bot+applications.commands" class="btn-shimmer text-sm font-semibold px-5 py-2.5 rounded-xl shadow-lg flex items-center gap-2">
                     <span>Add to Discord</span>
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                 </a>
             </div>
         </div>
@@ -109,7 +118,7 @@
             
             <div class="flex items-center justify-between pb-8 mb-8 border-b border-white/10">
                 <div>
-                    <span class="text-xs font-mono tracking-widest text-indigo-400 uppercase">Legal Agreement</span>
+                    <span class="text-xs font-mono tracking-widest text-slate-400 uppercase">Legal Agreement</span>
                     <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-gradient mt-1">Terms of Service</h1>
                 </div>
                 <div class="hidden sm:block text-right font-mono text-xs text-slate-500">
@@ -121,46 +130,46 @@
             <div class="space-y-8 text-slate-300">
                 <section>
                     <h2 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2 mb-2">
-                        <span class="text-indigo-400 font-mono text-sm">01.</span> Usage Guidelines
+                        <span class="text-slate-400 font-mono text-sm">01.</span> Usage Guidelines
                     </h2>
                     <p class="text-sm sm:text-base text-slate-400 leading-relaxed pl-6">
-                        Waypoint is provided “as‑is” and may update dynamically at any time. You agree not to misuse, exploit, reverse engineer, or attempt to compromise the bot or its underlying API systems.
+                        Harmony is provided “as‑is” and may update dynamically at any time. You agree not to misuse, exploit, reverse engineer, or attempt to compromise the bot or its underlying API systems.
                     </p>
                 </section>
 
                 <section>
                     <h2 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2 mb-2">
-                        <span class="text-indigo-400 font-mono text-sm">02.</span> Data Handling Policy
+                        <span class="text-slate-400 font-mono text-sm">02.</span> Data Handling Policy
                     </h2>
                     <p class="text-sm sm:text-base text-slate-400 leading-relaxed pl-6">
-                        Waypoint stores exclusively essential configuration metadata required for core navigation routing features. No personal user data is intentionally collected, monetized, sold, or shared with external entities.
+                        Harmony stores exclusively essential configuration metadata required for core features. No personal user data is intentionally collected, monetized, sold, or shared with external entities.
                     </p>
                 </section>
 
                 <section>
                     <h2 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2 mb-2">
-                        <span class="text-indigo-400 font-mono text-sm">03.</span> Ecosystem Compliance
+                        <span class="text-slate-400 font-mono text-sm">03.</span> Ecosystem Compliance
                     </h2>
                     <p class="text-sm sm:text-base text-slate-400 leading-relaxed pl-6">
-                        All operators and users must strictly abide by Discord’s Terms of Service and Community Guidelines while interacting with Waypoint across any server environment.
+                        All operators and users must strictly abide by Discord’s Terms of Service and Community Guidelines while interacting with Harmony across any server environment.
                     </p>
                 </section>
 
                 <section>
                     <h2 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2 mb-2">
-                        <span class="text-indigo-400 font-mono text-sm">04.</span> Limitation of Liability
+                        <span class="text-slate-400 font-mono text-sm">04.</span> Limitation of Liability
                     </h2>
                     <p class="text-sm sm:text-base text-slate-400 leading-relaxed pl-6">
-                        Waypoint’s developers and infrastructure maintainers hold no financial or operational liability for damages, unexpected data loss, or downtime caused by third‑party API disruptions or external system failures.
+                        Harmony’s developers and infrastructure maintainers hold no financial or operational liability for damages, unexpected data loss, or downtime caused by third‑party API disruptions or external system failures.
                     </p>
                 </section>
 
                 <section>
                     <h2 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2 mb-2">
-                        <span class="text-indigo-400 font-mono text-sm">05.</span> Access Termination
+                        <span class="text-slate-400 font-mono text-sm">05.</span> Access Termination
                     </h2>
                     <p class="text-sm sm:text-base text-slate-400 leading-relaxed pl-6">
-                        We reserve the absolute right to restrict, suspend, or terminate access to Waypoint at any given moment for violations of these terms, malicious intent, or platform abuse.
+                        We reserve the absolute right to restrict, suspend, or terminate access to Harmony at any given moment for violations of these terms, malicious intent, or platform abuse.
                     </p>
                 </section>
             </div>
@@ -169,7 +178,7 @@
     </main>
 
     <footer class="py-6 text-center text-xs text-slate-500 font-mono">
-        <p>&copy; 2026 Waypoint Systems. All enterprise rights reserved.</p>
+        <p>&copy; 2026 Harmony Systems. All rights reserved.</p>
     </footer>
 
     <script>
