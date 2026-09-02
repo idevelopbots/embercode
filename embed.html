@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>harmony embed builder</title>
+    <link rel="icon" type="image/webp" href="https://i.postimg.cc/vcrRFrf9/eb051f76774f67b04c498c78ab9c5f7f.webp">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'drift': 'drift 22s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        drift: {
+                            '0%': { backgroundPosition: '0% 50%, 100% 50%, 50% 100%' },
+                            '50%': { backgroundPosition: '100% 30%, 0% 70%, 40% 20%' },
+                            '100%': { backgroundPosition: '0% 50%, 100% 50%, 50% 100%' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .mesh-bg {
+            background-color: #050505;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(255, 255, 255, 0.14) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(255, 255, 255, 0.10) 0px, transparent 50%),
+                radial-gradient(at 50% 100%, rgba(255, 255, 255, 0.08) 0px, transparent 50%);
+            background-size: 200% 200%, 200% 200%, 200% 200%;
+            animation: drift 22s ease-in-out infinite;
+        }
+        
+        .glass-panel {
+            background: rgba(17, 17, 20, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -10px rgba(255, 255, 255, 0.1);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #ffffff 20%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-shimmer {
+            background: linear-gradient(90deg, #ffffff 0%, #94a3b8 50%, #ffffff 100%);
+            background-size: 200% auto;
+            color: #050505;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-shimmer:hover {
+            background-position: right center;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.35);
+        }
+
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+
+        input, textarea, select {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #f8fafc;
+            transition: all 0.2s ease;
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+
+<body class="mesh-bg bg-grid min-h-screen text-slate-100 flex flex-col justify-between overflow-x-hidden font-sans selection:bg-white selection:text-black">
+
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/5 rounded-full blur-[140px] pointer-events-none -z-10 animate-pulse-slow"></div>
+    <div class="absolute bottom-10 right-10 w-[400px] h-[400px] bg-white/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+
+    <header class="fixed top-0 left-0 right-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <div class="w-9 h-9 rounded-xl overflow-hidden bg-transparent flex items-center justify-center group-hover:scale-105 transition-transform">
+                    <img src="https://i.postimg.cc/vcrRFrf9/eb051f76774f67b04c498c78ab9c5f7f.webp" alt="Logo" class="w-full h-full object-contain">
+                </div>
+                <span class="font-bold tracking-tight text-lg text-white">Harmony</span>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-1 glass-panel px-3 py-1.5 rounded-full">
+                <a href="index.html" class="px-4 py-1.5 rounded-full text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-colors">Home</a>
+                <a href="commands.html" class="px-4 py-1.5 rounded-full text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-colors">Commands</a>
+                <a href="embed.html" class="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white transition-colors">Embed Builder</a>
+                <a href="tos.html" class="px-4 py-1.5 rounded-full text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-colors">Terms</a>
+                <a href="privacy.html" class="px-4 py-1.5 rounded-full text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-colors">Privacy</a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <a href="https://discord.gg/3QV3XEteHx" class="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-white transition-colors px-4 py-2">
+                    Support
+                </a>
+                <a href="https://discord.com/oauth2/authorize?client_id=1544796656711761960&permissions=8&integration_type=0&scope=bot+applications.commands" class="btn-shimmer text-sm font-semibold px-5 py-2.5 rounded-xl shadow-lg flex items-center gap-2">
+                    <span>Add to Discord</span>
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center px-4 pt-32 pb-16">
+        <div id="tilt-container" class="glass-panel w-full max-w-6xl rounded-3xl p-6 sm:p-10 text-left transition-transform duration-100 ease-out relative">
+            
+            <div class="flex items-center justify-between pb-6 mb-8 border-b border-white/10">
+                <div>
+                    <span class="text-xs font-mono tracking-widest text-slate-400 uppercase">Interactive Tool</span>
+                    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-gradient mt-1">Embed Builder</h1>
+                </div>
+                <div class="hidden sm:block text-right font-mono text-xs text-slate-500">
+                    <div>Visual Discord Customizer</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="glass-card rounded-2xl p-6 space-y-4">
+                        <h2 class="text-sm font-bold tracking-wide uppercase text-slate-300 font-mono">Embed Configuration</h2>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-medium text-slate-400 mb-1 font-mono">Author Name</label>
+                                <input type="text" id="input-author" placeholder="e.g. Harmony Updates" class="w-full text-sm rounded-xl px-3.5 py-2.5">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-400 mb-1 font-mono">Author Icon URL</label>
+                                <input type="text" id="input-author-icon" placeholder="https://..." class="w-full text-sm rounded-xl px-3.5 py-2.5">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1 font-mono">Embed Title</label>
+                            <input type="text" id="input-title" placeholder="Enter embed title..." class="w-full text-sm rounded-xl px-3.5 py-2.5">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1 font-mono">Description (Markdown Supported)</label>
+                            <textarea id="input-description" rows="4" placeholder="Write main embed description here..." class="w-full text-sm rounded-xl px-3.5 py-2.5 resize-none"></textarea>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-medium text-slate-400 mb-1 font-mono">Side Accent Color</label>
+                                <div class="flex items-center gap-2">
+                                    <input type="color" id="input-color" value="#5865F2" class="w-10 h-10 rounded-xl bg-transparent cursor-pointer border border-white/20 p-1">
+                                    <input type="text" id="input-color-hex" value="#5865F2" class="w-full text-sm rounded-xl px-3.5 py-2 font-mono">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-400 mb-1 font-mono">Thumbnail URL</label>
+                                <input type="text" id="input-thumbnail" placeholder="https://..." class="w-full text-sm rounded-xl px-3.5 py-2.5">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1 font-mono">Image URL</label>
+                            <input type="text" id="input-image" placeholder="https://..." class="w-full text-sm rounded-xl px-3.5 py-2.5">
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-medium text-slate-400 mb-1 font-mono">Footer Text</label>
+                                <input type="text" id="input-footer" placeholder="e.g. Harmony Bot • Today" class="w-full text-sm rounded-xl px-3.5 py-2.5">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-400 mb-1 font-mono">Footer Icon URL</label>
+                                <input type="text" id="input-footer-icon" placeholder="https://..." class="w-full text-sm rounded-xl px-3.5 py-2.5">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 flex flex-col justify-between space-y-6">
+                    <div class="glass-card rounded-2xl p-6 flex flex-col h-full">
+                        <h2 class="text-sm font-bold tracking-wide uppercase text-slate-300 font-mono mb-4">Discord Preview</h2>
+                        
+                        <div class="bg-[#313338] rounded-2xl p-4 text-[#dbdee1] flex-grow shadow-inner flex flex-col justify-between border border-white/5">
+                            
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 rounded-full bg-indigo-600 flex-shrink-0 flex items-center justify-center font-bold text-white overflow-hidden">
+                                    <img src="https://i.postimg.cc/vcrRFrf9/eb051f76774f67b04c498c78ab9c5f7f.webp" class="w-full h-full object-contain" alt="Bot Avatar">
+                                </div>
+                                <div class="flex-grow overflow-hidden">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="font-semibold text-white text-sm hover:underline cursor-pointer">Harmony</span>
+                                        <span class="bg-[#5865F2] text-white text-[10px] font-semibold px-1 rounded flex items-center">BOT</span>
+                                        <span class="text-xs text-[#949ba4]">Today at 4:45 PM</span>
+                                    </div>
+
+                                    <div id="discord-embed" class="relative bg-[#2b2d31] rounded-lg p-4 max-w-md border-l-[4px] border-[#5865F2] shadow-md text-sm">
+                                        
+                                        <div id="preview-author-container" class="hidden items-center gap-2 mb-2">
+                                            <img id="preview-author-icon" src="" class="w-5 h-5 rounded-full hidden" alt="">
+                                            <span id="preview-author" class="text-xs font-semibold text-white"></span>
+                                        </div>
+
+                                        <div id="preview-title" class="font-bold text-white mb-1.5 hidden hover:underline cursor-pointer"></div>
+
+                                        <div id="preview-description" class="text-[#dbdee1] text-xs leading-relaxed whitespace-pre-wrap mb-3"></div>
+
+                                        <div id="preview-thumb-container" class="float-right ml-4 mb-2 hidden">
+                                            <img id="preview-thumbnail" src="" class="w-20 h-20 rounded object-cover" alt="">
+                                        </div>
+
+                                        <div id="preview-image-container" class="mt-3 hidden clear-both">
+                                            <img id="preview-image" src="" class="rounded-lg max-h-48 w-full object-cover" alt="">
+                                        </div>
+
+                                        <div id="preview-footer-container" class="mt-3 pt-2 border-t border-[#3f4147] flex items-center gap-2 hidden clear-both">
+                                            <img id="preview-footer-icon" src="" class="w-4 h-4 rounded-full hidden" alt="">
+                                            <span id="preview-footer" class="text-[10px] text-[#949ba4]"></span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="mt-6">
+                            <button id="btn-copy-json" class="btn-shimmer w-full text-sm font-semibold py-3 rounded-xl shadow-lg flex items-center justify-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round5" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                                <span>Copy Embed JSON</span>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="py-6 text-center text-xs text-slate-500 font-mono">
+        <p>&copy; 2026 Harmony Systems. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const panel = document.getElementById("tilt-container");
+
+        document.addEventListener("mousemove", (e) => {
+            if (!panel) return;
+
+            const rect = panel.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const rotateX = ((y - centerY) / centerY) * -2;
+            const rotateY = ((x - centerX) / centerX) * 2;
+
+            panel.style.transform = `
+                perspective(1000px)
+                rotateX(${rotateX}deg)
+                rotateY(${rotateY}deg)
+                scale3d(1.002, 1.002, 1.002)
+            `;
+        });
+
+        document.addEventListener("mouseleave", () => {
+            if (!panel) return;
+            panel.style.transform = `
+                perspective(1000px)
+                rotateX(0deg)
+                rotateY(0deg)
+                scale3d(1, 1, 1)
+            `;
+        });
+
+        // Embed Live Builder Logic
+        const inputAuthor = document.getElementById('input-author');
+        const inputAuthorIcon = document.getElementById('input-author-icon');
+        const inputTitle = document.getElementById('input-title');
+        const inputDescription = document.getElementById('input-description');
+        const inputColor = document.getElementById('input-color');
+        const inputColorHex = document.getElementById('input-color-hex');
+        const inputThumbnail = document.getElementById('input-thumbnail');
+        const inputImage = document.getElementById('input-image');
+        const inputFooter = document.getElementById('input-footer');
+        const inputFooterIcon = document.getElementById('input-footer-icon');
+
+        const discordEmbed = document.getElementById('discord-embed');
+        const previewAuthorContainer = document.getElementById('preview-author-container');
+        const previewAuthorIcon = document.getElementById('preview-author-icon');
+        const previewAuthor = document.getElementById('preview-author');
+        const previewTitle = document.getElementById('preview-title');
+        const previewDescription = document.getElementById('preview-description');
+        const previewThumbContainer = document.getElementById('preview-thumb-container');
+        const previewThumbnail = document.getElementById('preview-thumbnail');
+        const previewImageContainer = document.getElementById('preview-image-container');
+        const previewImage = document.getElementById('preview-image');
+        const previewFooterContainer = document.getElementById('preview-footer-container');
+        const previewFooterIcon = document.getElementById('preview-footer-icon');
+        const previewFooter = document.getElementById('preview-footer');
+        const btnCopyJson = document.getElementById('btn-copy-json');
+
+        function updatePreview() {
+            // Author
+            if (inputAuthor.value.trim() !== '') {
+                previewAuthor.textContent = inputAuthor.value;
+                previewAuthorContainer.style.display = 'flex';
+                if (inputAuthorIcon.value.trim() !== '') {
+                    previewAuthorIcon.src = inputAuthorIcon.value;
+                    previewAuthorIcon.style.display = 'block';
+                } else {
+                    previewAuthorIcon.style.display = 'none';
+                }
+            } else {
+                previewAuthorContainer.style.display = 'none';
+            }
+
+            // Title
+            if (inputTitle.value.trim() !== '') {
+                previewTitle.textContent = inputTitle.value;
+                previewTitle.style.display = 'block';
+            } else {
+                previewTitle.style.display = 'none';
+            }
+
+            // Description
+            if (inputDescription.value.trim() !== '') {
+                previewDescription.textContent = inputDescription.value;
+                previewDescription.style.display = 'block';
+            } else {
+                previewDescription.textContent = 'Use the controls on the left to configure this embed message preview.';
+            }
+
+            // Color
+            discordEmbed.style.borderLeftColor = inputColor.value;
+            inputColorHex.value = inputColor.value;
+
+            // Thumbnail
+            if (inputThumbnail.value.trim() !== '') {
+                previewThumbnail.src = inputThumbnail.value;
+                previewThumbContainer.style.display = 'block';
+            } else {
+                previewThumbContainer.style.display = 'none';
+            }
+
+            // Image
+            if (inputImage.value.trim() !== '') {
+                previewImage.src = inputImage.value;
+                previewImageContainer.style.display = 'block';
+            } else {
+                previewImageContainer.style.display = 'none';
+            }
+
+            // Footer
+            if (inputFooter.value.trim() !== '') {
+                previewFooter.textContent = inputFooter.value;
+                previewFooterContainer.style.display = 'flex';
+                if (inputFooterIcon.value.trim() !== '') {
+                    previewFooterIcon.src = inputFooterIcon.value;
+                    previewFooterIcon.style.display = 'block';
+                } else {
+                    previewFooterIcon.style.display = 'none';
+                }
+            } else {
+                previewFooterContainer.style.display = 'none';
+            }
+        }
+
+        // Color input synchronization
+        inputColor.addEventListener('input', () => {
+            inputColorHex.value = inputColor.value;
+            updatePreview();
+        });
+
+        inputColorHex.addEventListener('input', () => {
+            if (/^#[0-9A-F]{6}$/i.test(inputColorHex.value)) {
+                inputColor.value = inputColorHex.value;
+                updatePreview();
+            }
+        });
+
+        // Add event listeners to all text fields
+        [inputAuthor, inputAuthorIcon, inputTitle, inputDescription, inputThumbnail, inputImage, inputFooter, inputFooterIcon].forEach(element => {
+            element.addEventListener('input', updatePreview);
+        });
+
+        // Initial placeholder render
+        updatePreview();
+
+        // Copy JSON functionality
+        btnCopyJson.addEventListener('click', () => {
+            const embedObj = {
+                title: inputTitle.value || undefined,
+                description: inputDescription.value || undefined,
+                color: parseInt(inputColor.value.replace('#', ''), 16),
+                author: inputAuthor.value ? { name: inputAuthor.value, icon_url: inputAuthorIcon.value || undefined } : undefined,
+                thumbnail: inputThumbnail.value ? { url: inputThumbnail.value } : undefined,
+                image: inputImage.value ? { url: inputImage.value } : undefined,
+                footer: inputFooter.value ? { text: inputFooter.value, icon_url: inputFooterIcon.value || undefined } : undefined
+            };
+
+            // Clean undefined fields
+            JSON.stringify(embedObj, (key, value) => (value === undefined ? undefined : value), 2);
+
+            navigator.clipboard.writeText(JSON.stringify(embedObj, null, 2)).then(() => {
+                const originalText = btnCopyJson.innerHTML;
+                btnCopyJson.innerHTML = `<span>Copied JSON to Clipboard!</span>`;
+                setTimeout(() => {
+                    btnCopyJson.innerHTML = originalText;
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
