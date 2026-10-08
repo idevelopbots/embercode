@@ -1,151 +1,547 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Countdown</title>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body{
-    height:100vh;
-    overflow:hidden;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-family:Inter, Arial, sans-serif;
-    background:linear-gradient(-45deg,#0f172a,#1e3a8a,#312e81,#0f172a);
-    background-size:400% 400%;
-    animation:bgMove 15s ease infinite;
-    color:white;
+:root {
+    --accent: #60a5fa;
+    --accent-light: #93c5fd;
+    --glass: rgba(255,255,255,0.075);
+    --border: rgba(255,255,255,0.13);
 }
 
-@keyframes bgMove{
-    0%{background-position:0% 50%;}
-    50%{background-position:100% 50%;}
-    100%{background-position:0% 50%;}
+html,
+body {
+    width: 100%;
+    height: 100%;
 }
 
-.particles{
-    position:absolute;
-    inset:0;
+body {
+    min-height: 100vh;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: "Inter", Arial, sans-serif;
+    color: white;
+
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(59,130,246,0.22),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 80% 80%,
+            rgba(99,102,241,0.2),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #020617,
+            #0f172a,
+            #172554,
+            #1e1b4b,
+            #020617
+        );
+
+    background-size: 200% 200%;
+    animation: backgroundMove 18s ease infinite;
 }
 
-.particle{
-    position:absolute;
-    border-radius:50%;
-    background:rgba(255,255,255,0.15);
-    animation:float linear infinite;
-}
-
-@keyframes float{
-    from{
-        transform:translateY(110vh);
+@keyframes backgroundMove {
+    0% {
+        background-position: 0% 50%;
     }
-    to{
-        transform:translateY(-20vh);
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
     }
 }
 
-.container{
-    position:relative;
-    z-index:10;
-    text-align:center;
-    padding:50px;
-    border-radius:30px;
-    background:rgba(255,255,255,0.08);
-    backdrop-filter:blur(20px);
-    border:1px solid rgba(255,255,255,0.15);
+/* Ambient glow */
+
+.glow {
+    position: fixed;
+    width: 500px;
+    height: 500px;
+
+    border-radius: 50%;
+
+    background: rgba(37,99,235,0.14);
+
+    filter: blur(100px);
+
+    pointer-events: none;
+
+    animation: glowMove 12s ease-in-out infinite alternate;
+}
+
+.glow.one {
+    top: -250px;
+    left: -200px;
+}
+
+.glow.two {
+    right: -250px;
+    bottom: -250px;
+
+    background: rgba(79,70,229,0.14);
+
+    animation-delay: -5s;
+}
+
+@keyframes glowMove {
+    from {
+        transform: translate(0,0) scale(1);
+    }
+
+    to {
+        transform: translate(80px,50px) scale(1.15);
+    }
+}
+
+/* Particles */
+
+.particles {
+    position: fixed;
+    inset: 0;
+
+    pointer-events: none;
+
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.18);
+
+    box-shadow: 0 0 8px rgba(255,255,255,0.15);
+
+    animation: float linear infinite;
+}
+
+@keyframes float {
+    from {
+        transform: translateY(110vh);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(-20vh);
+        opacity: 0;
+    }
+}
+
+/* Main card */
+
+.container {
+    position: relative;
+
+    width: min(1000px, calc(100% - 32px));
+
+    padding: 58px;
+
+    text-align: center;
+
+    border-radius: 32px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.11),
+            rgba(255,255,255,0.045)
+        );
+
+    border: 1px solid var(--border);
+
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+
     box-shadow:
-        0 0 40px rgba(0,150,255,0.25),
-        0 0 100px rgba(0,100,255,0.15);
+        0 30px 80px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+
+    animation: cardEnter 0.9s cubic-bezier(.2,.8,.2,1);
 }
 
-h1{
-    font-size:3rem;
-    margin-bottom:20px;
-    letter-spacing:3px;
-    text-transform:uppercase;
+@keyframes cardEnter {
+    from {
+        opacity: 0;
+        transform: translateY(25px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
-.target{
-    color:#8fd3ff;
-    margin-bottom:40px;
-    font-size:1.1rem;
+/* Small top label */
+
+.badge {
+    display: inline-flex;
+
+    align-items: center;
+    gap: 8px;
+
+    padding: 8px 14px;
+
+    margin-bottom: 22px;
+
+    border-radius: 999px;
+
+    background: rgba(96,165,250,0.1);
+
+    border: 1px solid rgba(96,165,250,0.22);
+
+    color: var(--accent-light);
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
 }
 
-.countdown{
-    display:flex;
-    gap:20px;
-    justify-content:center;
-    flex-wrap:wrap;
+.badge-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #60a5fa;
+
+    box-shadow:
+        0 0 10px #60a5fa;
+
+    animation: pulse 2s infinite;
 }
 
-.time-box{
-    min-width:140px;
-    padding:25px;
-    border-radius:20px;
-    background:rgba(255,255,255,0.06);
-    border:1px solid rgba(255,255,255,0.12);
-    transition:0.3s ease;
+@keyframes pulse {
+    0%,100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: .45;
+        transform: scale(.75);
+    }
 }
 
-.time-box:hover{
-    transform:translateY(-8px);
-    box-shadow:0 0 35px rgba(0,183,255,0.5);
+h1 {
+    font-size: clamp(2.2rem, 5vw, 4rem);
+
+    line-height: 1.05;
+
+    font-weight: 800;
+
+    letter-spacing: -2px;
+
+    margin-bottom: 14px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff,
+            #cbd5e1
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
 }
 
-.number{
-    font-size:4rem;
-    font-weight:800;
-    text-shadow:0 0 20px rgba(0,183,255,0.8);
+.target {
+    color: rgba(255,255,255,0.62);
+
+    font-size: 15px;
+
+    font-weight: 500;
+
+    margin-bottom: 42px;
 }
 
-.label{
-    margin-top:10px;
-    letter-spacing:2px;
-    font-size:0.9rem;
-    opacity:0.8;
+/* Countdown */
+
+.countdown {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 16px;
 }
 
-.finished{
-    font-size:3rem;
-    font-weight:bold;
-    color:#8fd3ff;
+.time-box {
+    position: relative;
+
+    padding: 28px 18px;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.09),
+            rgba(255,255,255,0.035)
+        );
+
+    border: 1px solid rgba(255,255,255,0.1);
+
+    overflow: hidden;
+
+    transition:
+        transform .35s ease,
+        border-color .35s ease,
+        box-shadow .35s ease;
+}
+
+.time-box::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 15%;
+
+    width: 70%;
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,0.4),
+            transparent
+        );
+}
+
+.time-box:hover {
+    transform: translateY(-7px);
+
+    border-color: rgba(96,165,250,0.35);
+
+    box-shadow:
+        0 15px 35px rgba(0,0,0,0.2),
+        0 0 30px rgba(59,130,246,0.12);
+}
+
+.number {
+    font-size: clamp(2.5rem, 6vw, 4.6rem);
+
+    line-height: 1;
+
+    font-weight: 800;
+
+    letter-spacing: -3px;
+
+    color: white;
+
     text-shadow:
-        0 0 20px #00bfff,
-        0 0 40px #00bfff;
+        0 0 25px rgba(96,165,250,0.3);
+
+    transition:
+        transform .2s ease,
+        opacity .2s ease;
 }
 
-@media(max-width:768px){
-    h1{
-        font-size:2rem;
+.number.changed {
+    animation: numberChange .35s ease;
+}
+
+@keyframes numberChange {
+    0% {
+        transform: translateY(-5px);
+        opacity: .3;
     }
 
-    .number{
-        font-size:2.8rem;
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.label {
+    margin-top: 13px;
+
+    color: rgba(255,255,255,0.45);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+}
+
+/* Bottom information */
+
+.footer {
+    margin-top: 30px;
+
+    color: rgba(255,255,255,0.35);
+
+    font-size: 12px;
+
+    letter-spacing: .5px;
+}
+
+/* Finished */
+
+.finished {
+    padding: 30px 10px;
+
+    font-size: clamp(1.8rem, 5vw, 3.2rem);
+
+    font-weight: 800;
+
+    letter-spacing: -1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #93c5fd,
+            #ffffff,
+            #93c5fd
+        );
+
+    background-size: 200% auto;
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+
+    animation: finishedGlow 3s linear infinite;
+}
+
+@keyframes finishedGlow {
+    to {
+        background-position: 200% center;
+    }
+}
+
+/* Mobile */
+
+@media (max-width: 700px) {
+
+    body {
+        overflow-y: auto;
+        padding: 20px 0;
     }
 
-    .time-box{
-        min-width:120px;
+    .container {
+        padding: 35px 20px;
+
+        border-radius: 26px;
+    }
+
+    .countdown {
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 12px;
+    }
+
+    .time-box {
+        padding: 25px 12px;
+    }
+
+    .number {
+        font-size: 3rem;
+    }
+
+    .target {
+        margin-bottom: 28px;
+    }
+}
+
+@media (max-width: 380px) {
+
+    .container {
+        width: calc(100% - 20px);
+
+        padding: 28px 14px;
+    }
+
+    .number {
+        font-size: 2.4rem;
+    }
+
+    .time-box {
+        padding: 20px 8px;
+    }
+}
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }
 </style>
 </head>
+
 <body>
+
+<div class="glow one"></div>
+<div class="glow two"></div>
 
 <div class="particles" id="particles"></div>
 
-<div class="container">
+<main class="container">
+
+    <div class="badge">
+        <span class="badge-dot"></span>
+        Countdown Active
+    </div>
+
     <h1>Countdown</h1>
-    <div class="target">October 7 • 10:45 AM</div>
+
+    <div class="target">
+        October 7 • 10:45 AM
+    </div>
 
     <div id="countdown" class="countdown">
+
         <div class="time-box">
             <div id="days" class="number">0</div>
             <div class="label">DAYS</div>
@@ -165,42 +561,72 @@ h1{
             <div id="seconds" class="number">0</div>
             <div class="label">SECONDS</div>
         </div>
+
     </div>
-</div>
+
+    <div class="footer">
+        Time remaining until October 7 at 10:45 AM
+    </div>
+
+</main>
 
 <script>
-// Floating particles
-const particleContainer = document.getElementById("particles");
 
-for(let i=0;i<60;i++){
-    const p = document.createElement("div");
-    p.classList.add("particle");
+/* =========================
+   PARTICLES
+========================= */
 
-    const size = Math.random()*8 + 2;
+const particleContainer =
+    document.getElementById("particles");
 
-    p.style.width = size + "px";
-    p.style.height = size + "px";
-    p.style.left = Math.random()*100 + "%";
-    p.style.animationDuration = (10 + Math.random()*20) + "s";
-    p.style.animationDelay = Math.random()*10 + "s";
+for (let i = 0; i < 45; i++) {
 
-    particleContainer.appendChild(p);
+    const particle =
+        document.createElement("div");
+
+    particle.className = "particle";
+
+    const size =
+        Math.random() * 5 + 2;
+
+    particle.style.width =
+        `${size}px`;
+
+    particle.style.height =
+        `${size}px`;
+
+    particle.style.left =
+        `${Math.random() * 100}%`;
+
+    particle.style.animationDuration =
+        `${12 + Math.random() * 20}s`;
+
+    particle.style.animationDelay =
+        `${Math.random() * -20}s`;
+
+    particleContainer.appendChild(particle);
 }
 
-// Countdown target
+
+/* =========================
+   COUNTDOWN
+========================= */
+
 function getNextOctober7() {
+
     const now = new Date();
 
     let target = new Date(
         now.getFullYear(),
-        9,      // October (0-indexed)
+        9,
         7,
         10,
         45,
         0
     );
 
-    if (now > target) {
+    if (now >= target) {
+
         target = new Date(
             now.getFullYear() + 1,
             9,
@@ -214,36 +640,126 @@ function getNextOctober7() {
     return target;
 }
 
-const targetDate = getNextOctober7();
+const targetDate =
+    getNextOctober7();
+
+
+/* =========================
+   UPDATE NUMBERS
+========================= */
+
+const elements = {
+
+    days:
+        document.getElementById("days"),
+
+    hours:
+        document.getElementById("hours"),
+
+    minutes:
+        document.getElementById("minutes"),
+
+    seconds:
+        document.getElementById("seconds")
+
+};
+
+function setNumber(element, value) {
+
+    const newValue =
+        String(value);
+
+    if (element.textContent !== newValue) {
+
+        element.classList.remove("changed");
+
+        void element.offsetWidth;
+
+        element.textContent =
+            newValue;
+
+        element.classList.add("changed");
+
+    }
+
+}
+
 
 function updateCountdown() {
-    const now = new Date();
-    const diff = targetDate - now;
 
-    if(diff <= 0){
-        document.querySelector(".container").innerHTML =
-        `
-        <div class="finished">
-            OCTOBER 7 • 10:45 HAS ARRIVED
-        </div>
+    const now = new Date();
+
+    const difference =
+        targetDate - now;
+
+    if (difference <= 0) {
+
+        document.querySelector(".container").innerHTML = `
+            <div class="finished">
+                OCTOBER 7 • 10:45 HAS ARRIVED
+            </div>
         `;
+
         return;
     }
 
-    const days = Math.floor(diff / (1000*60*60*24));
-    const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-    const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
-    const seconds = Math.floor((diff % (1000*60)) / 1000);
+    const days =
+        Math.floor(
+            difference /
+            (1000 * 60 * 60 * 24)
+        );
 
-    document.getElementById("days").textContent = days;
-    document.getElementById("hours").textContent = hours;
-    document.getElementById("minutes").textContent = minutes;
-    document.getElementById("seconds").textContent = seconds;
+    const hours =
+        Math.floor(
+            (difference %
+            (1000 * 60 * 60 * 24)) /
+            (1000 * 60 * 60)
+        );
+
+    const minutes =
+        Math.floor(
+            (difference %
+            (1000 * 60 * 60)) /
+            (1000 * 60)
+        );
+
+    const seconds =
+        Math.floor(
+            (difference %
+            (1000 * 60)) /
+            1000
+        );
+
+    setNumber(elements.days, days);
+
+    setNumber(
+        elements.hours,
+        String(hours).padStart(2, "0")
+    );
+
+    setNumber(
+        elements.minutes,
+        String(minutes).padStart(2, "0")
+    );
+
+    setNumber(
+        elements.seconds,
+        String(seconds).padStart(2, "0")
+    );
 }
 
+
+/* Start */
+
 updateCountdown();
-setInterval(updateCountdown, 1000);
+
+setInterval(
+    updateCountdown,
+    1000
+);
+
 </script>
 
 </body>
 </html>
+```
