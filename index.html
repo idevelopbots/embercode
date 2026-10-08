@@ -3,221 +3,183 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Braces Countdown</title>
 
-<title>Los Angeles Roleplay</title>
-
-<link rel="icon" type="image/png" href="https://i.ibb.co/bMnZ02J7/FL.png">
+https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap
 
 <style>
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial, sans-serif;
 }
 
 body{
-    background:#0d1117;
-    color:white;
-}
-
-header{
-    background:#111827;
-    padding:15px 8%;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    border-bottom:2px solid #2563eb;
-}
-
-.logo{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.logo img{
-    width:55px;
-    border-radius:50%;
-}
-
-.logo h1{
-    color:#fff;
-}
-
-nav a{
-    color:white;
-    text-decoration:none;
-    margin-left:25px;
-    transition:.3s;
-}
-
-nav a:hover{
-    color:#3b82f6;
-}
-
-.hero{
-    height:90vh;
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
-    flex-direction:column;
-    text-align:center;
     background:
-    linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.7)),
-    url('https://images.unsplash.com/photo-1543916562-699f4ac7f7c9?auto=format&fit=crop&w=1920&q=80');
-    background-size:cover;
-    background-position:center;
-}
-
-.hero h1{
-    font-size:4rem;
-    margin-bottom:15px;
-}
-
-.hero p{
-    font-size:1.2rem;
-    max-width:700px;
-    margin-bottom:25px;
-}
-
-.btn{
-    background:#2563eb;
+        radial-gradient(circle at top left,#3a4d7c 0%,transparent 40%),
+        radial-gradient(circle at bottom right,#5d4a7d 0%,transparent 40%),
+        #0f172a;
     color:white;
-    padding:15px 30px;
-    border-radius:8px;
-    text-decoration:none;
-    font-weight:bold;
-    transition:.3s;
 }
 
-.btn:hover{
-    background:#1d4ed8;
-}
-
-.section{
-    padding:80px 8%;
-}
-
-.section h2{
+.container{
+    width:min(900px,90%);
+    padding:50px;
+    border-radius:32px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,0.12);
+    box-shadow:0 15px 50px rgba(0,0,0,0.35);
     text-align:center;
-    margin-bottom:40px;
-    font-size:2.5rem;
 }
 
-.features{
+.subtitle{
+    text-transform:uppercase;
+    letter-spacing:3px;
+    font-size:.85rem;
+    color:rgba(255,255,255,.65);
+    margin-bottom:14px;
+}
+
+h1{
+    font-size:3rem;
+    font-weight:700;
+    margin-bottom:12px;
+}
+
+.target-date{
+    color:rgba(255,255,255,.75);
+    margin-bottom:40px;
+}
+
+.countdown{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:25px;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
 }
 
 .card{
-    background:#161b22;
-    padding:25px;
-    border-radius:12px;
-    border:1px solid #30363d;
-    transition:.3s;
+    padding:30px 15px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:24px;
+    transition:.3s ease;
 }
 
 .card:hover{
-    transform:translateY(-8px);
+    transform:translateY(-5px);
+    background:rgba(255,255,255,0.08);
 }
 
-.card h3{
-    color:#60a5fa;
-    margin-bottom:10px;
+.number{
+    font-size:3.5rem;
+    font-weight:700;
+    line-height:1;
 }
 
-footer{
-    text-align:center;
-    padding:30px;
-    background:#111827;
-    border-top:2px solid #2563eb;
+.label{
+    margin-top:10px;
+    color:rgba(255,255,255,.65);
+    letter-spacing:2px;
+    text-transform:uppercase;
+    font-size:.85rem;
+}
+
+.footer{
+    margin-top:35px;
+    color:rgba(255,255,255,.7);
+    font-size:1rem;
+}
+
+@media(max-width:700px){
+    .countdown{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    h1{
+        font-size:2.2rem;
+    }
+
+    .number{
+        font-size:2.6rem;
+    }
 }
 </style>
 </head>
-
 <body>
 
-<header>
-    <div class="logo">
-        <img src="https://i.ibb.co/bMnZ02J7/FL.png" alt="Los Angeles Roleplay">
-        <h1>Los Angeles RP</h1>
+<div class="container">
+    <div class="subtitle">Braces Removal Countdown</div>
+
+    <h1>Days Until Braces Come Off</h1>
+
+    <div class="target-date">
+        October 7, 2028 · 10:45 AM
     </div>
 
-    <nav>
-        #homeHome</a>
-        #aboutAbout</a>
-        #featuresFeatures</a>
-        #joinJoin</a>
-    </nav>
-</header>
-
-<section class="hero" id="home">
-    <h1>Los Angeles Roleplay</h1>
-    <p>
-        Experience realistic emergency services, civilian life,
-        criminal roleplay, and exciting stories in Los Angeles.
-    </p>
-
-    #Join Our Server</a>
-</section>
-
-<section class="section" id="about">
-    <h2>About Us</h2>
-
-    <div class="card">
-        <p>
-            Los Angeles Roleplay is a professional roleplay community
-            focused on immersive experiences, realistic scenes,
-            active staffing, and a welcoming environment for all players.
-        </p>
-    </div>
-</section>
-
-<section class="section" id="features">
-    <h2>Server Features</h2>
-
-    <div class="features">
-
+    <div class="countdown">
         <div class="card">
-            <h3>🚓 LAPD</h3>
-            <p>Protect the city and enforce the law.</p>
+            <div class="number" id="days">0</div>
+            <div class="label">Days</div>
         </div>
 
         <div class="card">
-            <h3>🚑 EMS</h3>
-            <p>Respond to emergencies and save lives.</p>
+            <div class="number" id="hours">0</div>
+            <div class="label">Hours</div>
         </div>
 
         <div class="card">
-            <h3>🚒 Fire Rescue</h3>
-            <p>Handle fires, rescues, and disasters.</p>
+            <div class="number" id="minutes">0</div>
+            <div class="label">Minutes</div>
         </div>
 
         <div class="card">
-            <h3>🏙 Civilian RP</h3>
-            <p>Create your own story in Los Angeles.</p>
+            <div class="number" id="seconds">0</div>
+            <div class="label">Seconds</div>
         </div>
-
     </div>
-</section>
 
-<section class="section" id="join">
-    <h2>Ready To Join?</h2>
-
-    <div class="card" style="text-align:center;">
-        <p style="margin-bottom:20px;">
-            Become part of Los Angeles Roleplay today.
-        </p>
-
-        #Join Discord</a>
+    <div class="footer" id="footer">
+        One day closer.
     </div>
-</section>
+</div>
 
-<footer>
-    © 2026 Los Angeles Roleplay. All Rights Reserved.
-</footer>
+<script>
+const target = new Date("October 7, 2028 10:45:00").getTime();
+
+function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = target - now;
+
+    if (distance <= 0) {
+        document.querySelector(".container").innerHTML = `
+            <h1>Countdown Complete</h1>
+            <div class="footer" style="margin-top:20px;">
+                Your braces removal date has arrived.
+            </div>
+        `;
+        return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("days").textContent = days;
+    document.getElementById("hours").textContent = hours;
+    document.getElementById("minutes").textContent = minutes;
+    document.getElementById("seconds").textContent = seconds;
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
 
 </body>
 </html>
