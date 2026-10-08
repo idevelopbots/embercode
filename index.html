@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Braces Countdown</title>
-
-https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap
+<title>Countdown</title>
 
 <style>
 *{
@@ -15,161 +13,227 @@ https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap
 }
 
 body{
-    font-family:'Inter',sans-serif;
-    min-height:100vh;
+    height:100vh;
+    overflow:hidden;
     display:flex;
     justify-content:center;
     align-items:center;
-    background:
-        radial-gradient(circle at top left,#3a4d7c 0%,transparent 40%),
-        radial-gradient(circle at bottom right,#5d4a7d 0%,transparent 40%),
-        #0f172a;
+    font-family:Inter, Arial, sans-serif;
+    background:linear-gradient(-45deg,#0f172a,#1e3a8a,#312e81,#0f172a);
+    background-size:400% 400%;
+    animation:bgMove 15s ease infinite;
     color:white;
 }
 
-.container{
-    width:min(900px,90%);
-    padding:50px;
-    border-radius:32px;
-    background:rgba(255,255,255,0.08);
-    backdrop-filter:blur(20px);
-    border:1px solid rgba(255,255,255,0.12);
-    box-shadow:0 15px 50px rgba(0,0,0,0.35);
-    text-align:center;
+@keyframes bgMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
 }
 
-.subtitle{
-    text-transform:uppercase;
-    letter-spacing:3px;
-    font-size:.85rem;
-    color:rgba(255,255,255,.65);
-    margin-bottom:14px;
+.particles{
+    position:absolute;
+    inset:0;
+}
+
+.particle{
+    position:absolute;
+    border-radius:50%;
+    background:rgba(255,255,255,0.15);
+    animation:float linear infinite;
+}
+
+@keyframes float{
+    from{
+        transform:translateY(110vh);
+    }
+    to{
+        transform:translateY(-20vh);
+    }
+}
+
+.container{
+    position:relative;
+    z-index:10;
+    text-align:center;
+    padding:50px;
+    border-radius:30px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,0.15);
+    box-shadow:
+        0 0 40px rgba(0,150,255,0.25),
+        0 0 100px rgba(0,100,255,0.15);
 }
 
 h1{
     font-size:3rem;
-    font-weight:700;
-    margin-bottom:12px;
+    margin-bottom:20px;
+    letter-spacing:3px;
+    text-transform:uppercase;
 }
 
-.target-date{
-    color:rgba(255,255,255,.75);
+.target{
+    color:#8fd3ff;
     margin-bottom:40px;
+    font-size:1.1rem;
 }
 
 .countdown{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
+    display:flex;
     gap:20px;
+    justify-content:center;
+    flex-wrap:wrap;
 }
 
-.card{
-    padding:30px 15px;
-    background:rgba(255,255,255,0.05);
-    border:1px solid rgba(255,255,255,0.08);
-    border-radius:24px;
-    transition:.3s ease;
+.time-box{
+    min-width:140px;
+    padding:25px;
+    border-radius:20px;
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.12);
+    transition:0.3s ease;
 }
 
-.card:hover{
-    transform:translateY(-5px);
-    background:rgba(255,255,255,0.08);
+.time-box:hover{
+    transform:translateY(-8px);
+    box-shadow:0 0 35px rgba(0,183,255,0.5);
 }
 
 .number{
-    font-size:3.5rem;
-    font-weight:700;
-    line-height:1;
+    font-size:4rem;
+    font-weight:800;
+    text-shadow:0 0 20px rgba(0,183,255,0.8);
 }
 
 .label{
     margin-top:10px;
-    color:rgba(255,255,255,.65);
     letter-spacing:2px;
-    text-transform:uppercase;
-    font-size:.85rem;
+    font-size:0.9rem;
+    opacity:0.8;
 }
 
-.footer{
-    margin-top:35px;
-    color:rgba(255,255,255,.7);
-    font-size:1rem;
+.finished{
+    font-size:3rem;
+    font-weight:bold;
+    color:#8fd3ff;
+    text-shadow:
+        0 0 20px #00bfff,
+        0 0 40px #00bfff;
 }
 
-@media(max-width:700px){
-    .countdown{
-        grid-template-columns:repeat(2,1fr);
-    }
-
+@media(max-width:768px){
     h1{
-        font-size:2.2rem;
+        font-size:2rem;
     }
 
     .number{
-        font-size:2.6rem;
+        font-size:2.8rem;
+    }
+
+    .time-box{
+        min-width:120px;
     }
 }
 </style>
 </head>
 <body>
 
+<div class="particles" id="particles"></div>
+
 <div class="container">
-    <div class="subtitle">Braces Removal Countdown</div>
+    <h1>Countdown</h1>
+    <div class="target">October 7 • 10:45 AM</div>
 
-    <h1>Days Until Braces Come Off</h1>
-
-    <div class="target-date">
-        October 7, 2028 · 10:45 AM
-    </div>
-
-    <div class="countdown">
-        <div class="card">
-            <div class="number" id="days">0</div>
-            <div class="label">Days</div>
+    <div id="countdown" class="countdown">
+        <div class="time-box">
+            <div id="days" class="number">0</div>
+            <div class="label">DAYS</div>
         </div>
 
-        <div class="card">
-            <div class="number" id="hours">0</div>
-            <div class="label">Hours</div>
+        <div class="time-box">
+            <div id="hours" class="number">0</div>
+            <div class="label">HOURS</div>
         </div>
 
-        <div class="card">
-            <div class="number" id="minutes">0</div>
-            <div class="label">Minutes</div>
+        <div class="time-box">
+            <div id="minutes" class="number">0</div>
+            <div class="label">MINUTES</div>
         </div>
 
-        <div class="card">
-            <div class="number" id="seconds">0</div>
-            <div class="label">Seconds</div>
+        <div class="time-box">
+            <div id="seconds" class="number">0</div>
+            <div class="label">SECONDS</div>
         </div>
-    </div>
-
-    <div class="footer" id="footer">
-        One day closer.
     </div>
 </div>
 
 <script>
-const target = new Date("October 7, 2028 10:45:00").getTime();
+// Floating particles
+const particleContainer = document.getElementById("particles");
+
+for(let i=0;i<60;i++){
+    const p = document.createElement("div");
+    p.classList.add("particle");
+
+    const size = Math.random()*8 + 2;
+
+    p.style.width = size + "px";
+    p.style.height = size + "px";
+    p.style.left = Math.random()*100 + "%";
+    p.style.animationDuration = (10 + Math.random()*20) + "s";
+    p.style.animationDelay = Math.random()*10 + "s";
+
+    particleContainer.appendChild(p);
+}
+
+// Countdown target
+function getNextOctober7() {
+    const now = new Date();
+
+    let target = new Date(
+        now.getFullYear(),
+        9,      // October (0-indexed)
+        7,
+        10,
+        45,
+        0
+    );
+
+    if (now > target) {
+        target = new Date(
+            now.getFullYear() + 1,
+            9,
+            7,
+            10,
+            45,
+            0
+        );
+    }
+
+    return target;
+}
+
+const targetDate = getNextOctober7();
 
 function updateCountdown() {
-    const now = new Date().getTime();
-    const distance = target - now;
+    const now = new Date();
+    const diff = targetDate - now;
 
-    if (distance <= 0) {
-        document.querySelector(".container").innerHTML = `
-            <h1>Countdown Complete</h1>
-            <div class="footer" style="margin-top:20px;">
-                Your braces removal date has arrived.
-            </div>
+    if(diff <= 0){
+        document.querySelector(".container").innerHTML =
+        `
+        <div class="finished">
+            OCTOBER 7 • 10:45 HAS ARRIVED
+        </div>
         `;
         return;
     }
 
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    const days = Math.floor(diff / (1000*60*60*24));
+    const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+    const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
+    const seconds = Math.floor((diff % (1000*60)) / 1000);
 
     document.getElementById("days").textContent = days;
     document.getElementById("hours").textContent = hours;
