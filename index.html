@@ -1,765 +1,842 @@
-```html
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>fazeable | CS Student & Developer</title>
+  
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome & Lucide Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            black: {
+              DEFAULT: '#050508',
+              card: 'rgba(13, 17, 23, 0.75)',
+              border: '#1e293b'
+            },
+            electric: {
+              blue: '#00f0ff',
+              deep: '#0072ff',
+              glow: 'rgba(0, 240, 255, 0.35)'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          animation: {
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'glow-pulse': 'glow 2.5s ease-in-out infinite alternate',
+            'float': 'float 5s ease-in-out infinite',
+          },
+          keyframes: {
+            glow: {
+              '0%': { boxShadow: '0 0 15px rgba(0, 240, 255, 0.2), inset 0 0 15px rgba(0, 240, 255, 0.1)' },
+              '100%': { boxShadow: '0 0 30px rgba(0, 240, 255, 0.6), inset 0 0 20px rgba(0, 240, 255, 0.3)' }
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
 
-<title>Countdown</title>
-
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-:root {
-    --accent: #60a5fa;
-    --accent-light: #93c5fd;
-    --glass: rgba(255,255,255,0.075);
-    --border: rgba(255,255,255,0.13);
-}
-
-html,
-body {
-    width: 100%;
-    height: 100%;
-}
-
-body {
-    min-height: 100vh;
-    overflow: hidden;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-family: "Inter", Arial, sans-serif;
-    color: white;
-
-    background:
-        radial-gradient(
-            circle at 20% 20%,
-            rgba(59,130,246,0.22),
-            transparent 35%
-        ),
-        radial-gradient(
-            circle at 80% 80%,
-            rgba(99,102,241,0.2),
-            transparent 35%
-        ),
-        linear-gradient(
-            135deg,
-            #020617,
-            #0f172a,
-            #172554,
-            #1e1b4b,
-            #020617
-        );
-
-    background-size: 200% 200%;
-    animation: backgroundMove 18s ease infinite;
-}
-
-@keyframes backgroundMove {
-    0% {
-        background-position: 0% 50%;
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #050508;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00f0ff;
     }
 
-    50% {
-        background-position: 100% 50%;
+    /* Glassmorphism Styles */
+    .glass-card {
+      background: rgba(13, 17, 23, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 240, 255, 0.12);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-/* Ambient glow */
-
-.glow {
-    position: fixed;
-    width: 500px;
-    height: 500px;
-
-    border-radius: 50%;
-
-    background: rgba(37,99,235,0.14);
-
-    filter: blur(100px);
-
-    pointer-events: none;
-
-    animation: glowMove 12s ease-in-out infinite alternate;
-}
-
-.glow.one {
-    top: -250px;
-    left: -200px;
-}
-
-.glow.two {
-    right: -250px;
-    bottom: -250px;
-
-    background: rgba(79,70,229,0.14);
-
-    animation-delay: -5s;
-}
-
-@keyframes glowMove {
-    from {
-        transform: translate(0,0) scale(1);
+    .glass-card:hover {
+      border-color: rgba(0, 240, 255, 0.4);
+      box-shadow: 0 10px 30px -10px rgba(0, 240, 255, 0.25);
+      transform: translateY(-4px);
     }
 
-    to {
-        transform: translate(80px,50px) scale(1.15);
-    }
-}
-
-/* Particles */
-
-.particles {
-    position: fixed;
-    inset: 0;
-
-    pointer-events: none;
-
-    overflow: hidden;
-}
-
-.particle {
-    position: absolute;
-
-    border-radius: 50%;
-
-    background: rgba(255,255,255,0.18);
-
-    box-shadow: 0 0 8px rgba(255,255,255,0.15);
-
-    animation: float linear infinite;
-}
-
-@keyframes float {
-    from {
-        transform: translateY(110vh);
-        opacity: 0;
+    .glass-nav {
+      background: rgba(5, 5, 8, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    10% {
-        opacity: 1;
+    /* Neon Text Effect */
+    .text-glow {
+      text-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
+    }
+    
+    .gradient-text {
+      background: linear-gradient(135deg, #ffffff 0%, #00f0ff 50%, #0072ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    90% {
-        opacity: 1;
+    /* Code Block Styling */
+    .code-container {
+      background: #090d14;
+      border-left: 3px solid #00f0ff;
     }
 
-    to {
-        transform: translateY(-20vh);
-        opacity: 0;
+    /* Avatar Glow Pulse Ring */
+    .avatar-glow {
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.5), 0 0 50px rgba(0, 114, 255, 0.3);
     }
-}
-
-/* Main card */
-
-.container {
-    position: relative;
-
-    width: min(1000px, calc(100% - 32px));
-
-    padding: 58px;
-
-    text-align: center;
-
-    border-radius: 32px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,0.11),
-            rgba(255,255,255,0.045)
-        );
-
-    border: 1px solid var(--border);
-
-    backdrop-filter: blur(28px);
-    -webkit-backdrop-filter: blur(28px);
-
-    box-shadow:
-        0 30px 80px rgba(0,0,0,0.35),
-        inset 0 1px 0 rgba(255,255,255,0.08);
-
-    animation: cardEnter 0.9s cubic-bezier(.2,.8,.2,1);
-}
-
-@keyframes cardEnter {
-    from {
-        opacity: 0;
-        transform: translateY(25px) scale(0.97);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-/* Small top label */
-
-.badge {
-    display: inline-flex;
-
-    align-items: center;
-    gap: 8px;
-
-    padding: 8px 14px;
-
-    margin-bottom: 22px;
-
-    border-radius: 999px;
-
-    background: rgba(96,165,250,0.1);
-
-    border: 1px solid rgba(96,165,250,0.22);
-
-    color: var(--accent-light);
-
-    font-size: 12px;
-    font-weight: 700;
-
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-}
-
-.badge-dot {
-    width: 7px;
-    height: 7px;
-
-    border-radius: 50%;
-
-    background: #60a5fa;
-
-    box-shadow:
-        0 0 10px #60a5fa;
-
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%,100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-
-    50% {
-        opacity: .45;
-        transform: scale(.75);
-    }
-}
-
-h1 {
-    font-size: clamp(2.2rem, 5vw, 4rem);
-
-    line-height: 1.05;
-
-    font-weight: 800;
-
-    letter-spacing: -2px;
-
-    margin-bottom: 14px;
-
-    background:
-        linear-gradient(
-            180deg,
-            #ffffff,
-            #cbd5e1
-        );
-
-    -webkit-background-clip: text;
-    background-clip: text;
-
-    color: transparent;
-}
-
-.target {
-    color: rgba(255,255,255,0.62);
-
-    font-size: 15px;
-
-    font-weight: 500;
-
-    margin-bottom: 42px;
-}
-
-/* Countdown */
-
-.countdown {
-    display: grid;
-
-    grid-template-columns:
-        repeat(4, 1fr);
-
-    gap: 16px;
-}
-
-.time-box {
-    position: relative;
-
-    padding: 28px 18px;
-
-    border-radius: 22px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,0.09),
-            rgba(255,255,255,0.035)
-        );
-
-    border: 1px solid rgba(255,255,255,0.1);
-
-    overflow: hidden;
-
-    transition:
-        transform .35s ease,
-        border-color .35s ease,
-        box-shadow .35s ease;
-}
-
-.time-box::before {
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    left: 15%;
-
-    width: 70%;
-    height: 1px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(255,255,255,0.4),
-            transparent
-        );
-}
-
-.time-box:hover {
-    transform: translateY(-7px);
-
-    border-color: rgba(96,165,250,0.35);
-
-    box-shadow:
-        0 15px 35px rgba(0,0,0,0.2),
-        0 0 30px rgba(59,130,246,0.12);
-}
-
-.number {
-    font-size: clamp(2.5rem, 6vw, 4.6rem);
-
-    line-height: 1;
-
-    font-weight: 800;
-
-    letter-spacing: -3px;
-
-    color: white;
-
-    text-shadow:
-        0 0 25px rgba(96,165,250,0.3);
-
-    transition:
-        transform .2s ease,
-        opacity .2s ease;
-}
-
-.number.changed {
-    animation: numberChange .35s ease;
-}
-
-@keyframes numberChange {
-    0% {
-        transform: translateY(-5px);
-        opacity: .3;
-    }
-
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.label {
-    margin-top: 13px;
-
-    color: rgba(255,255,255,0.45);
-
-    font-size: 10px;
-
-    font-weight: 700;
-
-    letter-spacing: 2px;
-}
-
-/* Bottom information */
-
-.footer {
-    margin-top: 30px;
-
-    color: rgba(255,255,255,0.35);
-
-    font-size: 12px;
-
-    letter-spacing: .5px;
-}
-
-/* Finished */
-
-.finished {
-    padding: 30px 10px;
-
-    font-size: clamp(1.8rem, 5vw, 3.2rem);
-
-    font-weight: 800;
-
-    letter-spacing: -1px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #93c5fd,
-            #ffffff,
-            #93c5fd
-        );
-
-    background-size: 200% auto;
-
-    -webkit-background-clip: text;
-    background-clip: text;
-
-    color: transparent;
-
-    animation: finishedGlow 3s linear infinite;
-}
-
-@keyframes finishedGlow {
-    to {
-        background-position: 200% center;
-    }
-}
-
-/* Mobile */
-
-@media (max-width: 700px) {
-
-    body {
-        overflow-y: auto;
-        padding: 20px 0;
-    }
-
-    .container {
-        padding: 35px 20px;
-
-        border-radius: 26px;
-    }
-
-    .countdown {
-        grid-template-columns:
-            repeat(2, 1fr);
-
-        gap: 12px;
-    }
-
-    .time-box {
-        padding: 25px 12px;
-    }
-
-    .number {
-        font-size: 3rem;
-    }
-
-    .target {
-        margin-bottom: 28px;
-    }
-}
-
-@media (max-width: 380px) {
-
-    .container {
-        width: calc(100% - 20px);
-
-        padding: 28px 14px;
-    }
-
-    .number {
-        font-size: 2.4rem;
-    }
-
-    .time-box {
-        padding: 20px 8px;
-    }
-}
-
-/* Reduced motion */
-
-@media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-}
-</style>
+  </style>
 </head>
+<body class="bg-[#050508] text-gray-200 font-sans selection:bg-electric-blue selection:text-black overflow-x-hidden relative min-h-screen">
 
-<body>
+  <!-- Interactive Particle Background Canvas -->
+  <canvas id="bgCanvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-0"></canvas>
 
-<div class="glow one"></div>
-<div class="glow two"></div>
+  <header class="fixed top-0 left-0 w-full z-50 glass-nav transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <!-- Logo / Brand -->
+      <a href="#hero" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-full p-[2px] bg-gradient-to-tr from-electric-blue to-electric-deep group-hover:scale-105 transition-transform duration-300">
+          <img src="https://i.ibb.co/fVZZfrXf/d798a359cb10fd6e40a2d6a309076465.webp" 
+               alt="fazeable avatar" 
+               class="w-full h-full rounded-full object-cover"
+               onerror="this.onerror=null; this.src='https://placehold.co/100x100/0d1117/00f0ff?text=FZ';" />
+        </div>
+        <span class="font-mono text-xl font-bold tracking-wider text-white group-hover:text-electric-blue transition-colors">
+          fazeable<span class="text-electric-blue animate-pulse">_</span>
+        </span>
+      </a>
 
-<div class="particles" id="particles"></div>
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-8 font-mono text-sm tracking-wide">
+        <a href="#about" class="text-gray-400 hover:text-electric-blue transition-colors flex items-center gap-1.5">
+          <span class="text-electric-blue text-xs">01.</span> About
+        </a>
+        <a href="#skills" class="text-gray-400 hover:text-electric-blue transition-colors flex items-center gap-1.5">
+          <span class="text-electric-blue text-xs">02.</span> Skills
+        </a>
+        <a href="#services" class="text-gray-400 hover:text-electric-blue transition-colors flex items-center gap-1.5">
+          <span class="text-electric-blue text-xs">03.</span> Expertise
+        </a>
+        <a href="#contact" class="px-5 py-2 rounded-full border border-electric-blue/40 text-electric-blue hover:bg-electric-blue/10 hover:border-electric-blue transition-all duration-300 text-glow">
+          Contact Me
+        </a>
+      </nav>
 
-<main class="container">
-
-    <div class="badge">
-        <span class="badge-dot"></span>
-        Countdown Active
+      <!-- Mobile Menu Button -->
+      <button id="menuBtn" class="md:hidden text-gray-300 hover:text-electric-blue focus:outline-none p-2" aria-label="Toggle Navigation">
+        <i class="fa-solid fa-bars text-xl"></i>
+      </button>
     </div>
 
-    <h1>Countdown</h1>
-
-    <div class="target">
-        October 7 • 10:45 AM
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobileMenu" class="hidden md:hidden glass-card border-x-0 border-t-0 px-6 py-6 flex flex-col gap-4 font-mono text-sm">
+      <a href="#about" class="mobile-link text-gray-300 hover:text-electric-blue py-2 flex items-center gap-2">
+        <span class="text-electric-blue">01.</span> About
+      </a>
+      <a href="#skills" class="mobile-link text-gray-300 hover:text-electric-blue py-2 flex items-center gap-2">
+        <span class="text-electric-blue">02.</span> Skills
+      </a>
+      <a href="#services" class="mobile-link text-gray-300 hover:text-electric-blue py-2 flex items-center gap-2">
+        <span class="text-electric-blue">03.</span> Expertise
+      </a>
+      <a href="#contact" class="mobile-link text-electric-blue py-2 text-center border border-electric-blue/40 rounded-lg bg-electric-blue/5">
+        Contact Me
+      </a>
     </div>
+  </header>
 
-    <div id="countdown" class="countdown">
+  <main class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-16">
+    <!-- Hero Section -->
+    <section id="hero" class="min-h-[80vh] flex flex-col justify-center items-center text-center py-12 relative">
+      <!-- Glow ambient background sphere -->
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-electric-blue/10 rounded-full filter blur-[120px] pointer-events-none"></div>
 
-        <div class="time-box">
-            <div id="days" class="number">0</div>
-            <div class="label">DAYS</div>
+      <!-- Avatar with Pulsing Electric Ring -->
+      <div class="relative mb-8 group">
+        <div class="absolute -inset-1.5 bg-gradient-to-r from-electric-blue to-electric-deep rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse-slow"></div>
+        <div class="relative w-36 h-36 sm:w-44 sm:h-44 rounded-full p-1 bg-[#050508] border-2 border-electric-blue/50 overflow-hidden avatar-glow">
+          <img src="https://i.ibb.co/fVZZfrXf/d798a359cb10fd6e40a2d6a309076465.webp" 
+               alt="fazeable avatar" 
+               class="w-full h-full rounded-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+               onerror="this.onerror=null; this.src='https://placehold.co/200x200/0d1117/00f0ff?text=fazeable';" />
+        </div>
+        <!-- Status Indicator Pill -->
+        <div class="absolute bottom-2 right-2 bg-black/90 border border-electric-blue/40 rounded-full px-3 py-1 flex items-center gap-2 text-xs font-mono text-gray-300 backdrop-blur-md shadow-lg">
+          <span class="w-2.5 h-2.5 rounded-full bg-electric-blue animate-ping"></span>
+          <span>Building APIs & Bots</span>
+        </div>
+      </div>
+
+      <!-- Main Heading & Name -->
+      <div class="space-y-4 max-w-3xl">
+        <p class="font-mono text-electric-blue text-sm sm:text-base tracking-wider uppercase font-semibold">
+          Hello World, I am
+        </p>
+        <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white">
+          <span class="gradient-text">fazeable</span>
+        </h1>
+        
+        <!-- Typing Effect Subtitle -->
+        <div class="h-10 flex items-center justify-center">
+          <p class="font-mono text-lg sm:text-2xl text-gray-300">
+            I <span id="typingText" class="text-electric-blue font-semibold"></span><span class="animate-pulse text-electric-blue">|</span>
+          </p>
         </div>
 
-        <div class="time-box">
-            <div id="hours" class="number">0</div>
-            <div class="label">HOURS</div>
-        </div>
+        <p class="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto font-light leading-relaxed pt-2">
+          Computer Science student passionate about crafting high-performance REST APIs, full-featured Discord automation, and clean back-end architecture.
+        </p>
+      </div>
 
-        <div class="time-box">
-            <div id="minutes" class="number">0</div>
-            <div class="label">MINUTES</div>
-        </div>
+      <!-- Action Buttons -->
+      <div class="mt-10 flex flex-wrap justify-center gap-4 sm:gap-6 w-full max-w-md">
+        <a href="#services" class="w-full sm:w-auto px-8 py-3.5 rounded-xl font-mono text-sm font-semibold bg-gradient-to-r from-electric-blue to-electric-deep text-black hover:opacity-90 transition-all duration-300 shadow-[0_0_20px_rgba(0,240,255,0.4)] flex items-center justify-center gap-2">
+          <i class="fa-solid fa-code"></i> Explore Work
+        </a>
+        <a href="#contact" class="w-full sm:w-auto px-8 py-3.5 rounded-xl font-mono text-sm font-semibold border border-electric-blue/30 text-white hover:bg-electric-blue/10 hover:border-electric-blue transition-all duration-300 glass-card flex items-center justify-center gap-2">
+          <i class="fa-solid fa-paper-plane text-electric-blue"></i> Contact Me
+        </a>
+      </div>
 
-        <div class="time-box">
-            <div id="seconds" class="number">0</div>
-            <div class="label">SECONDS</div>
-        </div>
+      <!-- Quick Tech Icons Bar -->
+      <div class="mt-16 pt-8 border-t border-white/5 flex flex-wrap justify-center items-center gap-8 text-gray-500 text-2xl">
+        <span class="hover:text-electric-blue transition-colors duration-300 cursor-pointer" title="Python"><i class="fa-brands fa-python"></i></span>
+        <span class="hover:text-electric-blue transition-colors duration-300 cursor-pointer" title="JavaScript"><i class="fa-brands fa-js"></i></span>
+        <span class="hover:text-electric-blue transition-colors duration-300 cursor-pointer" title="Discord API"><i class="fa-brands fa-discord"></i></span>
+        <span class="hover:text-electric-blue transition-colors duration-300 cursor-pointer" title="REST APIs"><i class="fa-solid fa-network-wired"></i></span>
+        <span class="hover:text-electric-blue transition-colors duration-300 cursor-pointer" title="Computer Science"><i class="fa-solid fa-graduation-cap"></i></span>
+      </div>
+    </section>
 
-    </div>
+    <!-- About Section -->
+    <section id="about" class="py-20 scroll-mt-20">
+      <div class="flex items-center gap-4 mb-12">
+        <h2 class="font-mono text-2xl sm:text-3xl font-bold text-white flex items-center gap-3">
+          <span class="text-electric-blue">01.</span> About Me
+        </h2>
+        <div class="h-[1px] bg-gradient-to-r from-electric-blue/40 to-transparent flex-grow"></div>
+      </div>
 
-    <div class="footer">
-        Time remaining until October 7 at 10:45 AM
-    </div>
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
+        <!-- Main Bio Card -->
+        <div class="md:col-span-7 glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between">
+          <div class="space-y-4 text-gray-300 leading-relaxed">
+            <h3 class="text-xl font-bold text-white font-mono flex items-center gap-2">
+              <i class="fa-solid fa-terminal text-electric-blue"></i> Who is fazeable?
+            </h3>
+            <p>
+              I am a dedicated software developer actively pursuing my degree in <strong class="text-electric-blue">Computer Science</strong>. My journey started with curiosity for how real-time digital ecosystems interact, leading me deep into system logic and API integration.
+            </p>
+            <p>
+              Having <strong class="text-white">mastered Python and JavaScript</strong>, I spend my time engineering custom asynchronous backend solutions, modular Discord bots with high uptime, and developer-friendly REST endpoints.
+            </p>
+          </div>
 
-</main>
-
-<script>
-
-/* =========================
-   PARTICLES
-========================= */
-
-const particleContainer =
-    document.getElementById("particles");
-
-for (let i = 0; i < 45; i++) {
-
-    const particle =
-        document.createElement("div");
-
-    particle.className = "particle";
-
-    const size =
-        Math.random() * 5 + 2;
-
-    particle.style.width =
-        `${size}px`;
-
-    particle.style.height =
-        `${size}px`;
-
-    particle.style.left =
-        `${Math.random() * 100}%`;
-
-    particle.style.animationDuration =
-        `${12 + Math.random() * 20}s`;
-
-    particle.style.animationDelay =
-        `${Math.random() * -20}s`;
-
-    particleContainer.appendChild(particle);
-}
-
-
-/* =========================
-   COUNTDOWN
-========================= */
-
-function getNextOctober7() {
-
-    const now = new Date();
-
-    let target = new Date(
-        now.getFullYear(),
-        9,
-        7,
-        10,
-        45,
-        0
-    );
-
-    if (now >= target) {
-
-        target = new Date(
-            now.getFullYear() + 1,
-            9,
-            7,
-            10,
-            45,
-            0
-        );
-    }
-
-    return target;
-}
-
-const targetDate =
-    getNextOctober7();
-
-
-/* =========================
-   UPDATE NUMBERS
-========================= */
-
-const elements = {
-
-    days:
-        document.getElementById("days"),
-
-    hours:
-        document.getElementById("hours"),
-
-    minutes:
-        document.getElementById("minutes"),
-
-    seconds:
-        document.getElementById("seconds")
-
-};
-
-function setNumber(element, value) {
-
-    const newValue =
-        String(value);
-
-    if (element.textContent !== newValue) {
-
-        element.classList.remove("changed");
-
-        void element.offsetWidth;
-
-        element.textContent =
-            newValue;
-
-        element.classList.add("changed");
-
-    }
-
-}
-
-
-function updateCountdown() {
-
-    const now = new Date();
-
-    const difference =
-        targetDate - now;
-
-    if (difference <= 0) {
-
-        document.querySelector(".container").innerHTML = `
-            <div class="finished">
-                OCTOBER 7 • 10:45 HAS ARRIVED
+          <!-- Academic Status Widget -->
+          <div class="mt-8 pt-6 border-t border-white/10 grid grid-cols-2 gap-4">
+            <div class="bg-black/40 p-4 rounded-xl border border-white/5">
+              <p class="text-xs font-mono text-gray-400">STATUS</p>
+              <p class="font-bold text-white mt-1 flex items-center gap-2">
+                <i class="fa-solid fa-user-graduate text-electric-blue"></i> CS Major
+              </p>
             </div>
-        `;
+            <div class="bg-black/40 p-4 rounded-xl border border-white/5">
+              <p class="text-xs font-mono text-gray-400">SPECIALIZATION</p>
+              <p class="font-bold text-white mt-1 flex items-center gap-2">
+                <i class="fa-solid fa-server text-electric-blue"></i> Backend & Bots
+              </p>
+            </div>
+          </div>
+        </div>
 
-        return;
+        <!-- Terminal Output Simulation Card -->
+        <div class="md:col-span-5 glass-card rounded-2xl p-6 code-container flex flex-col justify-between font-mono text-xs sm:text-sm">
+          <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
+              <span class="w-3 h-3 rounded-full bg-yellow-500/80 inline-block"></span>
+              <span class="w-3 h-3 rounded-full bg-green-500/80 inline-block"></span>
+            </div>
+            <span class="text-gray-500">profile_summary.py</span>
+          </div>
+
+          <div class="space-y-3 text-gray-300">
+            <p><span class="text-electric-blue">class</span> <span class="text-yellow-400">Developer</span>:</p>
+            <p class="pl-4"><span class="text-electric-blue">def</span> <span class="text-blue-400">__init__</span>(self):</p>
+            <p class="pl-8 text-gray-400">self.handle = <span class="text-green-400">"fazeable"</span></p>
+            <p class="pl-8 text-gray-400">self.education = <span class="text-green-400">"Computer Science"</span></p>
+            <p class="pl-8 text-gray-400">self.languages = [<span class="text-green-400">"Python"</span>, <span class="text-green-400">"JavaScript"</span>]</p>
+            <p class="pl-8 text-gray-400">self.focus = [<span class="text-green-400">"Discord Bots"</span>, <span class="text-green-400">"Custom APIs"</span>]</p>
+            <p class="pl-8 text-gray-400">self.status = <span class="text-green-400">"Ready for complex builds"</span></p>
+            <br>
+            <p><span class="text-purple-400">me</span> = Developer()</p>
+            <p><span class="text-electric-blue">print</span>(f<span class="text-green-400">"{me.handle} initialized."</span>)</p>
+          </div>
+
+          <div class="mt-6 pt-3 border-t border-white/5 flex items-center justify-between text-gray-400 text-xs">
+            <span class="text-green-400"><i class="fa-solid fa-circle-check"></i> Output: fazeable initialized.</span>
+            <span>UTF-8</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core Skills Section -->
+    <section id="skills" class="py-20 scroll-mt-20">
+      <div class="flex items-center gap-4 mb-12">
+        <h2 class="font-mono text-2xl sm:text-3xl font-bold text-white flex items-center gap-3">
+          <span class="text-electric-blue">02.</span> Mastered Skills
+        </h2>
+        <div class="h-[1px] bg-gradient-to-r from-electric-blue/40 to-transparent flex-grow"></div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Python Card -->
+        <div class="glass-card rounded-2xl p-6 flex flex-col justify-between group hover:border-electric-blue/60 transition-all">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-electric-blue/10 border border-electric-blue/30 flex items-center justify-center text-electric-blue text-2xl mb-4 group-hover:scale-110 transition-transform">
+              <i class="fa-brands fa-python"></i>
+            </div>
+            <h3 class="text-lg font-bold text-white font-mono">Python</h3>
+            <span class="inline-block mt-1 text-xs px-2.5 py-0.5 rounded-full bg-electric-blue/10 text-electric-blue border border-electric-blue/30 font-mono">
+              Mastered
+            </span>
+            <p class="text-gray-400 text-sm mt-3 leading-relaxed">
+              Asyncio, Discord.py, FastAPI, Flask, Data Structures & Algorithm Optimization.
+            </p>
+          </div>
+          <!-- Progress Bar -->
+          <div class="mt-6">
+            <div class="flex justify-between text-xs font-mono text-gray-400 mb-1">
+              <span>Proficiency</span>
+              <span class="text-electric-blue">100%</span>
+            </div>
+            <div class="w-full bg-black/60 rounded-full h-2 overflow-hidden border border-white/5">
+              <div class="bg-gradient-to-r from-electric-blue to-electric-deep h-2 rounded-full w-full"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- JavaScript Card -->
+        <div class="glass-card rounded-2xl p-6 flex flex-col justify-between group hover:border-electric-blue/60 transition-all">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-electric-blue/10 border border-electric-blue/30 flex items-center justify-center text-electric-blue text-2xl mb-4 group-hover:scale-110 transition-transform">
+              <i class="fa-brands fa-js"></i>
+            </div>
+            <h3 class="text-lg font-bold text-white font-mono">JavaScript</h3>
+            <span class="inline-block mt-1 text-xs px-2.5 py-0.5 rounded-full bg-electric-blue/10 text-electric-blue border border-electric-blue/30 font-mono">
+              Mastered
+            </span>
+            <p class="text-gray-400 text-sm mt-3 leading-relaxed">
+              Node.js, Express, Discord.js v14, Async/Await architecture, RESTful web services.
+            </p>
+          </div>
+          <!-- Progress Bar -->
+          <div class="mt-6">
+            <div class="flex justify-between text-xs font-mono text-gray-400 mb-1">
+              <span>Proficiency</span>
+              <span class="text-electric-blue">100%</span>
+            </div>
+            <div class="w-full bg-black/60 rounded-full h-2 overflow-hidden border border-white/5">
+              <div class="bg-gradient-to-r from-electric-blue to-electric-deep h-2 rounded-full w-full"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Discord Bot Dev Card -->
+        <div class="glass-card rounded-2xl p-6 flex flex-col justify-between group hover:border-electric-blue/60 transition-all">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-electric-blue/10 border border-electric-blue/30 flex items-center justify-center text-electric-blue text-2xl mb-4 group-hover:scale-110 transition-transform">
+              <i class="fa-brands fa-discord"></i>
+            </div>
+            <h3 class="text-lg font-bold text-white font-mono">Discord Bots</h3>
+            <span class="inline-block mt-1 text-xs px-2.5 py-0.5 rounded-full bg-electric-blue/10 text-electric-blue border border-electric-blue/30 font-mono">
+              Expert
+            </span>
+            <p class="text-gray-400 text-sm mt-3 leading-relaxed">
+              Slash commands, custom dashboards, economy systems, webhooks & automated moderation.
+            </p>
+          </div>
+          <!-- Progress Bar -->
+          <div class="mt-6">
+            <div class="flex justify-between text-xs font-mono text-gray-400 mb-1">
+              <span>Proficiency</span>
+              <span class="text-electric-blue">98%</span>
+            </div>
+            <div class="w-full bg-black/60 rounded-full h-2 overflow-hidden border border-white/5">
+              <div class="bg-gradient-to-r from-electric-blue to-electric-deep h-2 rounded-full w-[98%]"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Custom APIs Card -->
+        <div class="glass-card rounded-2xl p-6 flex flex-col justify-between group hover:border-electric-blue/60 transition-all">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-electric-blue/10 border border-electric-blue/30 flex items-center justify-center text-electric-blue text-2xl mb-4 group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-gears"></i>
+            </div>
+            <h3 class="text-lg font-bold text-white font-mono">Custom APIs</h3>
+            <span class="inline-block mt-1 text-xs px-2.5 py-0.5 rounded-full bg-electric-blue/10 text-electric-blue border border-electric-blue/30 font-mono">
+              Expert
+            </span>
+            <p class="text-gray-400 text-sm mt-3 leading-relaxed">
+              RESTful Endpoints, Rate Limiting, Authentication (JWT/API Keys), JSON Schemas, Database ORMs.
+            </p>
+          </div>
+          <!-- Progress Bar -->
+          <div class="mt-6">
+            <div class="flex justify-between text-xs font-mono text-gray-400 mb-1">
+              <span>Proficiency</span>
+              <span class="text-electric-blue">95%</span>
+            </div>
+            <div class="w-full bg-black/60 rounded-full h-2 overflow-hidden border border-white/5">
+              <div class="bg-gradient-to-r from-electric-blue to-electric-deep h-2 rounded-full w-[95%]"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Showcase & Capabilities Section -->
+    <section id="services" class="py-20 scroll-mt-20">
+      <div class="flex items-center gap-4 mb-12">
+        <h2 class="font-mono text-2xl sm:text-3xl font-bold text-white flex items-center gap-3">
+          <span class="text-electric-blue">03.</span> What I Build
+        </h2>
+        <div class="h-[1px] bg-gradient-to-r from-electric-blue/40 to-transparent flex-grow"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Feature 1: Discord Bots -->
+        <div class="glass-card rounded-2xl p-8 relative overflow-hidden flex flex-col justify-between group">
+          <div class="absolute -right-6 -bottom-6 text-white/[0.02] text-9xl font-mono select-none group-hover:text-electric-blue/[0.05] transition-colors">
+            01
+          </div>
+          <div>
+            <div class="w-14 h-14 rounded-2xl bg-electric-blue/10 border border-electric-blue/30 flex items-center justify-center text-electric-blue text-2xl mb-6 shadow-[0_0_15px_rgba(0,240,255,0.15)]">
+              <i class="fa-brands fa-discord"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Discord Bot Development</h3>
+            <p class="text-gray-400 text-sm leading-relaxed mb-6">
+              Tailor-made Discord bots engineered for high reliability and scalability. From complex database integration to custom interactive embeds and button UI.
+            </p>
+            <ul class="space-y-2.5 font-mono text-xs text-gray-300 mb-6">
+              <li class="flex items-center gap-2">
+                <i class="fa-solid fa-check text-electric-blue"></i> Custom Slash Commands & Interactions
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fa-solid fa-check text-electric-blue"></i> Automated Webhook Integrations
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fa-solid fa-check text-electric-blue"></i> Economy, Leveling & Moderation Systems
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fa-solid fa-check text-electric-blue"></i> Sharding & High Uptime Hosting
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Feature 2: Custom APIs -->
+        <div class="glass-card rounded-2xl p-8 relative overflow-hidden flex flex-col justify-between group">
+          <div class="absolute -right-6 -bottom-6 text-white/[0.02] text-9xl font-mono select-none group-hover:text-electric-blue/[0.05] transition-colors">
+            02
+          </div>
+          <div>
+            <div class="w-14 h-14 rounded-2xl bg-electric-blue/10 border border-electric-blue/30 flex items-center justify-center text-electric-blue text-2xl mb-6 shadow-[0_0_15px_rgba(0,240,255,0.15)]">
+              <i class="fa-solid fa-cloud-bolt"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Custom REST API Creation</h3>
+            <p class="text-gray-400 text-sm leading-relaxed mb-6">
+              Fast, secure, and clean APIs built using Python (FastAPI/Flask) or JavaScript (Express). Designed to seamlessly bridge client applications and data stores.
+            </p>
+            <ul class="space-y-2.5 font-mono text-xs text-gray-300 mb-6">
+              <li class="flex items-center gap-2">
+                <i class="fa-solid fa-check text-electric-blue"></i> Lightweight & High Throughput Architecture
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fa-solid fa-check text-electric-blue"></i> Token Authentication (JWT / API Keys)
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fa-solid fa-check text-electric-blue"></i> Database Management (PostgreSQL/MongoDB/SQLite)
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fa-solid fa-check text-electric-blue"></i> Comprehensive Swagger/OpenAPI Docs
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Feature 3: CS Engineering -->
+        <div class="glass-card rounded-2xl p-8 relative overflow-hidden flex flex-col justify-between group">
+          <div class="absolute -right-6 -bottom-6 text-white/[0.02] text-9xl font-mono select-none group-hover:text-electric-blue/[0.05] transition-colors">
+            03
+          </div>
+          <div>
+            <div class="w-14 h-14 rounded-2xl bg-electric-blue/10 border border-electric-blue/30 flex items-center justify-center text-electric-blue text-2xl mb-6 shadow-[0_0_15px_rgba(0,240,255,0.15)]">
+              <i class="fa-solid fa-laptop-code"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Computer Science Focus</h3>
+            <p class="text-gray-400 text-sm leading-relaxed mb-6">
+              Applying fundamental computer science principles to write clean, optimized, maintainable code with strong architectural fundamentals.
+            </p>
+            <ul class="space-y-2.5 font-mono text-xs text-gray-300 mb-6">
+              <li class="flex items-center gap-2">
+                <i class="fa-solid fa-check text-electric-blue"></i> Optimized Algorithms & Data Structures
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fa-solid fa-check text-electric-blue"></i> Asynchronous & Concurrent Programming
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fa-solid fa-check text-electric-blue"></i> Modular Codebase Architecture
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fa-solid fa-check text-electric-blue"></i> Continuous Learning & Problem Solving
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 scroll-mt-20">
+      <div class="max-w-4xl mx-auto glass-card rounded-3xl p-8 sm:p-12 relative overflow-hidden border border-electric-blue/30">
+        <!-- Accent Glow background in card -->
+        <div class="absolute -top-24 -right-24 w-72 h-72 bg-electric-blue/20 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="text-center max-w-2xl mx-auto space-y-4 mb-10">
+          <span class="font-mono text-electric-blue text-sm uppercase tracking-widest">Get In Touch</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Let's Build Something Cool</h2>
+          <p class="text-gray-400 text-sm sm:text-base">
+            Whether you need a custom Discord bot, a high-speed REST API, or just want to chat about Computer Science—my inbox is always open.
+          </p>
+        </div>
+
+        <!-- Quick Interactive Discord Copy Tile -->
+        <div class="bg-black/60 rounded-2xl p-6 border border-white/10 max-w-lg mx-auto mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-[#5865F2]/20 text-[#5865F2] flex items-center justify-center text-2xl">
+              <i class="fa-brands fa-discord"></i>
+            </div>
+            <div class="text-left">
+              <p class="text-xs text-gray-400 font-mono">DISCORD USERNAME</p>
+              <p class="text-white font-mono font-bold">fazeable</p>
+            </div>
+          </div>
+          <button id="copyDiscordBtn" onclick="copyDiscordTag()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-electric-blue/10 hover:bg-electric-blue/20 text-electric-blue border border-electric-blue/40 font-mono text-xs transition-all flex items-center justify-center gap-2">
+            <i class="fa-regular fa-copy" id="copyIcon"></i>
+            <span id="copyText">Copy Tag</span>
+          </button>
+        </div>
+
+        <!-- Contact Links Grid -->
+        <div class="flex flex-wrap justify-center gap-4 pt-4 border-t border-white/10">
+          <a href="https://discord.com" target="_blank" class="px-6 py-3 rounded-xl bg-black/40 hover:bg-electric-blue/10 border border-white/10 hover:border-electric-blue/50 text-gray-300 hover:text-white font-mono text-xs transition-all flex items-center gap-2">
+            <i class="fa-brands fa-discord text-electric-blue"></i> Connect on Discord
+          </a>
+          <a href="https://github.com" target="_blank" class="px-6 py-3 rounded-xl bg-black/40 hover:bg-electric-blue/10 border border-white/10 hover:border-electric-blue/50 text-gray-300 hover:text-white font-mono text-xs transition-all flex items-center gap-2">
+            <i class="fa-brands fa-github text-electric-blue"></i> GitHub Profile
+          </a>
+          <a href="mailto:fazeable@example.com" class="px-6 py-3 rounded-xl bg-black/40 hover:bg-electric-blue/10 border border-white/10 hover:border-electric-blue/50 text-gray-300 hover:text-white font-mono text-xs transition-all flex items-center gap-2">
+            <i class="fa-solid fa-envelope text-electric-blue"></i> Send Email
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="relative z-10 border-t border-white/5 py-8 text-center font-mono text-xs text-gray-500">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p>© <span id="year"></span> fazeable. Designed & Built with Electric Precision.</p>
+      <div class="flex items-center gap-2 text-electric-blue">
+        <i class="fa-solid fa-terminal"></i>
+        <span>Python • JavaScript • CS</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Notification Toast Box -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 glass-card border border-electric-blue text-white px-5 py-3 rounded-xl font-mono text-xs shadow-2xl transform translate-y-24 opacity-0 transition-all duration-300 flex items-center gap-3 pointer-events-none">
+    <i class="fa-solid fa-circle-check text-electric-blue text-base"></i>
+    <span id="toastMessage">Discord username copied to clipboard!</span>
+  </div>
+
+  <script>
+    // Set Current Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Dynamic Typing Effect
+    const typingPhrases = [
+      "Code Discord Bots.",
+      "Study Computer Science.",
+      "Develop Custom APIs.",
+      "Master Python & JS."
+    ];
+    let phraseIdx = 0;
+    let charIdx = 0;
+    let isDeleting = false;
+    const typingSpeed = 90;
+    const deletingSpeed = 40;
+    const pauseDelay = 1800;
+    const typingElement = document.getElementById('typingText');
+
+    function typeEffect() {
+      const currentPhrase = typingPhrases[phraseIdx];
+      
+      if (isDeleting) {
+        typingElement.textContent = currentPhrase.substring(0, charIdx - 1);
+        charIdx--;
+      } else {
+        typingElement.textContent = currentPhrase.substring(0, charIdx + 1);
+        charIdx++;
+      }
+
+      let timeout = isDeleting ? deletingSpeed : typingSpeed;
+
+      if (!isDeleting && charIdx === currentPhrase.length) {
+        timeout = pauseDelay;
+        isDeleting = true;
+      } else if (isDeleting && charIdx === 0) {
+        isDeleting = false;
+        phraseIdx = (phraseIdx + 1) % typingPhrases.length;
+        timeout = 400;
+      }
+
+      setTimeout(typeEffect, timeout);
+    }
+    
+    // Start typing on load
+    document.addEventListener('DOMContentLoaded', typeEffect);
+
+    // Mobile Navigation Menu Toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+      });
+    });
+
+    // Copy Discord Username Logic
+    function copyDiscordTag() {
+      const tag = "fazeable";
+      
+      // Fallback & execCommand copy approach
+      const tempInput = document.createElement("input");
+      tempInput.value = tag;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand("copy");
+      document.body.removeChild(tempInput);
+
+      // UI Feedback
+      const copyText = document.getElementById("copyText");
+      const copyIcon = document.getElementById("copyIcon");
+      
+      copyText.textContent = "Copied!";
+      copyIcon.className = "fa-solid fa-check text-green-400";
+
+      showToast("Discord tag 'fazeable' copied to clipboard!");
+
+      setTimeout(() => {
+        copyText.textContent = "Copy Tag";
+        copyIcon.className = "fa-regular fa-copy";
+      }, 2500);
     }
 
-    const days =
-        Math.floor(
-            difference /
-            (1000 * 60 * 60 * 24)
-        );
+    // Toast Notification System
+    function showToast(msg) {
+      const toast = document.getElementById("toast");
+      const toastMessage = document.getElementById("toastMessage");
+      toastMessage.textContent = msg;
+      
+      toast.classList.remove("translate-y-24", "opacity-0");
+      toast.classList.add("translate-y-0", "opacity-100");
 
-    const hours =
-        Math.floor(
-            (difference %
-            (1000 * 60 * 60 * 24)) /
-            (1000 * 60 * 60)
-        );
+      setTimeout(() => {
+        toast.classList.remove("translate-y-0", "opacity-100");
+        toast.classList.add("translate-y-24", "opacity-0");
+      }, 3000);
+    }
 
-    const minutes =
-        Math.floor(
-            (difference %
-            (1000 * 60 * 60)) /
-            (1000 * 60)
-        );
+    // Electric Particle Canvas Background Animation
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
 
-    const seconds =
-        Math.floor(
-            (difference %
-            (1000 * 60)) /
-            1000
-        );
+    let width, height;
+    let particles = [];
+    let mouse = { x: null, y: null, radius: 170 };
 
-    setNumber(elements.days, days);
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      initParticles();
+    }
 
-    setNumber(
-        elements.hours,
-        String(hours).padStart(2, "0")
-    );
+    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.x;
+      mouse.y = e.y;
+    });
+    window.addEventListener('mouseleave', () => {
+      mouse.x = null;
+      mouse.y = null;
+    });
 
-    setNumber(
-        elements.minutes,
-        String(minutes).padStart(2, "0")
-    );
+    class Particle {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.8;
+        this.vy = (Math.random() - 0.5) * 0.8;
+        this.radius = Math.random() * 1.8 + 0.8;
+        this.baseAlpha = Math.random() * 0.5 + 0.2;
+        this.alpha = this.baseAlpha;
+      }
 
-    setNumber(
-        elements.seconds,
-        String(seconds).padStart(2, "0")
-    );
-}
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0, 240, 255, ${this.alpha})`;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = '#00f0ff';
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
 
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
 
-/* Start */
+        // Bounce off edges
+        if (this.x < 0 || this.x > width) this.vx *= -1;
+        if (this.y < 0 || this.y > height) this.vy *= -1;
 
-updateCountdown();
+        // Mouse Interactivity
+        if (mouse.x !== null && mouse.y !== null) {
+          let dx = mouse.x - this.x;
+          let dy = mouse.y - this.y;
+          let dist = Math.sqrt(dx * dx + dy * dy);
 
-setInterval(
-    updateCountdown,
-    1000
-);
+          if (dist < mouse.radius) {
+            let force = (mouse.radius - dist) / mouse.radius;
+            this.alpha = Math.min(1, this.baseAlpha + force * 0.6);
+            
+            // Subtle push effect
+            this.x -= (dx / dist) * force * 1.2;
+            this.y -= (dy / dist) * force * 1.2;
+          } else {
+            this.alpha = this.baseAlpha;
+          }
+        } else {
+          this.alpha = this.baseAlpha;
+        }
 
-</script>
+        this.draw();
+      }
+    }
 
+    function initParticles() {
+      particles = [];
+      // Adjust density based on screen size
+      const count = Math.floor((width * height) / 12000);
+      for (let i = 0; i < Math.min(count, 110); i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    function connectParticles() {
+      const maxDistance = 120;
+      for (let a = 0; a < particles.length; a++) {
+        for (let b = a + 1; b < particles.length; b++) {
+          let dx = particles[a].x - particles[b].x;
+          let dy = particles[a].y - particles[b].y;
+          let dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < maxDistance) {
+            let opacity = 1 - (dist / maxDistance);
+            ctx.beginPath();
+            ctx.moveTo(particles[a].x, particles[a].y);
+            ctx.lineTo(particles[b].x, particles[b].y);
+            ctx.strokeStyle = `rgba(0, 240, 255, ${opacity * 0.18})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+
+      // Draw subtle dark grid pattern
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.015)';
+      ctx.lineWidth = 1;
+      const gridSize = 60;
+      for (let x = 0; x < width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      }
+      for (let y = 0; y < height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+
+      // Update and connect particles
+      particles.forEach(p => p.update());
+      connectParticles();
+
+      requestAnimationFrame(animate);
+    }
+
+    window.onload = function() {
+      resizeCanvas();
+      animate();
+    };
+  </script>
 </body>
 </html>
-```
