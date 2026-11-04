@@ -3,519 +3,306 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Born a Crime - Interactive Study Quiz</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <!-- Google Fonts -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Plus Jakarta Sans', 'sans-serif'],
-          },
-          colors: {
-            brand: {
-              50: '#fffbe8',
-              100: '#fef3c7',
-              500: '#f59e0b',
-              600: '#d97706',
-              700: '#b45309',
-              900: '#0f172a'
-            }
-          }
-        }
-      }
-    }
-  </script>
+  <title>Born a Crime - Practice Quiz</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body {
-      background-color: #0f172a;
-      color: #f8fafc;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-    .glass-card {
-      background: rgba(30, 41, 59, 0.7);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .custom-radio:checked + label {
-      border-color: #f59e0b;
-      background-color: rgba(245, 158, 11, 0.12);
-    }
-    .correct-option {
-      border-color: #10b981 !important;
-      background-color: rgba(16, 185, 129, 0.15) !important;
-      color: #34d399 !important;
-    }
-    .incorrect-option {
-      border-color: #ef4444 !important;
-      background-color: rgba(239, 68, 68, 0.15) !important;
-      color: #fca5a5 !important;
-    }
+    body { background-color: #f8f9fa; color: #212529; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    .navbar-brand { font-weight: 700; color: #0d6efd !important; }
+    .card { border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
+    .correct-card { border-left: 6px solid #198754; background-color: #f8fff9; }
+    .incorrect-card { border-left: 6px solid #dc3545; background-color: #fff8f8; }
+    .badge-chapter { background-color: #e7f1ff; color: #0d6efd; font-weight: 600; font-size: 0.85rem; }
+    .btn-custom { padding: 0.6rem 1.5rem; font-weight: 600; border-radius: 8px; }
   </style>
 </head>
-<body class="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+<body>
 
-  <!-- Main Container -->
-  <div class="max-w-4xl mx-auto space-y-8">
-
-    <!-- Header Banner -->
-    <header class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl">
-      <div class="space-y-2 text-center sm:text-left">
-        <span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-bold uppercase tracking-wider rounded-full border border-amber-500/30">
-          Book Study Guide
-        </span>
-        <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-          Born a Crime <span class="text-amber-400">Quiz</span>
-        </h1>
-        <p class="text-slate-400 text-sm sm:text-base max-width-xl">
-          Chapters 9, 11, 13, 15, 16, 17, & 18 Study Review
-        </p>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Born a Crime Study Hub</a>
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link active" href="index.html">Practice Quiz</a>
+        <a class="nav-link" href="review.html">Study & Flashcards</a>
       </div>
-      <div id="quiz-status-badge" class="flex items-center gap-3 bg-slate-800/80 border border-slate-700/60 rounded-xl p-4">
-        <i class="fa-solid fa-graduation-cap text-3xl text-amber-400"></i>
-        <div>
-          <div class="text-xs text-slate-400 font-semibold uppercase">Status</div>
-          <div id="status-text" class="text-sm font-bold text-slate-200">Ready to Start</div>
-        </div>
-      </div>
-    </header>
+    </div>
+  </nav>
 
-    <!-- Score Summary Modal/Card (Hidden by default) -->
-    <section id="results-card" class="hidden glass-card rounded-2xl p-6 sm:p-8 shadow-2xl border-2 border-amber-500/40 space-y-6">
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-6 border-b border-slate-700/60 pb-6">
-        <div>
-          <h2 class="text-2xl font-bold text-white flex items-center gap-3">
-            <i class="fa-solid fa-trophy text-amber-400"></i>
-            Quiz Performance Summary
-          </h2>
-          <p id="mode-subtitle" class="text-slate-400 text-sm mt-1">Full Quiz Results</p>
-        </div>
-        <!-- Score Display -->
-        <div class="text-center sm:text-right bg-slate-900/80 px-6 py-4 rounded-xl border border-slate-700">
-          <div class="text-xs text-slate-400 font-bold uppercase tracking-wider">Final Score</div>
-          <div class="text-4xl font-extrabold text-amber-400" id="score-display">0 / 10</div>
-          <div class="text-xs font-semibold mt-1" id="score-percentage">0%</div>
-        </div>
+  <div class="container py-4" style="max-width: 800px;">
+    
+    <!-- Score Header -->
+    <div id="scoreContainer" class="d-none text-center p-4 bg-white rounded-3 shadow-sm mb-4">
+      <h2 class="fw-bold mb-2">Quiz Results</h2>
+      <div class="display-4 fw-bold text-primary mb-2" id="scoreDisplay">0 / 0</div>
+      <p id="percentageDisplay" class="fs-5 text-muted mb-3">0%</p>
+      
+      <div class="d-flex justify-content-center gap-2 flex-wrap">
+        <button id="filterMissedBtn" class="btn btn-outline-danger btn-custom" onclick="toggleFilterMissed()">Show Only Missed</button>
+        <button id="redoMissedBtn" class="btn btn-warning btn-custom" onclick="startRedoMode()">Redo Missed Questions</button>
+        <button class="btn btn-primary btn-custom" onclick="resetQuiz()">Retake Full Quiz</button>
       </div>
+    </div>
 
-      <!-- Action Buttons & Filters -->
-      <div class="flex flex-wrap items-center justify-between gap-4 pt-2">
-        <div class="flex items-center gap-3">
-          <button id="toggle-filter-btn" onclick="toggleFilterIncorrect()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-semibold border border-slate-700 transition flex items-center gap-2">
-            <i class="fa-solid fa-filter text-amber-400"></i>
-            <span id="filter-btn-text">Show Only Missed Questions</span>
-          </button>
-        </div>
-        <div class="flex flex-wrap items-center gap-3">
-          <button id="redo-missed-btn" onclick="redoMissedQuestions()" class="hidden px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-sm transition shadow-lg shadow-amber-500/20 flex items-center gap-2">
-            <i class="fa-solid fa-rotate-right"></i>
-            Redo Missed Questions (<span id="missed-count">0</span>)
-          </button>
-          <button onclick="resetFullQuiz()" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-sm border border-slate-700 transition flex items-center gap-2">
-            <i class="fa-solid fa-arrows-rotate"></i>
-            Retake Entire Quiz
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Quiz Form / Questions Container -->
-    <form id="quiz-form" onsubmit="handleQuizSubmit(event)" class="space-y-6">
-      <div id="questions-list" class="space-y-6">
-        <!-- Questions will be injected dynamically via JavaScript -->
-      </div>
-
-      <!-- Submit Footer -->
-      <div id="submit-container" class="glass-card rounded-2xl p-6 text-center sticky bottom-6 shadow-2xl border border-slate-700">
-        <button type="submit" class="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 text-lg font-extrabold rounded-xl shadow-lg shadow-amber-500/25 transition transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-3 mx-auto">
-          <i class="fa-solid fa-paper-plane"></i>
-          Submit Answers
-        </button>
+    <!-- Quiz Form -->
+    <form id="quizForm">
+      <div id="questionsContainer"></div>
+      
+      <div class="text-center mt-4">
+        <button type="button" id="submitBtn" class="btn btn-primary btn-custom btn-lg w-100" onclick="gradeQuiz()">Submit Quiz</button>
       </div>
     </form>
 
   </div>
 
   <script>
-    // Master Question Dataset
-    const quizData = [
+    const questionsData = [
       {
         id: 1,
         chapter: "Chapter 9",
-        question: "How did the South African apartheid government use colored people to sow confusion, hatred, and mistrust?",
+        question: "How did the South African apartheid government use colored people to maintain white supremacy?",
         options: [
-          "By granting colored people equal political rights with white citizens.",
-          "By giving colored people privileged status over Black people to divide marginalized groups.",
-          "By forcing colored communities into total isolation from all other ethnic groups.",
-          "By designating colored citizens as the sole administrators of local townships."
+          "By offering colored people privileged status over Black people to divide marginalized groups.",
+          "By granting colored people equal voting rights with white citizens.",
+          "By forcing colored communities into total isolation from all other groups.",
+          "By appointing colored leaders to high political office."
         ],
-        correct: 1,
-        explanation: "Noah explains that by giving colored people slightly more privileges than Black people (and making them fear losing those privileges), the government successfully created division and prevented them from uniting against apartheid."
+        answer: 0,
+        explanation: "The government gave colored people slightly better rights than Black people, sowing jealousy, mistrust, and division so they would not unite against white supremacy."
       },
       {
         id: 2,
         chapter: "Chapter 9",
-        question: "Which specific test was famously used by the government to decide whether a person was classified as white or colored?",
+        question: "Which test was famously used by the government to decide if someone was white or colored?",
         options: [
           "The pencil test inserted into the hair.",
-          "The skin tone comparison wheel.",
-          "The native language fluency exam.",
-          "The ancestral lineage handwriting test."
+          "The skin-tone color wheel test.",
+          "The ancestral handwriting test.",
+          "The native dialect pronunciation test."
         ],
-        correct: 0,
-        explanation: "The infamous 'pencil test' involved sliding a pencil into a person's hair. If the pencil stayed put, the person was classified as Black/colored; if it fell out, they could be classified as white."
+        answer: 0,
+        explanation: "If a pencil inserted into hair stayed in place while shaking the head, the hair was considered textured enough to classify the person as colored or Black."
       },
       {
         id: 3,
         chapter: "Chapter 11",
-        question: "Why did Trevor refer to himself as 'like a weed dealer, but of food' at school, and how did it benefit him?",
+        question: "How did Trevor's ability as the 'fastest kid in school' benefit him socially and economically?",
         options: [
-          "He stole food from the cafeteria and resold it at discounted prices to teachers.",
-          "He ran food orders for lazy students because he was fast, earning profits and social popularity across all peer groups.",
-          "He smuggled illegal foreign candy onto campus and sold it secretly during class.",
-          "He traded home-cooked meals for homework answers with older students."
+          "He ran food orders from the cafeteria line for other students in exchange for a fee.",
+          "He won prize money competing in regional track meets.",
+          "He was hired by local shops to deliver goods after school.",
+          "He used his speed to evade security guards when selling stolen goods."
         ],
-        correct: 1,
-        explanation: "Being the fastest kid in school allowed Trevor to get to the front of the tuck shop line first. He charged students a fee to buy their food, which made him money and allowed him to interact with every clique."
+        answer: 0,
+        explanation: "Trevor acted as a food dealer, using his speed to beat the long canteen lines and buy food for other kids, making him popular and providing him a steady income."
       },
       {
         id: 4,
         chapter: "Chapter 13",
-        question: "Why didn't the police recognize Trevor in the security footage when interrogating him about the shoplifting incident with Teddy?",
+        question: "Why didn't security guards recognize Trevor from the security footage during the mall theft incident?",
         options: [
-          "Trevor wore a heavy mask during the theft.",
-          "Teddy destroyed the security cameras before police arrived.",
-          "The low-quality black-and-white camera footage made Trevor's light skin look white on screen.",
-          "The police officer on duty was bribed by Trevor's friends."
+          "The black-and-white video footage made Trevor's light skin look white.",
+          "Trevor was wearing a heavy disguise during the incident.",
+          "The security guard on duty was Trevor's personal friend.",
+          "Teddy destroyed the security tapes before they could be inspected."
         ],
-        correct: 2,
-        explanation: "The grainy black-and-white footage rendered Trevor's light skin as white. The police assumed a white child was with Teddy, completely overlooking Trevor who was sitting right in front of them."
+        answer: 0,
+        explanation: "Because the camera footage was grainy black-and-white, Trevor's colored skin appeared white on screen, leading police to look for a white accomplice instead of him."
       },
       {
         id: 5,
         chapter: "Chapter 15",
-        question: "What flaw does Trevor identify in the famous maxim 'Give a man a fish, and he'll eat for a day. Teach a man to fish, and he'll eat for a lifetime'?",
+        question: "What flaw does Trevor identify in the proverb 'Teach a man to fish, and he eats for a lifetime'?",
         options: [
-          "People prefer meat over fish in South Africa.",
-          "Teaching someone to fish is useless if you don't also give them a fishing rod (resources/access).",
-          "Learning to fish takes too long compared to buying food in local markets.",
-          "The ocean waters were contaminated during apartheid."
+          "It fails to account for providing the person with a fishing rod.",
+          "Not everyone enjoys eating fish.",
+          "Fishing takes too long to learn compared to farming.",
+          "The lake is usually owned by private corporations."
         ],
-        correct: 1,
-        explanation: "Noah emphasizes that education and knowledge are incomplete without access to capital and equipment. You need both skills AND tools (a fishing rod) to break out of poverty."
+        answer: 0,
+        explanation: "Trevor points out that teaching someone to fish is useless if they don't have access to capital or equipment (the fishing rod) to actually fish."
       },
       {
         id: 6,
         chapter: "Chapter 15",
-        question: "Why did the name 'Hitler' not offend many Black South Africans in the same way it offended Europeans?",
+        question: "Why did the name 'Hitler' lack negative historical associations for many Black South Africans?",
         options: [
-          "Black South Africans viewed Western historical figures through anti-colonial lenses rather than European history.",
-          "Apartheid schools completely erased World War II from all history books.",
-          "Hitler was believed to be a local freedom fighter in township mythology.",
-          "The name was translated into a phrase meaning 'strong warrior'."
+          "They viewed historical European figures primarily through the lens of anti-colonial resistance.",
+          "Apartheid schools completely banned teaching World War II history.",
+          "They believed Hitler was a local African freedom fighter.",
+          "Translators mispronounced the name in local indigenous languages."
         ],
-        correct: 0,
-        explanation: "Many Black South Africans saw European colonial powers (like Britain) as their primary oppressors. They didn't learn European history in depth and often named children after powerful foreign figures without moral context."
+        answer: 0,
+        explanation: "For Black South Africans, Western powers (like Britain) were the oppressors; thus, anyone who fought the oppressors was often seen neutrally or as a symbol of power."
       },
       {
         id: 7,
         chapter: "Chapter 16",
-        question: "In township slang, what does it mean to be a 'cheese boy'?",
+        question: "What does the term 'cheese boy' describe in South African township slang?",
         options: [
-          "A kid who worked long hours in suburban grocery stores.",
-          "A middle-class kid whose family could afford luxury food items like cheese.",
-          "A police informant operating secretly inside the hood.",
-          "A street vendor specializing in dairy products."
+          "A middle-class kid who could afford luxury food items like cheese.",
+          "A street vendor selling fast food at taxi ranks.",
+          "An informant who worked for local police forces.",
+          "A kid who worked on dairy farms outside the city."
         ],
-        correct: 1,
-        explanation: "In the township, cheese was considered a luxury item. A 'cheese boy' was a kid from a relatively well-off family who had luxuries that most residents couldn't afford."
+        answer: 0,
+        explanation: "A 'cheese boy' refers to someone who grew up with enough money to afford modest luxuries like cheese on their bread, unlike most township kids."
       },
       {
         id: 8,
         chapter: "Chapter 16",
-        question: "Why does Trevor state that 'crime succeeds because crime does the one thing the government doesn't do: crime cares'?",
+        question: "Why does Trevor write that 'crime cares' when describing life in the hood?",
         options: [
-          "Crime offers economic opportunity, structure, and support when government institutions fail communities.",
-          "Local gangs built free hospitals and schools in Alexandra.",
-          "Crime rates decreased rapidly post-apartheid due to community policing.",
-          "Gangs paid off local college tuitions for high-performing students."
+          "Crime provides economic opportunity and support when government institutions fail people.",
+          "Criminal gang leaders were religious community leaders.",
+          "Larceny laws were exceptionally lenient under South African courts.",
+          "Criminals redistributed all stolen money back to local charities."
         ],
-        correct: 0,
-        explanation: "In neglected townships, criminal networks provided jobs, protection, and income to young people who were abandoned by the state's lack of jobs and social safety nets."
+        answer: 0,
+        explanation: "In neglected townships, criminal hustling was often the only system that provided youth with income, purpose, and community support."
       },
       {
         id: 9,
         chapter: "Chapter 17",
-        question: "How did Trevor's ability to speak multiple languages impact his experience while held in jail?",
+        question: "How does language help Trevor survive and de-escalate danger while in jail?",
         options: [
-          "He spoke Afrikaans to convince the guards he was innocent.",
-          "He spoke Zulu to connect with a terrifying inmate, turning a dangerous situation into immediate camaraderie.",
-          "He pretended to speak only English so officers would treat him like a foreign tourist.",
-          "He used secret code words with other prisoners to organize a protest."
+          "He speaks Zulu to connect with a intimidating inmate and build rapport.",
+          "He speaks Afrikaans to convince the guards to release him early.",
+          "He speaks English to pretend he is an American tourist.",
+          "He pretends to be mute so inmates leave him alone."
         ],
-        correct: 1,
-        explanation: "When faced with a giant, intimidating inmate in the holding cell, Trevor initiated a conversation in Zulu. Realizing Trevor shared his language, the inmate instantly treated him as an ally."
+        answer: 0,
+        explanation: "By speaking fluent Zulu to a large, intimidating prisoner, Trevor broke the tension and bridged the barrier between them."
       },
       {
         id: 10,
         chapter: "Chapter 18",
-        question: "Why did Trevor strongly object to his mother marrying Abel?",
+        question: "Why did Trevor object to his mother marrying Abel?",
         options: [
-          "He recognized Abel's traditional patriarchal mindset, volatility, and dangerous temper early on.",
-          "Abel refused to allow Trevor to attend high school.",
-          "Abel wanted the family to move permanently out of South Africa.",
-          "Trevor wanted his mother to reconcile with his biological father, Robert."
+          "He recognized Abel's traditional patriarchal mindset and dangerous temper early on.",
+          "Abel refused to let Trevor attend school.",
+          "Abel was secretly working as an undercover police officer.",
+          "Trevor wanted his mother to move back in with his biological father."
         ],
-        correct: 0,
-        explanation: "Trevor sensed early on that Abel held deeply traditional patriarchal views that clashed with Patricia's independent spirit, and he feared Abel's explosive anger."
+        answer: 0,
+        explanation: "Trevor saw Abel's controlling behavior and volatility, warning his mother before Abel's abuse escalated."
       }
     ];
 
-    // State Management
-    let userAnswers = {}; // { qId: selectedIndex }
-    let isSubmitted = false;
-    let activeQuestionIds = quizData.map(q => q.id);
-    let isFilterOnlyMissed = false;
+    let activeQuestions = [...questionsData];
+    let userAnswers = {};
+    let isFilteredMissed = false;
 
-    // Render Questions
-    function renderQuiz() {
-      const container = document.getElementById('questions-list');
+    function renderQuestions() {
+      const container = document.getElementById('questionsContainer');
       container.innerHTML = '';
 
-      const questionsToDisplay = quizData.filter(q => activeQuestionIds.includes(q.id));
+      activeQuestions.forEach((q, index) => {
+        const selected = userAnswers[q.id];
+        const card = document.createElement('div');
+        card.className = 'card p-4';
+        card.id = `q-card-${q.id}`;
 
-      if (questionsToDisplay.length === 0) {
-        container.innerHTML = `
-          <div class="glass-card rounded-2xl p-8 text-center space-y-4">
-            <i class="fa-solid fa-circle-check text-5xl text-emerald-400"></i>
-            <h3 class="text-xl font-bold text-white">No Missed Questions!</h3>
-            <p class="text-slate-400">You scored 100% on all active questions.</p>
-          </div>
-        `;
-        return;
-      }
-
-      questionsToDisplay.forEach((q, index) => {
-        const isUserCorrect = isSubmitted && userAnswers[q.id] === q.correct;
-        const isUserIncorrect = isSubmitted && userAnswers[q.id] !== undefined && userAnswers[q.id] !== q.correct;
-        const isUserUnanswered = isSubmitted && userAnswers[q.id] === undefined;
-
-        // Hide non-missed questions when filter toggle is active
-        if (isSubmitted && isFilterOnlyMissed && isUserCorrect) {
-          return;
-        }
-
-        const cardHtml = document.createElement('div');
-        cardHtml.className = `glass-card rounded-2xl p-6 sm:p-8 transition-all ${
-          isSubmitted 
-            ? isUserCorrect 
-              ? 'border-2 border-emerald-500/50 bg-emerald-950/10' 
-              : 'border-2 border-rose-500/50 bg-rose-950/10'
-            : 'border border-slate-700/60'
-        }`;
-
-        cardHtml.innerHTML = `
-          <div class="space-y-4">
-            <!-- Header Info -->
-            <div class="flex items-center justify-between gap-4">
-              <span class="text-xs font-bold text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">
-                ${q.chapter}
-              </span>
-              ${
-                isSubmitted
-                  ? isUserCorrect
-                    ? `<span class="text-xs font-extrabold text-emerald-400 bg-emerald-500/20 px-3 py-1 rounded-full border border-emerald-500/30 flex items-center gap-1.5"><i class="fa-solid fa-check"></i> Correct</span>`
-                    : `<span class="text-xs font-extrabold text-rose-400 bg-rose-500/20 px-3 py-1 rounded-full border border-rose-500/30 flex items-center gap-1.5"><i class="fa-solid fa-xmark"></i> Incorrect</span>`
-                  : `<span class="text-xs font-bold text-slate-400">Question ${index + 1} of ${questionsToDisplay.length}</span>`
-              }
+        let optionsHtml = '';
+        q.options.forEach((opt, optIdx) => {
+          const checked = selected === optIdx ? 'checked' : '';
+          optionsHtml += `
+            <div class="form-check mb-2">
+              <input class="form-check-input" type="radio" name="q_${q.id}" id="q_${q.id}_${optIdx}" value="${optIdx}" ${checked} onchange="recordAnswer(${q.id}, ${optIdx})">
+              <label class="form-check-label" for="q_${q.id}_${optIdx}">${opt}</label>
             </div>
+          `;
+        });
 
-            <!-- Question Text -->
-            <h3 class="text-lg sm:text-xl font-bold text-white leading-snug">
-              ${q.question}
-            </h3>
-
-            <!-- Options List -->
-            <div class="space-y-3 pt-2">
-              ${q.options.map((opt, optIdx) => {
-                const isSelected = userAnswers[q.id] === optIdx;
-                let optionStyleClass = "border-slate-700/70 bg-slate-800/40 text-slate-300 hover:border-slate-500";
-
-                if (isSubmitted) {
-                  if (optIdx === q.correct) {
-                    optionStyleClass = "correct-option border-2 font-bold";
-                  } else if (isSelected && optIdx !== q.correct) {
-                    optionStyleClass = "incorrect-option border-2 font-bold";
-                  } else {
-                    optionStyleClass = "border-slate-800 bg-slate-900/40 text-slate-500 opacity-60";
-                  }
-                }
-
-                return `
-                  <div class="relative">
-                    <input 
-                      type="radio" 
-                      id="q${q.id}_opt${optIdx}" 
-                      name="question_${q.id}" 
-                      value="${optIdx}" 
-                      class="custom-radio sr-only"
-                      ${isSelected ? 'checked' : ''}
-                      ${isSubmitted ? 'disabled' : ''}
-                      onchange="selectOption(${q.id}, ${optIdx})"
-                    >
-                    <label 
-                      for="q${q.id}_opt${optIdx}" 
-                      class="flex items-start gap-4 p-4 rounded-xl border text-sm sm:text-base font-medium cursor-pointer transition ${optionStyleClass}"
-                    >
-                      <span class="flex items-center justify-center w-6 h-6 rounded-full border border-current text-xs font-bold flex-shrink-0 mt-0.5">
-                        ${String.fromCharCode(65 + optIdx)}
-                      </span>
-                      <span class="flex-1">${opt}</span>
-                    </label>
-                  </div>
-                `;
-              }).join('')}
-            </div>
-
-            <!-- Explanation Box (Appears on Submit) -->
-            ${
-              isSubmitted
-                ? `
-                <div class="mt-4 p-4 rounded-xl bg-slate-900/90 border border-slate-700/80 text-sm space-y-1">
-                  <div class="text-amber-400 font-bold flex items-center gap-2">
-                    <i class="fa-solid fa-circle-info"></i> Explanation
-                  </div>
-                  <p class="text-slate-300 leading-relaxed">${q.explanation}</p>
-                </div>
-              `
-                : ''
-            }
+        card.innerHTML = `
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="badge badge-chapter px-3 py-2 rounded-pill">${q.chapter}</span>
+            <span class="text-muted small">Question ${index + 1} of ${activeQuestions.length}</span>
           </div>
+          <h5 class="fw-bold mb-3">${q.question}</h5>
+          <div>${optionsHtml}</div>
+          <div id="feedback-${q.id}" class="mt-3 p-3 rounded-3 d-none"></div>
         `;
-
-        container.appendChild(cardHtml);
+        container.appendChild(card);
       });
     }
 
-    // Handle Radio Option Selection
-    function selectOption(questionId, optionIndex) {
-      if (isSubmitted) return;
-      userAnswers[questionId] = optionIndex;
+    function recordAnswer(qId, optionIdx) {
+      userAnswers[qId] = optionIdx;
     }
 
-    // Calculate & Display Results
-    function handleQuizSubmit(e) {
-      e.preventDefault();
-      isSubmitted = true;
+    function gradeQuiz() {
+      let score = 0;
+      let missedCount = 0;
 
-      // Calculate score for active questions
-      let correctCount = 0;
-      let missedQuestions = [];
+      activeQuestions.forEach((q) => {
+        const card = document.getElementById(`q-card-${q.id}`);
+        const feedback = document.getElementById(`feedback-${q.id}`);
+        const selected = userAnswers[q.id];
+        const inputs = card.querySelectorAll('input');
 
-      activeQuestionIds.forEach(qId => {
-        const q = quizData.find(item => item.id === qId);
-        if (userAnswers[qId] === q.correct) {
-          correctCount++;
+        inputs.forEach(input => input.disabled = true);
+        feedback.classList.remove('d-none');
+
+        if (selected === q.answer) {
+          score++;
+          card.classList.add('correct-card');
+          feedback.className = 'mt-3 p-3 rounded-3 bg-success bg-opacity-10 text-success';
+          feedback.innerHTML = `<strong>Correct!</strong> ${q.explanation}`;
         } else {
-          missedQuestions.push(qId);
+          missedCount++;
+          card.classList.add('incorrect-card');
+          feedback.className = 'mt-3 p-3 rounded-3 bg-danger bg-opacity-10 text-danger';
+          feedback.innerHTML = `<strong>Incorrect.</strong> Correct answer: <em>${q.options[q.answer]}</em>.<br><small class="mt-1 d-block text-dark">${q.explanation}</small>`;
         }
       });
 
-      const totalActive = activeQuestionIds.length;
-      const percentage = Math.round((correctCount / totalActive) * 100);
+      document.getElementById('scoreContainer').classList.remove('d-none');
+      document.getElementById('scoreDisplay').innerText = `${score} / ${activeQuestions.length}`;
+      document.getElementById('percentageDisplay').innerText = `${Math.round((score / activeQuestions.length) * 100)}%`;
+      document.getElementById('submitBtn').classList.add('d-none');
+      document.getElementById('redoMissedBtn').style.display = missedCount > 0 ? 'inline-block' : 'none';
 
-      // Update Results Card
-      document.getElementById('results-card').classList.remove('hidden');
-      document.getElementById('score-display').innerText = `${correctCount} / ${totalActive}`;
-      document.getElementById('score-percentage').innerText = `${percentage}% Accuracy`;
-      document.getElementById('score-percentage').className = `text-xs font-bold mt-1 ${
-        percentage >= 80 ? 'text-emerald-400' : percentage >= 60 ? 'text-amber-400' : 'text-rose-400'
-      }`;
-
-      // Update Redo Button visibility
-      const redoBtn = document.getElementById('redo-missed-btn');
-      if (missedQuestions.length > 0) {
-        redoBtn.classList.remove('hidden');
-        document.getElementById('missed-count').innerText = missedQuestions.length;
-      } else {
-        redoBtn.classList.add('hidden');
-      }
-
-      // Hide Submit Container
-      document.getElementById('submit-container').classList.add('hidden');
-
-      // Update status
-      document.getElementById('status-text').innerText = 'Completed';
-      document.getElementById('status-text').className = 'text-sm font-bold text-emerald-400';
-
-      // Re-render quiz with correctness highlights
-      renderQuiz();
-
-      // Scroll smoothly to results card
-      document.getElementById('results-card').scrollIntoView({ behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Filter Toggle to Show Only Incorrect Questions
-    function toggleFilterIncorrect() {
-      isFilterOnlyMissed = !isFilterOnlyMissed;
-      const btnText = document.getElementById('filter-btn-text');
-      btnText.innerText = isFilterOnlyMissed ? 'Show All Questions' : 'Show Only Missed Questions';
-      renderQuiz();
-    }
+    function toggleFilterMissed() {
+      isFilteredMissed = !isFilteredMissed;
+      const btn = document.getElementById('filterMissedBtn');
 
-    // Redo ONLY Missed Questions
-    function redoMissedQuestions() {
-      // Find missed question IDs
-      const missedIds = activeQuestionIds.filter(qId => {
-        const q = quizData.find(item => item.id === qId);
-        return userAnswers[qId] !== q.correct;
+      activeQuestions.forEach(q => {
+        const card = document.getElementById(`q-card-${q.id}`);
+        const isCorrect = userAnswers[q.id] === q.answer;
+        if (isFilteredMissed && isCorrect) {
+          card.classList.add('d-none');
+        } else {
+          card.classList.remove('d-none');
+        }
       });
 
-      if (missedIds.length === 0) return;
-
-      activeQuestionIds = missedIds;
-      missedIds.forEach(id => delete userAnswers[id]);
-
-      isSubmitted = false;
-      isFilterOnlyMissed = false;
-
-      // Reset UI elements
-      document.getElementById('results-card').classList.add('hidden');
-      document.getElementById('submit-container').classList.remove('hidden');
-      document.getElementById('mode-subtitle').innerText = 'Redo Missed Questions Mode';
-      document.getElementById('status-text').innerText = 'Retaking Missed';
-      document.getElementById('status-text').className = 'text-sm font-bold text-amber-400';
-
-      renderQuiz();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      btn.innerText = isFilteredMissed ? "Show All Questions" : "Show Only Missed";
     }
 
-    // Reset Entire Quiz back to 10 questions
-    function resetFullQuiz() {
-      activeQuestionIds = quizData.map(q => q.id);
+    function startRedoMode() {
+      activeQuestions = activeQuestions.filter(q => userAnswers[q.id] !== q.answer);
       userAnswers = {};
-      isSubmitted = false;
-      isFilterOnlyMissed = false;
+      isFilteredMissed = false;
 
-      document.getElementById('results-card').classList.add('hidden');
-      document.getElementById('submit-container').classList.remove('hidden');
-      document.getElementById('status-text').innerText = 'Ready to Start';
-      document.getElementById('status-text').className = 'text-sm font-bold text-slate-200';
-      document.getElementById('filter-btn-text').innerText = 'Show Only Missed Questions';
-
-      renderQuiz();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.getElementById('scoreContainer').classList.add('d-none');
+      document.getElementById('submitBtn').classList.remove('d-none');
+      renderQuestions();
     }
 
-    // Initial Launch
-    window.onload = function() {
-      renderQuiz();
-    };
+    function resetQuiz() {
+      activeQuestions = [...questionsData];
+      userAnswers = {};
+      isFilteredMissed = false;
+
+      document.getElementById('scoreContainer').classList.add('d-none');
+      document.getElementById('submitBtn').classList.remove('d-none');
+      renderQuestions();
+    }
+
+    renderQuestions();
   </script>
 </body>
 </html>
