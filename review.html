@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Born a Crime - Study & Review Cards</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f8f9fa; color: #212529; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    .navbar-brand { font-weight: 700; color: #0d6efd !important; }
+    
+    .flashcard-wrapper { perspective: 1000px; height: 320px; cursor: pointer; }
+    .flashcard-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+      transform-style: preserve-3d;
+    }
+    .flashcard-wrapper.flipped .flashcard-inner { transform: rotateY(180deg); }
+    .flashcard-front, .flashcard-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 16px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    .flashcard-front { background: white; border: 2px solid #e9ecef; }
+    .flashcard-back { background: #0d6efd; color: white; transform: rotateY(180deg); }
+    
+    .badge-chapter { background-color: #e7f1ff; color: #0d6efd; font-weight: 600; font-size: 0.9rem; }
+    .accordion-button:not(.collapsed) { background-color: #e7f1ff; color: #0d6efd; }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Born a Crime Study Hub</a>
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link" href="index.html">Practice Quiz</a>
+        <a class="nav-link active" href="review.html">Study & Flashcards</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container py-2" style="max-width: 900px;">
+    
+    <!-- View Switcher Tabs -->
+    <ul class="nav nav-pills justify-content-center mb-4" id="reviewTabs">
+      <li class="nav-item">
+        <button class="nav-link active fw-bold px-4" id="flashcardsTab" onclick="switchView('flashcards')">Interactive Flashcards</button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link fw-bold px-4" id="cheatsheetTab" onclick="switchView('cheatsheet')">Study Guide Cheatsheet</button>
+      </li>
+    </ul>
+
+    <!-- FLASHCARDS VIEW -->
+    <div id="flashcardsView">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <select id="chapterFilter" class="form-select w-auto" onchange="filterFlashcards()">
+          <option value="ALL">All Chapters</option>
+          <option value="Chapter 9">Chapter 9</option>
+          <option value="Chapter 11">Chapter 11</option>
+          <option value="Chapter 13">Chapter 13</option>
+          <option value="Chapter 15">Chapter 15</option>
+          <option value="Chapter 16">Chapter 16</option>
+          <option value="Chapter 17">Chapter 17</option>
+          <option value="Chapter 18">Chapter 18</option>
+        </select>
+        <span id="cardProgress" class="fw-bold text-muted">Card 1 of 10</span>
+      </div>
+
+      <div class="flashcard-wrapper mb-4" onclick="flipCard()">
+        <div class="flashcard-inner" id="activeCardInner">
+          <div class="flashcard-front">
+            <span class="badge badge-chapter mb-3" id="cardChapter">Chapter 9</span>
+            <h4 id="cardQuestion" class="fw-bold mb-0">Question text here...</h4>
+            <small class="text-muted mt-4">(Click to reveal answer)</small>
+          </div>
+          <div class="flashcard-back">
+            <h5 class="fw-normal lh-base mb-0" id="cardAnswer">Answer text here...</h5>
+            <small class="text-white-50 mt-4">(Click to flip back)</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center gap-3">
+        <button class="btn btn-outline-secondary px-4 fw-bold" onclick="prevCard()">Previous</button>
+        <button class="btn btn-primary px-4 fw-bold" onclick="nextCard()">Next Card</button>
+      </div>
+    </div>
+
+    <!-- CHEATSHEET VIEW -->
+    <div id="cheatsheetView" class="d-none">
+      <div class="accordion" id="studyAccordion"></div>
+    </div>
+
+  </div>
+
+  <script>
+    const reviewData = [
+      { chapter: "Chapter 9", q: "How did the government use colored people to sow confusion and mistrust?", a: "By placing colored people above Black people socially and legally, creating jealousy and preventing unified anti-apartheid resistance." },
+      { chapter: "Chapter 9", q: "What was the pencil test?", a: "A test where a pencil was stuck into hair. If it stayed put while shaking your head, your hair was deemed kinky/curly, classifying you as colored or Black." },
+      { chapter: "Chapter 11", q: "How did Trevor benefit from being the fastest kid in school?", a: "He ran food orders from the canteen lines for other kids in exchange for a fee, making money and becoming popular." },
+      { chapter: "Chapter 13", q: "Why didn't cops recognize Trevor in the camera footage?", a: "The grainy black-and-white video made Trevor's light colored skin look white, confusing investigators." },
+      { chapter: "Chapter 15", q: "What is wrong with 'Teach a man to fish' according to Noah?", a: "It assumes the person has access to a fishing rod (capital/resources). Without equipment, knowledge alone doesn't feed you." },
+      { chapter: "Chapter 15", q: "Why wasn't the name 'Hitler' offensive to many Black South Africans?", a: "They viewed European history through an anti-colonial lens; Allied nations were their oppressors, so enemies of Allies weren't viewed the same way." },
+      { chapter: "Chapter 16", q: "What is a 'cheese boy'?", a: "Township slang for a kid from a relatively affluent family who could afford luxury food items like cheese." },
+      { chapter: "Chapter 16", q: "Why does Noah say 'crime cares' in the hood?", a: "Crime provided structure, jobs, and financial assistance when official government systems abandoned youth." },
+      { chapter: "Chapter 17", q: "How did language help Trevor in jail?", a: "He spoke Zulu to a formidable inmate, instantly turning a potential violent situation into a respectful connection." },
+      { chapter: "Chapter 18", q: "Why didn't Trevor want his mother to marry Abel?", a: "He recognized Abel's traditional, controlling patriarchal mindset and aggressive temper early on." }
+    ];
+
+    let currentCards = [...reviewData];
+    let currentIndex = 0;
+
+    function renderCard() {
+      if (currentCards.length === 0) return;
+      const card = currentCards[currentIndex];
+      document.getElementById('cardChapter').innerText = card.chapter;
+      document.getElementById('cardQuestion').innerText = card.q;
+      document.getElementById('cardAnswer').innerText = card.a;
+      document.getElementById('cardProgress').innerText = `Card ${currentIndex + 1} of ${currentCards.length}`;
+      document.querySelector('.flashcard-wrapper').classList.remove('flipped');
+    }
+
+    function flipCard() {
+      document.querySelector('.flashcard-wrapper').classList.toggle('flipped');
+    }
+
+    function nextCard() {
+      currentIndex = (currentIndex + 1) % currentCards.length;
+      renderCard();
+    }
+
+    function prevCard() {
+      currentIndex = (currentIndex - 1 + currentCards.length) % currentCards.length;
+      renderCard();
+    }
+
+    function filterFlashcards() {
+      const selected = document.getElementById('chapterFilter').value;
+      if (selected === 'ALL') {
+        currentCards = [...reviewData];
+      } else {
+        currentCards = reviewData.filter(c => c.chapter === selected);
+      }
+      currentIndex = 0;
+      renderCard();
+    }
+
+    function renderCheatsheet() {
+      const accordion = document.getElementById('studyAccordion');
+      accordion.innerHTML = '';
+
+      const grouped = {};
+      reviewData.forEach(item => {
+        if (!grouped[item.chapter]) grouped[item.chapter] = [];
+        grouped[item.chapter].push(item);
+      });
+
+      let idx = 0;
+      for (const [chap, items] of Object.entries(grouped)) {
+        idx++;
+        let itemsHtml = items.map(i => `
+          <div class="mb-3">
+            <h6 class="fw-bold text-dark mb-1">Q: ${i.q}</h6>
+            <p class="text-muted mb-0"><strong>A:</strong> ${i.a}</p>
+          </div>
+        `).join('<hr>');
+
+        accordion.innerHTML += `
+          <div class="accordion-item border-0 mb-3 rounded-3 shadow-sm">
+            <h2 class="accordion-header">
+              <button class="accordion-button ${idx !== 1 ? 'collapsed' : ''} fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#chap-${idx}">
+                ${chap} Summary
+              </button>
+            </h2>
+            <div id="chap-${idx}" class="accordion-collapse collapse ${idx === 1 ? 'show' : ''}">
+              <div class="accordion-body">${itemsHtml}</div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function switchView(view) {
+      if (view === 'flashcards') {
+        document.getElementById('flashcardsView').classList.remove('d-none');
+        document.getElementById('cheatsheetView').classList.add('d-none');
+        document.getElementById('flashcardsTab').classList.add('active');
+        document.getElementById('cheatsheetTab').classList.remove('active');
+      } else {
+        document.getElementById('flashcardsView').classList.add('d-none');
+        document.getElementById('cheatsheetView').classList.remove('d-none');
+        document.getElementById('flashcardsTab').classList.remove('active');
+        document.getElementById('cheatsheetTab').classList.add('active');
+      }
+    }
+
+    renderCard();
+    renderCheatsheet();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
