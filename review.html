@@ -3,41 +3,55 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Born a Crime - Study & Review Cards</title>
+  <title>Born a Crime - Interactive Review Cards</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body { background-color: #f8f9fa; color: #212529; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     .navbar-brand { font-weight: 700; color: #0d6efd !important; }
     
-    .flashcard-wrapper { perspective: 1000px; height: 320px; cursor: pointer; }
-    .flashcard-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      text-align: center;
-      transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
-      transform-style: preserve-3d;
-    }
-    .flashcard-wrapper.flipped .flashcard-inner { transform: rotateY(180deg); }
-    .flashcard-front, .flashcard-back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
-      border-radius: 16px;
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-    }
-    .flashcard-front { background: white; border: 2px solid #e9ecef; }
-    .flashcard-back { background: #0d6efd; color: white; transform: rotateY(180deg); }
-    
     .badge-chapter { background-color: #e7f1ff; color: #0d6efd; font-weight: 600; font-size: 0.9rem; }
     .accordion-button:not(.collapsed) { background-color: #e7f1ff; color: #0d6efd; }
+    
+    /* Interactive Option Cards */
+    .option-card {
+      background: white;
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      padding: 1.25rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.1s ease;
+      font-size: 1rem;
+      font-weight: 500;
+      text-align: left;
+      width: 100%;
+    }
+    .option-card:hover {
+      border-color: #0d6efd;
+      background-color: #f8faff;
+    }
+    
+    /* Incorrect Shake Animation */
+    .option-card.shake-wrong {
+      animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+      background-color: #f8d7da !important;
+      border-color: #dc3545 !important;
+      color: #842029;
+    }
+
+    /* Correct Selection Styling */
+    .option-card.correct-choice {
+      background-color: #d1e7dd !important;
+      border-color: #198754 !important;
+      color: #0f5132;
+      font-weight: 600;
+    }
+    
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-2px, 0, 0); }
+      20%, 80% { transform: translate3d(4px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+      40%, 60% { transform: translate3d(6px, 0, 0); }
+    }
   </style>
 </head>
 <body>
@@ -53,22 +67,22 @@
     </div>
   </nav>
 
-  <div class="container py-2" style="max-width: 900px;">
+  <div class="container py-2" style="max-width: 800px;">
     
     <!-- View Switcher Tabs -->
     <ul class="nav nav-pills justify-content-center mb-4" id="reviewTabs">
       <li class="nav-item">
-        <button class="nav-link active fw-bold px-4" id="flashcardsTab" onclick="switchView('flashcards')">Interactive Flashcards</button>
+        <button class="nav-link active fw-bold px-4" id="cardsTab" onclick="switchView('cards')">Interactive Practice Cards</button>
       </li>
       <li class="nav-item">
         <button class="nav-link fw-bold px-4" id="cheatsheetTab" onclick="switchView('cheatsheet')">Study Guide Cheatsheet</button>
       </li>
     </ul>
 
-    <!-- FLASHCARDS VIEW -->
-    <div id="flashcardsView">
+    <!-- INTERACTIVE CARDS VIEW -->
+    <div id="cardsView">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <select id="chapterFilter" class="form-select w-auto" onchange="filterFlashcards()">
+        <select id="chapterFilter" class="form-select w-auto" onchange="filterCards()">
           <option value="ALL">All Chapters</option>
           <option value="Chapter 9">Chapter 9</option>
           <option value="Chapter 11">Chapter 11</option>
@@ -81,20 +95,18 @@
         <span id="cardProgress" class="fw-bold text-muted">Card 1 of 10</span>
       </div>
 
-      <div class="flashcard-wrapper mb-4" onclick="flipCard()">
-        <div class="flashcard-inner" id="activeCardInner">
-          <div class="flashcard-front">
-            <span class="badge badge-chapter mb-3" id="cardChapter">Chapter 9</span>
-            <h4 id="cardQuestion" class="fw-bold mb-0">Question text here...</h4>
-            <small class="text-muted mt-4">(Click to reveal answer)</small>
-          </div>
-          <div class="flashcard-back">
-            <h5 class="fw-normal lh-base mb-0" id="cardAnswer">Answer text here...</h5>
-            <small class="text-white-50 mt-4">(Click to flip back)</small>
-          </div>
+      <!-- Main Question Container -->
+      <div class="card p-4 shadow-sm border-0 mb-4 rounded-3">
+        <div class="mb-2">
+          <span class="badge badge-chapter px-3 py-2 rounded-pill" id="cardChapter">Chapter 9</span>
         </div>
+        <h4 id="cardQuestion" class="fw-bold mb-4">Question text here...</h4>
+
+        <!-- 4 Option Cards Grid -->
+        <div class="row g-3" id="optionsGrid"></div>
       </div>
 
+      <!-- Controls -->
       <div class="d-flex justify-content-center gap-3">
         <button class="btn btn-outline-secondary px-4 fw-bold" onclick="prevCard()">Previous</button>
         <button class="btn btn-primary px-4 fw-bold" onclick="nextCard()">Next Card</button>
@@ -110,16 +122,116 @@
 
   <script>
     const reviewData = [
-      { chapter: "Chapter 9", q: "How did the government use colored people to sow confusion and mistrust?", a: "By placing colored people above Black people socially and legally, creating jealousy and preventing unified anti-apartheid resistance." },
-      { chapter: "Chapter 9", q: "What was the pencil test?", a: "A test where a pencil was stuck into hair. If it stayed put while shaking your head, your hair was deemed kinky/curly, classifying you as colored or Black." },
-      { chapter: "Chapter 11", q: "How did Trevor benefit from being the fastest kid in school?", a: "He ran food orders from the canteen lines for other kids in exchange for a fee, making money and becoming popular." },
-      { chapter: "Chapter 13", q: "Why didn't cops recognize Trevor in the camera footage?", a: "The grainy black-and-white video made Trevor's light colored skin look white, confusing investigators." },
-      { chapter: "Chapter 15", q: "What is wrong with 'Teach a man to fish' according to Noah?", a: "It assumes the person has access to a fishing rod (capital/resources). Without equipment, knowledge alone doesn't feed you." },
-      { chapter: "Chapter 15", q: "Why wasn't the name 'Hitler' offensive to many Black South Africans?", a: "They viewed European history through an anti-colonial lens; Allied nations were their oppressors, so enemies of Allies weren't viewed the same way." },
-      { chapter: "Chapter 16", q: "What is a 'cheese boy'?", a: "Township slang for a kid from a relatively affluent family who could afford luxury food items like cheese." },
-      { chapter: "Chapter 16", q: "Why does Noah say 'crime cares' in the hood?", a: "Crime provided structure, jobs, and financial assistance when official government systems abandoned youth." },
-      { chapter: "Chapter 17", q: "How did language help Trevor in jail?", a: "He spoke Zulu to a formidable inmate, instantly turning a potential violent situation into a respectful connection." },
-      { chapter: "Chapter 18", q: "Why didn't Trevor want his mother to marry Abel?", a: "He recognized Abel's traditional, controlling patriarchal mindset and aggressive temper early on." }
+      {
+        chapter: "Chapter 9",
+        q: "How did the government use colored people to sow confusion and mistrust?",
+        options: [
+          "By placing colored people above Black people socially and legally, creating jealousy and preventing unified anti-apartheid resistance.",
+          "By granting colored people full political voting rights over white citizens.",
+          "By forcing colored communities into total isolation from all other groups.",
+          "By appointing colored leaders to high political offices."
+        ],
+        correct: 0
+      },
+      {
+        chapter: "Chapter 9",
+        q: "What was the pencil test used by the apartheid government?",
+        options: [
+          "A test where a pencil was stuck into hair; if it stayed put while shaking your head, your hair classified you as colored or Black.",
+          "A written exam given to citizens to determine their literacy level.",
+          "A test where skin pigmentation was matched using gray graphite pencils.",
+          "A test measuring head size using a pencil measurement standard."
+        ],
+        correct: 0
+      },
+      {
+        chapter: "Chapter 11",
+        q: "How did Trevor benefit from being the fastest kid in school?",
+        options: [
+          "He ran food orders from the canteen lines for other kids in exchange for a fee, making money and becoming popular.",
+          "He won prize money competing in regional track meets.",
+          "He was hired by local shops to deliver goods after school.",
+          "He used his speed to evade security guards when selling stolen goods."
+        ],
+        correct: 0
+      },
+      {
+        chapter: "Chapter 13",
+        q: "Why didn't security guards recognize Trevor from the mall camera footage?",
+        options: [
+          "The grainy black-and-white video made Trevor's light colored skin look white on screen.",
+          "Trevor was wearing a heavy disguise during the incident.",
+          "The security guard on duty was Trevor's personal friend.",
+          "Teddy destroyed the security tapes before they could be inspected."
+        ],
+        correct: 0
+      },
+      {
+        chapter: "Chapter 15",
+        q: "What flaw does Trevor identify in the proverb 'Teach a man to fish, and he eats for a lifetime'?",
+        options: [
+          "It fails to account for providing the person with a fishing rod (capital and equipment).",
+          "Not everyone enjoys eating fish.",
+          "Fishing takes too long to learn compared to farming.",
+          "The lake is usually owned by private corporations."
+        ],
+        correct: 0
+      },
+      {
+        chapter: "Chapter 15",
+        q: "Why wasn't the name 'Hitler' offensive to many Black South Africans?",
+        options: [
+          "They viewed European history through an anti-colonial lens; Allied nations were their oppressors, so enemies of Allies weren't viewed the same way.",
+          "Apartheid schools completely banned teaching World War II history.",
+          "They believed Hitler was a local African freedom fighter.",
+          "Translators mispronounced the name in local indigenous languages."
+        ],
+        correct: 0
+      },
+      {
+        chapter: "Chapter 16",
+        q: "What is a 'cheese boy' in South African township slang?",
+        options: [
+          "A middle-class kid who could afford luxury food items like cheese.",
+          "A street vendor selling fast food at taxi ranks.",
+          "An informant who worked for local police forces.",
+          "A kid who worked on dairy farms outside the city."
+        ],
+        correct: 0
+      },
+      {
+        chapter: "Chapter 16",
+        q: "Why does Noah state that 'crime cares' in the hood?",
+        options: [
+          "Crime provided structure, economic opportunity, and support when government institutions failed people.",
+          "Criminal gang leaders were religious community leaders.",
+          "Larceny laws were exceptionally lenient under South African courts.",
+          "Criminals redistributed all stolen money back to local charities."
+        ],
+        correct: 0
+      },
+      {
+        chapter: "Chapter 17",
+        q: "How did language help Trevor survive and de-escalate danger in jail?",
+        options: [
+          "He spoke Zulu to an intimidating inmate, instantly building rapport and defusing potential violence.",
+          "He spoke Afrikaans to convince the guards to release him early.",
+          "He spoke English to pretend he was an American tourist.",
+          "He pretended to be mute so inmates would leave him alone."
+        ],
+        correct: 0
+      },
+      {
+        chapter: "Chapter 18",
+        q: "Why didn't Trevor want his mother to marry Abel?",
+        options: [
+          "He recognized Abel's traditional, controlling patriarchal mindset and aggressive temper early on.",
+          "Abel refused to let Trevor attend school.",
+          "Abel was secretly working as an undercover police officer.",
+          "Trevor wanted his mother to move back in with his biological father."
+        ],
+        correct: 0
+      }
     ];
 
     let currentCards = [...reviewData];
@@ -128,15 +240,40 @@
     function renderCard() {
       if (currentCards.length === 0) return;
       const card = currentCards[currentIndex];
+      
       document.getElementById('cardChapter').innerText = card.chapter;
       document.getElementById('cardQuestion').innerText = card.q;
-      document.getElementById('cardAnswer').innerText = card.a;
       document.getElementById('cardProgress').innerText = `Card ${currentIndex + 1} of ${currentCards.length}`;
-      document.querySelector('.flashcard-wrapper').classList.remove('flipped');
+      
+      const grid = document.getElementById('optionsGrid');
+      grid.innerHTML = '';
+
+      card.options.forEach((optText, optIdx) => {
+        const col = document.createElement('div');
+        col.className = 'col-12 col-md-6';
+        
+        const btn = document.createElement('button');
+        btn.className = 'option-card';
+        btn.innerText = optText;
+        btn.onclick = () => checkOption(btn, optIdx, card.correct);
+        
+        col.appendChild(btn);
+        grid.appendChild(col);
+      });
     }
 
-    function flipCard() {
-      document.querySelector('.flashcard-wrapper').classList.toggle('flipped');
+    function checkOption(buttonEl, selectedIdx, correctIdx) {
+      if (selectedIdx === correctIdx) {
+        buttonEl.classList.remove('shake-wrong');
+        buttonEl.classList.add('correct-choice');
+      } else {
+        buttonEl.classList.add('shake-wrong');
+        
+        // Remove shake and red background after animation completes so it resets
+        setTimeout(() => {
+          buttonEl.classList.remove('shake-wrong');
+        }, 600);
+      }
     }
 
     function nextCard() {
@@ -149,7 +286,7 @@
       renderCard();
     }
 
-    function filterFlashcards() {
+    function filterCards() {
       const selected = document.getElementById('chapterFilter').value;
       if (selected === 'ALL') {
         currentCards = [...reviewData];
@@ -176,7 +313,7 @@
         let itemsHtml = items.map(i => `
           <div class="mb-3">
             <h6 class="fw-bold text-dark mb-1">Q: ${i.q}</h6>
-            <p class="text-muted mb-0"><strong>A:</strong> ${i.a}</p>
+            <p class="text-muted mb-0"><strong>Correct Answer:</strong> ${i.options[i.correct]}</p>
           </div>
         `).join('<hr>');
 
@@ -196,15 +333,15 @@
     }
 
     function switchView(view) {
-      if (view === 'flashcards') {
-        document.getElementById('flashcardsView').classList.remove('d-none');
+      if (view === 'cards') {
+        document.getElementById('cardsView').classList.remove('d-none');
         document.getElementById('cheatsheetView').classList.add('d-none');
-        document.getElementById('flashcardsTab').classList.add('active');
+        document.getElementById('cardsTab').classList.add('active');
         document.getElementById('cheatsheetTab').classList.remove('active');
       } else {
-        document.getElementById('flashcardsView').classList.add('d-none');
+        document.getElementById('cardsView').classList.add('d-none');
         document.getElementById('cheatsheetView').classList.remove('d-none');
-        document.getElementById('flashcardsTab').classList.remove('active');
+        document.getElementById('cardsTab').classList.remove('active');
         document.getElementById('cheatsheetTab').classList.add('active');
       }
     }
