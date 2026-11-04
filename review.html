@@ -3,54 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Born a Crime - Interactive Review Cards</title>
+  <title>Born a Crime - Chapter Study Station</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <style>
-    body { background-color: #f8f9fa; color: #212529; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #f4f6f9; color: #212529; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     .navbar-brand { font-weight: 700; color: #0d6efd !important; }
     
-    .badge-chapter { background-color: #e7f1ff; color: #0d6efd; font-weight: 600; font-size: 0.9rem; }
-    .accordion-button:not(.collapsed) { background-color: #e7f1ff; color: #0d6efd; }
-    
-    /* Interactive Option Cards */
-    .option-card {
-      background: white;
-      border: 2px solid #e9ecef;
-      border-radius: 12px;
-      padding: 1.25rem;
-      cursor: pointer;
-      transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.1s ease;
-      font-size: 1rem;
-      font-weight: 500;
+    /* Chapter Sidebar Navigation */
+    .chapter-nav-btn {
       text-align: left;
-      width: 100%;
-    }
-    .option-card:hover {
-      border-color: #0d6efd;
-      background-color: #f8faff;
-    }
-    
-    /* Incorrect Shake Animation */
-    .option-card.shake-wrong {
-      animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
-      background-color: #f8d7da !important;
-      border-color: #dc3545 !important;
-      color: #842029;
-    }
-
-    /* Correct Selection Styling */
-    .option-card.correct-choice {
-      background-color: #d1e7dd !important;
-      border-color: #198754 !important;
-      color: #0f5132;
       font-weight: 600;
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      color: #495057;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+    }
+    .chapter-nav-btn:hover { background-color: #e9ecef; color: #0d6efd; }
+    .chapter-nav-btn.active { background-color: #0d6efd; color: white; border-color: #0d6efd; }
+    
+    /* Concept Cards */
+    .study-card {
+      background: white;
+      border-radius: 14px;
+      border: none;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      transition: transform 0.2s ease;
+    }
+    .study-card:hover { transform: translateY(-2px); }
+    .card-header-tag {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
     }
     
-    @keyframes shake {
-      10%, 90% { transform: translate3d(-2px, 0, 0); }
-      20%, 80% { transform: translate3d(4px, 0, 0); }
-      30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
-      40%, 60% { transform: translate3d(6px, 0, 0); }
+    /* Audio/Podcast Style Quick Quote Callout */
+    .quote-box {
+      background: #f8f9ff;
+      border-left: 4px solid #0d6efd;
+      padding: 1.25rem;
+      border-radius: 0 10px 10px 0;
+      font-style: italic;
+    }
+    
+    /* Theme Badges */
+    .badge-theme {
+      background-color: #e7f1ff;
+      color: #0d6efd;
+      font-weight: 600;
+      border-radius: 6px;
+      padding: 0.4em 0.8em;
     }
   </style>
 </head>
@@ -62,293 +68,199 @@
       <a class="navbar-brand" href="index.html">Born a Crime Study Hub</a>
       <div class="navbar-nav ms-auto">
         <a class="nav-link" href="index.html">Practice Quiz</a>
-        <a class="nav-link active" href="review.html">Study & Flashcards</a>
+        <a class="nav-link active" href="review.html">Study & Review</a>
       </div>
     </div>
   </nav>
 
-  <div class="container py-2" style="max-width: 800px;">
+  <div class="container py-2" style="max-width: 1100px;">
     
-    <!-- View Switcher Tabs -->
-    <ul class="nav nav-pills justify-content-center mb-4" id="reviewTabs">
-      <li class="nav-item">
-        <button class="nav-link active fw-bold px-4" id="cardsTab" onclick="switchView('cards')">Interactive Practice Cards</button>
-      </li>
-      <li class="nav-item">
-        <button class="nav-link fw-bold px-4" id="cheatsheetTab" onclick="switchView('cheatsheet')">Study Guide Cheatsheet</button>
-      </li>
-    </ul>
-
-    <!-- INTERACTIVE CARDS VIEW -->
-    <div id="cardsView">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <select id="chapterFilter" class="form-select w-auto" onchange="filterCards()">
-          <option value="ALL">All Chapters</option>
-          <option value="Chapter 9">Chapter 9</option>
-          <option value="Chapter 11">Chapter 11</option>
-          <option value="Chapter 13">Chapter 13</option>
-          <option value="Chapter 15">Chapter 15</option>
-          <option value="Chapter 16">Chapter 16</option>
-          <option value="Chapter 17">Chapter 17</option>
-          <option value="Chapter 18">Chapter 18</option>
-        </select>
-        <span id="cardProgress" class="fw-bold text-muted">Card 1 of 10</span>
-      </div>
-
-      <!-- Main Question Container -->
-      <div class="card p-4 shadow-sm border-0 mb-4 rounded-3">
-        <div class="mb-2">
-          <span class="badge badge-chapter px-3 py-2 rounded-pill" id="cardChapter">Chapter 9</span>
-        </div>
-        <h4 id="cardQuestion" class="fw-bold mb-4">Question text here...</h4>
-
-        <!-- 4 Option Cards Grid -->
-        <div class="row g-3" id="optionsGrid"></div>
-      </div>
-
-      <!-- Controls -->
-      <div class="d-flex justify-content-center gap-3">
-        <button class="btn btn-outline-secondary px-4 fw-bold" onclick="prevCard()">Previous</button>
-        <button class="btn btn-primary px-4 fw-bold" onclick="nextCard()">Next Card</button>
-      </div>
+    <!-- Page Header -->
+    <div class="text-center mb-4">
+      <h2 class="fw-bold">Born a Crime Interactive Study Station</h2>
+      <p class="text-muted">Explore core concepts, key quotes, and essential analysis by chapter.</p>
     </div>
 
-    <!-- CHEATSHEET VIEW -->
-    <div id="cheatsheetView" class="d-none">
-      <div class="accordion" id="studyAccordion"></div>
+    <div class="row g-4">
+      
+      <!-- Chapter Selector Sidebar -->
+      <div class="col-lg-3">
+        <div class="card p-3 shadow-sm border-0 sticky-top" style="top: 20px;">
+          <h6 class="fw-bold text-muted mb-3 px-2">SELECT CHAPTER</h6>
+          <div class="d-grid gap-2" id="chapterNav"></div>
+        </div>
+      </div>
+
+      <!-- Main Content Area -->
+      <div class="col-lg-9">
+        
+        <!-- Search & Filter Bar -->
+        <div class="card p-3 shadow-sm border-0 mb-4">
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+            <input type="text" id="searchInput" class="form-control border-start-0" placeholder="Search concepts, names, or keywords (e.g. pencil test, Hitler, cheese boy)..." onkeyup="filterStudyCards()">
+          </div>
+        </div>
+
+        <!-- Dynamic Study Cards Container -->
+        <div id="studyContent"></div>
+
+      </div>
     </div>
 
   </div>
 
   <script>
-    const reviewData = [
+    const studyModules = [
       {
         chapter: "Chapter 9",
-        q: "How did the government use colored people to sow confusion and mistrust?",
-        options: [
-          "By placing colored people above Black people socially and legally, creating jealousy and preventing unified anti-apartheid resistance.",
-          "By granting colored people full political voting rights over white citizens.",
-          "By forcing colored communities into total isolation from all other groups.",
-          "By appointing colored leaders to high political offices."
-        ],
-        correct: 0
-      },
-      {
-        chapter: "Chapter 9",
-        q: "What was the pencil test used by the apartheid government?",
-        options: [
-          "A test where a pencil was stuck into hair; if it stayed put while shaking your head, your hair classified you as colored or Black.",
-          "A written exam given to citizens to determine their literacy level.",
-          "A test where skin pigmentation was matched using gray graphite pencils.",
-          "A test measuring head size using a pencil measurement standard."
-        ],
-        correct: 0
+        title: "Identity & Divide-and-Rule System",
+        theme: "Systemic Racism & Social Manipulation",
+        keyPoint: "How Apartheid Sowed Mistrust",
+        explanation: "The government placed colored people above Black people in status to create jealousy, mistrust, and division, preventing oppressed groups from uniting against white supremacy.",
+        quote: "When apartheid came, colored people defied easy categorization, so the system used them--quite brilliantly--to sow confusion, hatred, and mistrust.",
+        takeaway: "The 'Pencil Test' was used to determine racial classification based on hair texture."
       },
       {
         chapter: "Chapter 11",
-        q: "How did Trevor benefit from being the fastest kid in school?",
-        options: [
-          "He ran food orders from the canteen lines for other kids in exchange for a fee, making money and becoming popular.",
-          "He won prize money competing in regional track meets.",
-          "He was hired by local shops to deliver goods after school.",
-          "He used his speed to evade security guards when selling stolen goods."
-        ],
-        correct: 0
+        chapterTitle: "Chapter 11",
+        title: "Entrepreneurship & Social Survival",
+        theme: "Adaptability & Social Mobility",
+        keyPoint: "The Fast Kid & Canteen Food Dealer",
+        explanation: "Trevor used his speed to beat the canteen lines and buy food for other students for a fee. This provided him with financial independence and made him popular across different social cliques.",
+        quote: "I was like a weed dealer, but of food.",
+        takeaway: "Being adaptable allowed Trevor to navigate rigid social structures at school."
       },
       {
         chapter: "Chapter 13",
-        q: "Why didn't security guards recognize Trevor from the mall camera footage?",
-        options: [
-          "The grainy black-and-white video made Trevor's light colored skin look white on screen.",
-          "Trevor was wearing a heavy disguise during the incident.",
-          "The security guard on duty was Trevor's personal friend.",
-          "Teddy destroyed the security tapes before they could be inspected."
-        ],
-        correct: 0
+        chapterTitle: "Chapter 13",
+        title: "Race Perceptions & Systemic Bias",
+        theme: "Racial Identity & Law Enforcement",
+        keyPoint: "The Mall Theft & Video Footage",
+        explanation: "When security guards reviewed black-and-white mall surveillance footage, Trevor's light skin made him look white on screen. As a result, authorities failed to realize he was the person right in front of them.",
+        quote: "The footage made my light skin look white on camera.",
+        takeaway: "Systemic bias and racial preconceptions distorted how law enforcement viewed evidence."
       },
       {
         chapter: "Chapter 15",
-        q: "What flaw does Trevor identify in the proverb 'Teach a man to fish, and he eats for a lifetime'?",
-        options: [
-          "It fails to account for providing the person with a fishing rod (capital and equipment).",
-          "Not everyone enjoys eating fish.",
-          "Fishing takes too long to learn compared to farming.",
-          "The lake is usually owned by private corporations."
-        ],
-        correct: 0
-      },
-      {
-        chapter: "Chapter 15",
-        q: "Why wasn't the name 'Hitler' offensive to many Black South Africans?",
-        options: [
-          "They viewed European history through an anti-colonial lens; Allied nations were their oppressors, so enemies of Allies weren't viewed the same way.",
-          "Apartheid schools completely banned teaching World War II history.",
-          "They believed Hitler was a local African freedom fighter.",
-          "Translators mispronounced the name in local indigenous languages."
-        ],
-        correct: 0
+        chapterTitle: "Chapter 15",
+        title: "Capitalism, Education & Cultural Context",
+        theme: "Economic Inequality & Cultural Perspectives",
+        keyPoint: "Flaw in 'Teach a Man to Fish' & Historical Perspectives",
+        explanation: "Trevor points out that teaching someone to fish is useless without providing a fishing rod (capital/resources). Additionally, he explains why names like Hitler lacked negative connotations among Black South Africans who saw European powers primarily through an anti-colonial lens.",
+        quote: "Give a man a fish, and he eats for a day. Teach a man to fish, and he eats for a lifetime... but you also need to give him a fishing rod.",
+        takeaway: "Knowledge without access to capital or resources cannot break cycles of poverty."
       },
       {
         chapter: "Chapter 16",
-        q: "What is a 'cheese boy' in South African township slang?",
-        options: [
-          "A middle-class kid who could afford luxury food items like cheese.",
-          "A street vendor selling fast food at taxi ranks.",
-          "An informant who worked for local police forces.",
-          "A kid who worked on dairy farms outside the city."
-        ],
-        correct: 0
-      },
-      {
-        chapter: "Chapter 16",
-        q: "Why does Noah state that 'crime cares' in the hood?",
-        options: [
-          "Crime provided structure, economic opportunity, and support when government institutions failed people.",
-          "Criminal gang leaders were religious community leaders.",
-          "Larceny laws were exceptionally lenient under South African courts.",
-          "Criminals redistributed all stolen money back to local charities."
-        ],
-        correct: 0
+        chapterTitle: "Chapter 16",
+        title: "The Hood & Economic Reality",
+        theme: "Township Culture & Informal Economies",
+        keyPoint: "Cheese Boys & Why 'Crime Cares'",
+        explanation: "A 'cheese boy' is township slang for someone from a slightly more affluent family who can afford luxury items like cheese. Trevor notes that 'crime cares' because criminal hustling was often the only system in the hood providing youth with opportunity and support when government systems failed.",
+        quote: "Crime succeeds because crime does the one thing the government doesn't do: crime cares.",
+        takeaway: "Under-resourced communities build informal economies when official systems abandon them."
       },
       {
         chapter: "Chapter 17",
-        q: "How did language help Trevor survive and de-escalate danger in jail?",
-        options: [
-          "He spoke Zulu to an intimidating inmate, instantly building rapport and defusing potential violence.",
-          "He spoke Afrikaans to convince the guards to release him early.",
-          "He spoke English to pretend he was an American tourist.",
-          "He pretended to be mute so inmates would leave him alone."
-        ],
-        correct: 0
+        chapterTitle: "Chapter 17",
+        title: "Language as a Shield & Systemic Justice",
+        theme: "Communication & Power Dynamics",
+        keyPoint: "Surviving Jail & De-escalating Danger",
+        explanation: "Trevor de-escalated potential violence in jail by speaking fluent Zulu to a large, intimidating inmate. Language allowed him to bridge racial/cultural divides and protect himself in hostile environments.",
+        quote: "Language brings with it an identity and a culture that centralizes human connection.",
+        takeaway: "Mastering multiple languages served as Trevor's primary tool for self-defense and social connection."
       },
       {
         chapter: "Chapter 18",
-        q: "Why didn't Trevor want his mother to marry Abel?",
-        options: [
-          "He recognized Abel's traditional, controlling patriarchal mindset and aggressive temper early on.",
-          "Abel refused to let Trevor attend school.",
-          "Abel was secretly working as an undercover police officer.",
-          "Trevor wanted his mother to move back in with his biological father."
-        ],
-        correct: 0
+        chapterTitle: "Chapter 18",
+        title: "Domestic Violence & Maternal Strength",
+        theme: "Family Dynamics & Resilience",
+        keyPoint: "Abel's Patriarchal Control & Patricia's Choice",
+        explanation: "Trevor opposed his mother marrying Abel after recognizing Abel's traditional, controlling mindset and dangerous temper. The chapter highlights the lingering systemic impacts of apartheid on family structures and personal safety.",
+        quote: "My mother chose to live a life governed by love, not fear.",
+        takeaway: "Personal resilience and maternal love remained central despite severe systemic and domestic hardships."
       }
     ];
 
-    let currentCards = [...reviewData];
-    let currentIndex = 0;
+    let activeChapter = "ALL";
 
-    function renderCard() {
-      if (currentCards.length === 0) return;
-      const card = currentCards[currentIndex];
+    function initSidebar() {
+      const nav = document.getElementById('chapterNav');
+      const chapters = ["ALL", "Chapter 9", "Chapter 11", "Chapter 13", "Chapter 15", "Chapter 16", "Chapter 17", "Chapter 18"];
       
-      document.getElementById('cardChapter').innerText = card.chapter;
-      document.getElementById('cardQuestion').innerText = card.q;
-      document.getElementById('cardProgress').innerText = `Card ${currentIndex + 1} of ${currentCards.length}`;
+      nav.innerHTML = chapters.map(chap => `
+        <button class="btn chapter-nav-btn ${chap === 'ALL' ? 'active' : ''}" onclick="selectChapter('${chap}', this)">
+          <i class="bi bi-journal-text me-2"></i> ${chap === 'ALL' ? 'All Chapters' : chap}
+        </button>
+      `).join('');
+    }
+
+    function selectChapter(chap, btnEl) {
+      activeChapter = chap;
+      document.querySelectorAll('.chapter-nav-btn').forEach(b => b.classList.remove('active'));
+      btnEl.classList.add('active');
+      renderContent();
+    }
+
+    function renderContent() {
+      const container = document.getElementById('studyContent');
+      const searchQuery = document.getElementById('searchInput').value.toLowerCase();
       
-      const grid = document.getElementById('optionsGrid');
-      grid.innerHTML = '';
-
-      card.options.forEach((optText, optIdx) => {
-        const col = document.createElement('div');
-        col.className = 'col-12 col-md-6';
-        
-        const btn = document.createElement('button');
-        btn.className = 'option-card';
-        btn.innerText = optText;
-        btn.onclick = () => checkOption(btn, optIdx, card.correct);
-        
-        col.appendChild(btn);
-        grid.appendChild(col);
-      });
-    }
-
-    function checkOption(buttonEl, selectedIdx, correctIdx) {
-      if (selectedIdx === correctIdx) {
-        buttonEl.classList.remove('shake-wrong');
-        buttonEl.classList.add('correct-choice');
-      } else {
-        buttonEl.classList.add('shake-wrong');
-        
-        // Remove shake and red background after animation completes so it resets
-        setTimeout(() => {
-          buttonEl.classList.remove('shake-wrong');
-        }, 600);
-      }
-    }
-
-    function nextCard() {
-      currentIndex = (currentIndex + 1) % currentCards.length;
-      renderCard();
-    }
-
-    function prevCard() {
-      currentIndex = (currentIndex - 1 + currentCards.length) % currentCards.length;
-      renderCard();
-    }
-
-    function filterCards() {
-      const selected = document.getElementById('chapterFilter').value;
-      if (selected === 'ALL') {
-        currentCards = [...reviewData];
-      } else {
-        currentCards = reviewData.filter(c => c.chapter === selected);
-      }
-      currentIndex = 0;
-      renderCard();
-    }
-
-    function renderCheatsheet() {
-      const accordion = document.getElementById('studyAccordion');
-      accordion.innerHTML = '';
-
-      const grouped = {};
-      reviewData.forEach(item => {
-        if (!grouped[item.chapter]) grouped[item.chapter] = [];
-        grouped[item.chapter].push(item);
+      const filtered = studyModules.filter(m => {
+        const matchesChap = activeChapter === "ALL" || m.chapter === activeChapter;
+        const matchesSearch = m.title.toLowerCase().includes(searchQuery) ||
+                              m.explanation.toLowerCase().includes(searchQuery) ||
+                              m.keyPoint.toLowerCase().includes(searchQuery) ||
+                              m.chapter.toLowerCase().includes(searchQuery);
+        return matchesChap && matchesSearch;
       });
 
-      let idx = 0;
-      for (const [chap, items] of Object.entries(grouped)) {
-        idx++;
-        let itemsHtml = items.map(i => `
-          <div class="mb-3">
-            <h6 class="fw-bold text-dark mb-1">Q: ${i.q}</h6>
-            <p class="text-muted mb-0"><strong>Correct Answer:</strong> ${i.options[i.correct]}</p>
-          </div>
-        `).join('<hr>');
-
-        accordion.innerHTML += `
-          <div class="accordion-item border-0 mb-3 rounded-3 shadow-sm">
-            <h2 class="accordion-header">
-              <button class="accordion-button ${idx !== 1 ? 'collapsed' : ''} fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#chap-${idx}">
-                ${chap} Summary
-              </button>
-            </h2>
-            <div id="chap-${idx}" class="accordion-collapse collapse ${idx === 1 ? 'show' : ''}">
-              <div class="accordion-body">${itemsHtml}</div>
-            </div>
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="card p-5 text-center border-0 shadow-sm">
+            <i class="bi bi-search fs-1 text-muted mb-2"></i>
+            <h5>No study modules found</h5>
+            <p class="text-muted mb-0">Try clearing your search query or selecting a different chapter.</p>
           </div>
         `;
+        return;
       }
+
+      container.innerHTML = filtered.map(m => `
+        <div class="study-card p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="badge badge-theme">${m.chapter}</span>
+            <span class="card-header-tag text-muted"><i class="bi bi-bookmark-fill text-primary me-1"></i> ${m.theme}</span>
+          </div>
+
+          <h4 class="fw-bold text-dark mb-2">${m.title}</h4>
+          <h6 class="fw-bold text-primary mb-3">${m.keyPoint}</h6>
+
+          <p class="text-secondary lh-base mb-3">${m.explanation}</p>
+
+          <div class="quote-box mb-3">
+            <p class="mb-1 text-dark">"${m.quote}"</p>
+            <small class="text-muted fw-semibold">— Trevor Noah, Born a Crime</small>
+          </div>
+
+          <div class="p-3 bg-light rounded-3 d-flex align-items-center gap-2">
+            <i class="bi bi-lightbulb-fill text-warning fs-5"></i>
+            <div>
+              <strong class="d-block text-dark small">Key Takeaway for Exams:</strong>
+              <span class="small text-muted">${m.takeaway}</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
     }
 
-    function switchView(view) {
-      if (view === 'cards') {
-        document.getElementById('cardsView').classList.remove('d-none');
-        document.getElementById('cheatsheetView').classList.add('d-none');
-        document.getElementById('cardsTab').classList.add('active');
-        document.getElementById('cheatsheetTab').classList.remove('active');
-      } else {
-        document.getElementById('cardsView').classList.add('d-none');
-        document.getElementById('cheatsheetView').classList.remove('d-none');
-        document.getElementById('cardsTab').classList.remove('active');
-        document.getElementById('cheatsheetTab').classList.add('active');
-      }
+    function filterStudyCards() {
+      renderContent();
     }
 
-    renderCard();
-    renderCheatsheet();
+    initSidebar();
+    renderContent();
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
