@@ -3,29 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relax</title>
+    <title>Don't Click</title>
+
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #111;
-            color: white;
-            text-align: center;
-            margin-top: 100px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        a {
-            color: #4da6ff;
-            font-size: 24px;
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            background-color: #111;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 55px;
+            background: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 1000;
+            border-bottom: 1px solid #444;
+        }
+
+        .navbar a {
+            color: white;
             text-decoration: none;
+            font-weight: bold;
+            padding: 8px 14px;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .navbar a:hover {
+            background-color: #444;
+        }
+
+        .navbar a.active {
+            background-color: #0078d7;
+        }
+
+        /* Embedded Site */
+        iframe {
+            position: absolute;
+            top: 55px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 55px);
+            border: none;
         }
     </style>
 </head>
 <body>
-    <h1>Launch GBA Emulator</h1>
-    <p>
-        <a href="https://bobzgames.github.io/GBA/" target="_blank" rel="noopener noreferrer">
-            Open Emulator
-        </a>
-    </p>
+
+    <nav class="navbar">
+        <a href="index.html">Practice Quiz</a>
+        <a href="review.html">Study & Review</a>
+        <a href="relax.html" class="active">Don't Click</a>
+    </nav>
+
+    <iframe
+        src="https://bobzgames.github.io/GBA/"
+        title="GBA Emulator"
+        allowfullscreen>
+    </iframe>
+
 </body>
 </html>
