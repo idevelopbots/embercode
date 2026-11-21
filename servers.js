@@ -77,6 +77,16 @@ const SERVERS = [
     iconUrl: "https://i.ibb.co/v6qXDKWX/6c0a07c2c2629818beed8a38c060ab1c.webp",
     banner: "https://i.ibb.co/mVh1pZMv/aa2560134f12b351229a139f97872a5a.webp"
   },
+  {
+    name: "NavyAPI",
+    invite: "https://discord.gg/navyai",
+    description: "NavyAPI is the easiest way to access AI models, at a great price.",
+    category: "AI Pricing",
+    icon: "💻",
+    tags: ["Claude", "OpenAI", "AI"],
+    iconUrl: "https://i.ibb.co/yFTZhTBp/a46ee59c4ef51f60c3612606e0de14a9.webp",
+    banner: "https://i.ibb.co/67H40WXW/fa82068dd2231ec45c6b5b53835f893a.webp"
+  },
 ];
 
 /* ---------- Rendering (no need to edit below) ---------- */
