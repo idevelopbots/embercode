@@ -28,14 +28,14 @@ const SERVERS = [
     banner: "https://i.ibb.co/hx8KHyTj/Screenshot-2026-10-06-205903.webp"
   },
   {
-    name: "Lofi Lounge",
+    name: "FlaviBot",
     invite: "https://discord.gg/GQ58Nk2hKD",
-    description: "24/7 chill music, listening parties and a friendly producer community.",
+    description: "Discord bot that produces quality music audio, premium as well.",
     category: "Music",
     icon: "🎧",
-    tags: ["Music", "Chill", "Feedback"],
-    iconUrl: "",
-    banner: ""
+    tags: ["Music", "Premium", "Music"],
+    iconUrl: "https://i.ibb.co/XvxXykJ/Flavi.webp",
+    banner: "https://i.ibb.co/JFvynyk9/85ac36feb6235fe50a8f32579ae8197c.webp"
   },
   {
     name: "Studio Nine",
