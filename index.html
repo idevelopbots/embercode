@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Canvas</title>
 
     <!-- Favicon -->
@@ -16,116 +15,109 @@
             box-sizing:border-box;
         }
 
-        :root{
-            --white: rgba(255,255,255,.85);
-            --border: rgba(0,0,0,.12);
-            --text: #1a1a1a;
-        }
-
         body{
             min-height:100vh;
+            font-family:Inter, "Segoe UI", sans-serif;
             overflow:hidden;
-            font-family:Inter, Segoe UI, sans-serif;
             display:flex;
             justify-content:center;
             align-items:center;
             position:relative;
         }
 
-        /* Animated Rainbow Background */
+        /* Soft Premium Background */
 
         .background{
             position:fixed;
             inset:0;
             z-index:-2;
 
-            background:
-                linear-gradient(
-                    -45deg,
-                    #ffd6e7,
-                    #ffe2c2,
-                    #fff5b8,
-                    #dcffd7,
-                    #d6f1ff,
-                    #e3d6ff,
-                    #ffd6f5
-                );
+            background:linear-gradient(
+                -45deg,
+                #fef6f8,
+                #fcf7ef,
+                #fffdf7,
+                #f5fcf5,
+                #f5faff,
+                #f8f5ff,
+                #fff7fc
+            );
 
-            background-size:400% 400%;
-            animation:gradientFlow 18s ease infinite;
+            background-size:300% 300%;
+            animation:gradientFlow 30s ease infinite;
         }
 
         .blob{
             position:absolute;
             border-radius:50%;
-            filter:blur(80px);
-            opacity:.55;
-            mix-blend-mode:screen;
+            filter:blur(150px);
+            opacity:.18;
+            mix-blend-mode:multiply;
         }
 
         .blob1{
-            width:500px;
-            height:500px;
-            background:#ffb7d9;
-            top:-150px;
-            left:-100px;
-            animation:float1 18s ease-in-out infinite;
+            width:700px;
+            height:700px;
+            background:#ffdbe8;
+            top:-250px;
+            left:-200px;
+            animation:float1 32s ease-in-out infinite;
         }
 
         .blob2{
-            width:450px;
-            height:450px;
-            background:#b9e7ff;
-            right:-100px;
-            top:20%;
-            animation:float2 20s ease-in-out infinite;
+            width:650px;
+            height:650px;
+            background:#dff1ff;
+            right:-200px;
+            top:15%;
+            animation:float2 38s ease-in-out infinite;
         }
 
         .blob3{
-            width:500px;
-            height:500px;
-            background:#dfffc5;
-            bottom:-200px;
-            left:30%;
-            animation:float3 22s ease-in-out infinite;
+            width:750px;
+            height:750px;
+            background:#ecffe0;
+            bottom:-300px;
+            left:20%;
+            animation:float3 42s ease-in-out infinite;
         }
 
         .blob4{
-            width:420px;
-            height:420px;
-            background:#efcfff;
-            top:40%;
+            width:600px;
+            height:600px;
+            background:#efe3ff;
+            top:35%;
             left:50%;
-            animation:float4 17s ease-in-out infinite;
+            animation:float4 35s ease-in-out infinite;
         }
 
-        /* Navigation */
+        /* Floating Navigation */
 
         .navbar{
             position:fixed;
-            top:24px;
+            top:25px;
             left:50%;
             transform:translateX(-50%);
+
+            width:min(1000px,94%);
+            z-index:100;
 
             display:flex;
             justify-content:space-between;
             align-items:center;
 
-            width:min(95%, 1000px);
-
-            padding:14px 22px;
+            padding:14px 20px;
 
             background:rgba(255,255,255,.75);
-            backdrop-filter:blur(18px);
-            -webkit-backdrop-filter:blur(18px);
+            backdrop-filter:blur(20px);
+            -webkit-backdrop-filter:blur(20px);
 
-            border:1px solid rgba(255,255,255,.35);
+            border:1px solid rgba(255,255,255,.5);
             border-radius:999px;
 
             box-shadow:
-                0 12px 30px rgba(0,0,0,.08);
-
-            z-index:100;
+                0 12px 35px rgba(0,0,0,.06),
+                inset 0 1px 0 rgba(255,255,255,.7);
         }
 
         .brand{
@@ -133,20 +125,20 @@
             align-items:center;
             gap:12px;
             text-decoration:none;
-            color:#000;
+            color:#181818;
             font-weight:800;
-            font-size:1.1rem;
+            font-size:1.15rem;
         }
 
         .brand img{
-            width:36px;
-            height:36px;
+            width:38px;
+            height:38px;
             object-fit:contain;
         }
 
         .nav-links{
             display:flex;
-            gap:10px;
+            gap:8px;
         }
 
         .nav-links a{
@@ -155,38 +147,37 @@
             font-weight:600;
             padding:10px 16px;
             border-radius:999px;
-            transition:.25s;
+            transition:.25s ease;
         }
 
         .nav-links a:hover{
             background:rgba(255,255,255,.8);
         }
 
-        /* Hero */
+        /* Hero Section */
 
         .hero{
             text-align:center;
-            z-index:5;
             padding:20px;
+            z-index:2;
         }
 
         .hero h1{
-            font-size:clamp(3rem, 8vw, 6rem);
+            font-size:clamp(3.2rem,8vw,6.5rem);
             font-weight:900;
-            color:white;
-            line-height:1;
             letter-spacing:-0.05em;
-            text-shadow:0 10px 30px rgba(0,0,0,.12);
+            color:#1d1d1f;
             margin-bottom:18px;
         }
 
         .hero p{
-            color:rgba(255,255,255,.9);
-            font-size:1.2rem;
-            margin-bottom:35px;
+            color:#5f6368;
+            font-size:1.1rem;
+            margin-bottom:40px;
+            max-width:600px;
         }
 
-        .buttons{
+        .button-group{
             display:flex;
             justify-content:center;
             gap:16px;
@@ -198,30 +189,29 @@
             padding:16px 34px;
             border-radius:999px;
             font-weight:700;
-            font-size:1rem;
             transition:.3s ease;
         }
 
-        .btn-primary{
-            color:#fff;
+        .btn-invite{
             background:#5865F2;
-            box-shadow:0 10px 25px rgba(88,101,242,.35);
+            color:white;
+            box-shadow:0 10px 25px rgba(88,101,242,.25);
         }
 
-        .btn-primary:hover{
+        .btn-invite:hover{
             transform:translateY(-3px);
-            background:#4e5ae6;
+            box-shadow:0 16px 40px rgba(88,101,242,.3);
         }
 
-        .btn-secondary{
-            background:rgba(255,255,255,.85);
+        .btn-support{
+            background:white;
             color:#111;
             box-shadow:0 10px 25px rgba(0,0,0,.08);
         }
 
-        .btn-secondary:hover{
+        .btn-support:hover{
             transform:translateY(-3px);
-            background:white;
+            box-shadow:0 16px 35px rgba(0,0,0,.12);
         }
 
         @keyframes gradientFlow{
@@ -237,38 +227,50 @@
         }
 
         @keyframes float1{
-            50%{ transform:translate(180px,120px); }
+            50%{
+                transform:translate(150px,100px);
+            }
         }
 
         @keyframes float2{
-            50%{ transform:translate(-180px,-80px); }
+            50%{
+                transform:translate(-150px,-80px);
+            }
         }
 
         @keyframes float3{
-            50%{ transform:translate(120px,-120px); }
+            50%{
+                transform:translate(120px,-130px);
+            }
         }
 
         @keyframes float4{
-            50%{ transform:translate(-140px,100px); }
+            50%{
+                transform:translate(-100px,100px);
+            }
         }
 
         @media (max-width: 768px){
 
             .navbar{
-                padding:12px 16px;
-            }
-
-            .nav-links{
-                gap:4px;
-            }
-
-            .nav-links a{
-                padding:8px 10px;
-                font-size:.9rem;
+                padding:12px 14px;
             }
 
             .brand span{
                 display:none;
+            }
+
+            .nav-links{
+                gap:2px;
+            }
+
+            .nav-links a{
+                font-size:.85rem;
+                padding:8px 10px;
+            }
+
+            .hero h1{
+                font-size:3rem;
             }
         }
     </style>
@@ -284,10 +286,7 @@
 
     <nav class="navbar">
         <a href="#" class="brand">
-            <img
-                src="https://i.ibb.co/Rp57bbB2/COASTLINE-8.png"
-                alt="Canvas Logo"
-            >
+            <img src="https://i.ibb.co/Rp57bbB2/COASTLINE-8.png" alt="Canvas Logo">
             <span>Canvas</span>
         </a>
 
@@ -301,26 +300,28 @@
     <main class="hero">
         <h1>Give your server a paint job</h1>
 
-        <p>Transform your Discord server with Canvas.</p>
+        <p>
+            Transform your Discord server with beautiful and customizable experiences.
+        </p>
 
-        <div class="buttons">
+        <div class="button-group">
+
             <a
-                class="btn btn-primary"
+                class="btn btn-invite"
                 href="https://discord.com/oauth2/authorize?client_id=1573438461489188976&permissions=8&integration_type=0&scope=applications.commands+bot"
                 target="_blank"
-                rel="noopener noreferrer"
-            >
+                rel="noopener noreferrer">
                 Invite
             </a>
 
             <a
-                class="btn btn-secondary"
+                class="btn btn-support"
                 href="https://discord.gg/GQ58Nk2hKD"
                 target="_blank"
-                rel="noopener noreferrer"
-            >
+                rel="noopener noreferrer">
                 Support
             </a>
+
         </div>
     </main>
 
