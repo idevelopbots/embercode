@@ -20,7 +20,7 @@ const SERVERS = [
   {
     name: "Los Angeles Roleplay",
     invite: "https://discord.gg/JCDAk8wMZh",
-    description: "Welcome to Los Angeles Roleplay! Established in 2026, we are an Emergency Response: Liberty County community based in Los Angeles.",
+    description: "Los Angeles Roleplay is shutting down soon, this card may be removed.",
     category: "Gaming",
     icon: "🎮",
     tags: ["Roblox", "Roleplay", "ER:LC"],
