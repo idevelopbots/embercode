@@ -56,7 +56,16 @@ const SERVERS = [
     tags: ["Discord", "Deep Dives", "YouTube"],
     iconUrl: "https://i.ibb.co/8SVqyyR/906a3a6c959901cb6b347a5ebafdb075.webp",
     banner: "https://i.ibb.co/PZXyB3VR/a-d716b96d57907bacedb7b51aa938d604.webp"
-  }
+  },
+  {
+    name: "Discord Town Hall",
+    invite: "https://discord.gg/discord-townhall",
+    description: "The official Discord Town Hall.",
+    category: "Community",
+    icon: "🎮",
+    tags: ["Discord", "Official", "Friendly"],
+    iconUrl: "https://i.ibb.co/PZqyYKF9/48c9848093efe29a9bc938ea7e532129.webp",
+    banner: "https://i.ibb.co/yBVnp7sC/f90a39b7a6f7a6717287b057b9dcbf67.webp"
 ];
 
 /* ---------- Rendering (no need to edit below) ---------- */
