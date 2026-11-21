@@ -107,7 +107,6 @@ const SERVERS = [
     iconUrl: "https://i.ibb.co/xq54ypNV/file-00000000216c81fba0ca561a9a00bfc3.webp",
     banner: "https://i.ibb.co/4RPyGT40/file-00000000ec7881f69a63799404fd2dc0.webp"
   },
-  {
 ];
 
 /* ---------- Rendering (no need to edit below) ---------- */
