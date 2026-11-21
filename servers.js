@@ -48,14 +48,14 @@ const SERVERS = [
     banner: "https://i.ibb.co/0j4ncgyD/ca5deae156a8f97be63f2764952df757.webp"
   },
   {
-    name: "Dev Den",
-    invite: "https://discord.gg/GQ58Nk2hKD",
-    description: "Help channels, code reviews and project showcases for all skill levels.",
+    name: "No Text To Speech",
+    invite: "https://discord.gg/ntts",
+    description: "NTTS is a Discord YouTuber with over 100k subscribers..",
     category: "Coding",
-    icon: "💻",
-    tags: ["Help", "Projects", "Jobs"],
-    iconUrl: "",
-    banner: ""
+    icon: "📺",
+    tags: ["Discord", "Deep Dives", "YouTube"],
+    iconUrl: "https://i.ibb.co/8SVqyyR/906a3a6c959901cb6b347a5ebafdb075.webp",
+    banner: "https://i.ibb.co/PZXyB3VR/a-d716b96d57907bacedb7b51aa938d604.webp"
   }
 ];
 
