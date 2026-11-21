@@ -10,6 +10,7 @@
      description  what the server offers
      category     short label, e.g. "Gaming"
      icon         emoji shown on the banner
+     iconUrl      image URL for the round server icon (optional; first letter if empty)
      tags         list of short tags
      members      member count (number, optional)
      online       online count (number, optional)
@@ -25,6 +26,7 @@ const SERVERS = [
     tags: ["Events", "LFG", "Voice"],
     members: 12400,
     online: 1800,
+    iconUrl: "",
     banner: ""
   },
   {
@@ -36,6 +38,7 @@ const SERVERS = [
     tags: ["Music", "Chill", "Feedback"],
     members: 8200,
     online: 950,
+    iconUrl: "",
     banner: ""
   },
   {
@@ -47,6 +50,7 @@ const SERVERS = [
     tags: ["Art", "Challenges", "Commissions"],
     members: 5600,
     online: 620,
+    iconUrl: "",
     banner: ""
   },
   {
@@ -58,6 +62,7 @@ const SERVERS = [
     tags: ["Help", "Projects", "Jobs"],
     members: 9300,
     online: 1100,
+    iconUrl: "",
     banner: ""
   }
 ];
@@ -84,11 +89,14 @@ const SERVERS = [
     if (s.online) stats.push(Number(s.online).toLocaleString() + " online");
     const meta = [s.category, ...stats].filter(Boolean).map(esc).join(" &middot; ");
     const tags = (s.tags || []).map((t) => `<span class="badge">${esc(t)}</span>`).join("");
+    const avatar = s.iconUrl
+      ? `<div class="av" style="background:url('${esc(safeUrl(s.iconUrl))}') center/cover #1a1a22"></div>`
+      : `<div class="av" style="background:hsl(${h} 60% 45%)">${esc((s.name || "?")[0])}</div>`;
     const el = document.createElement("article");
     el.className = "sc";
     el.innerHTML =
       `<div class="bn" style="background:${bg}">${s.banner ? "" : esc(s.icon || "")}</div>` +
-      `<div class="sb"><div class="av" style="background:hsl(${h} 60% 45%)">${esc((s.name || "?")[0])}</div>` +
+      `<div class="sb">${avatar}` +
       `<h3>${esc(s.name)}</h3><small>${meta}</small>` +
       `<p>${esc(s.description)}</p><div class="tg">${tags}</div>` +
       `<a class="btn p" href="${esc(safeUrl(s.invite))}" target="_blank" rel="noopener">Join server</a></div>`;
