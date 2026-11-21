@@ -99,7 +99,7 @@ const SERVERS = [
   },
   {
     name: "North Dakota State",
-    invite: "https://discord.gg/symbiote",
+    invite: "https://discord.gg/czTTTFt9ay",
     description: "Roleplay in a small community with great people",
     category: "Community",
     icon: "🎮",
