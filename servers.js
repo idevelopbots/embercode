@@ -98,7 +98,7 @@ const SERVERS = [
     banner: "https://i.ibb.co/6JbKr7Qz/bd5cec135e68411f305fbc235622964e.webp"
   },
   {
-    name: "Symbiote",
+    name: "North Dakota State",
     invite: "https://discord.gg/symbiote",
     description: "Roleplay in a small community with great people",
     category: "Community",
