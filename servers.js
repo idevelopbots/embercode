@@ -41,7 +41,7 @@ const SERVERS = [
     name: "Orange County",
     invite: "https://discord.gg/orgcounty",
     description: "Roleplay with like-minded individuals, Orange County is highly realistic.",
-    category: "Art",
+    category: "Roblox",
     icon: "🌴",
     tags: ["ER:LC", "Florida", "Roleplay"],
     iconUrl: "https://i.ibb.co/23G12Z9K/da2dc8871392d01f5af7acebeb259d6a.webp",
@@ -97,6 +97,17 @@ const SERVERS = [
     iconUrl: "https://i.ibb.co/LdwRTCmW/cbfa617303babd601e99be39910ba19e.webp",
     banner: "https://i.ibb.co/6JbKr7Qz/bd5cec135e68411f305fbc235622964e.webp"
   },
+  {
+    name: "Symbiote",
+    invite: "https://discord.gg/symbiote",
+    description: "Roleplay in a small community with great people",
+    category: "Community",
+    icon: "🎮",
+    tags: ["SolarVisage", "Roblox", "ER:LC"],
+    iconUrl: "https://i.ibb.co/xq54ypNV/file-00000000216c81fba0ca561a9a00bfc3.webp",
+    banner: "https://i.ibb.co/4RPyGT40/file-00000000ec7881f69a63799404fd2dc0.webp"
+  },
+  {
 ];
 
 /* ---------- Rendering (no need to edit below) ---------- */
