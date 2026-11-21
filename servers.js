@@ -87,6 +87,16 @@ const SERVERS = [
     iconUrl: "https://i.ibb.co/yFTZhTBp/a46ee59c4ef51f60c3612606e0de14a9.webp",
     banner: "https://i.ibb.co/67H40WXW/fa82068dd2231ec45c6b5b53835f893a.webp"
   },
+  {
+    name: "Symbiote",
+    invite: "https://discord.gg/symbiote",
+    description: "Wear the SYMB server tag...?",
+    category: "Community",
+    icon: "💻",
+    tags: ["Symbiote", "Fanbase", "Friendly"],
+    iconUrl: "https://i.ibb.co/LdwRTCmW/cbfa617303babd601e99be39910ba19e.webp",
+    banner: "https://i.ibb.co/6JbKr7Qz/bd5cec135e68411f305fbc235622964e.webp"
+  },
 ];
 
 /* ---------- Rendering (no need to edit below) ---------- */
