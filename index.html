@@ -1,309 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Born a Crime - Practice Quiz</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body { background-color: #f8f9fa; color: #212529; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    .navbar-brand { font-weight: 700; color: #0d6efd !important; }
-    .card { border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
-    .correct-card { border-left: 6px solid #198754; background-color: #f8fff9; }
-    .incorrect-card { border-left: 6px solid #dc3545; background-color: #fff8f8; }
-    .badge-chapter { background-color: #e7f1ff; color: #0d6efd; font-weight: 600; font-size: 0.85rem; }
-    .btn-custom { padding: 0.6rem 1.5rem; font-weight: 600; border-radius: 8px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soft Rainbow Gradient</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    height:100vh;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:Arial, sans-serif;
+    background:#000;
+}
+
+.gradient-bg{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    background:linear-gradient(
+        45deg,
+        #ffd6e8,
+        #ffe5c7,
+        #fff7c2,
+        #d8ffd6,
+        #d6f5ff,
+        #e4d6ff,
+        #ffd6f5
+    );
+    background-size:400% 400%;
+    animation:gradientShift 18s ease infinite;
+}
+
+.blob{
+    position:absolute;
+    width:600px;
+    height:600px;
+    border-radius:50%;
+    filter:blur(80px);
+    opacity:0.5;
+    mix-blend-mode:screen;
+}
+
+.blob1{
+    background:#ffb3d9;
+    top:-200px;
+    left:-100px;
+    animation:float1 16s infinite ease-in-out;
+}
+
+.blob2{
+    background:#b8e1ff;
+    top:30%;
+    right:-150px;
+    animation:float2 20s infinite ease-in-out;
+}
+
+.blob3{
+    background:#d8ffc4;
+    bottom:-250px;
+    left:25%;
+    animation:float3 18s infinite ease-in-out;
+}
+
+.blob4{
+    background:#f5d0ff;
+    top:50%;
+    left:45%;
+    animation:float4 22s infinite ease-in-out;
+}
+
+.content{
+    position:relative;
+    z-index:10;
+    text-align:center;
+    color:white;
+}
+
+h1{
+    font-size:4rem;
+    font-weight:300;
+    text-shadow:0 4px 20px rgba(0,0,0,0.15);
+}
+
+p{
+    margin-top:10px;
+    font-size:1.2rem;
+    opacity:0.9;
+}
+
+@keyframes gradientShift{
+    0%{
+        background-position:0% 50%;
+    }
+    50%{
+        background-position:100% 50%;
+    }
+    100%{
+        background-position:0% 50%;
+    }
+}
+
+@keyframes float1{
+    0%,100%{transform:translate(0,0);}
+    50%{transform:translate(200px,150px);}
+}
+
+@keyframes float2{
+    0%,100%{transform:translate(0,0);}
+    50%{transform:translate(-250px,-100px);}
+}
+
+@keyframes float3{
+    0%,100%{transform:translate(0,0);}
+    50%{transform:translate(150px,-200px);}
+}
+
+@keyframes float4{
+    0%,100%{transform:translate(0,0);}
+    50%{transform:translate(-180px,120px);}
+}
+</style>
 </head>
 <body>
 
-  <!-- Navigation Bar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <a class="navbar-brand" href="index.html">Born a Crime Study Hub</a>
-      <div class="navbar-nav ms-auto">
-        <a class="nav-link active" href="index.html">Practice Quiz</a>
-        <a href="relax.html">Don't Click</a>
-        <a class="nav-link" href="review.html">Study & Flashcards</a>
-      </div>
-    </div>
-  </nav>
+<div class="gradient-bg">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+    <div class="blob blob4"></div>
+</div>
 
-  <div class="container py-4" style="max-width: 800px;">
-    
-    <!-- Score Header -->
-    <div id="scoreContainer" class="d-none text-center p-4 bg-white rounded-3 shadow-sm mb-4">
-      <h2 class="fw-bold mb-2">Quiz Results</h2>
-      <div class="display-4 fw-bold text-primary mb-2" id="scoreDisplay">0 / 0</div>
-      <p id="percentageDisplay" class="fs-5 text-muted mb-3">0%</p>
-      
-      <div class="d-flex justify-content-center gap-2 flex-wrap">
-        <button id="filterMissedBtn" class="btn btn-outline-danger btn-custom" onclick="toggleFilterMissed()">Show Only Missed</button>
-        <button id="redoMissedBtn" class="btn btn-warning btn-custom" onclick="startRedoMode()">Redo Missed Questions</button>
-        <button class="btn btn-primary btn-custom" onclick="resetQuiz()">Retake Full Quiz</button>
-      </div>
-    </div>
+<div class="content">
+    <h1>Soft Rainbow Dreams</h1>
+    <p>Animated pastel gradients with floating colors</p>
+</div>
 
-    <!-- Quiz Form -->
-    <form id="quizForm">
-      <div id="questionsContainer"></div>
-      
-      <div class="text-center mt-4">
-        <button type="button" id="submitBtn" class="btn btn-primary btn-custom btn-lg w-100" onclick="gradeQuiz()">Submit Quiz</button>
-      </div>
-    </form>
-
-  </div>
-
-  <script>
-    const questionsData = [
-      {
-        id: 1,
-        chapter: "Chapter 9",
-        question: "How did the South African apartheid government use colored people to maintain white supremacy?",
-        options: [
-          "By offering colored people privileged status over Black people to divide marginalized groups.",
-          "By granting colored people equal voting rights with white citizens.",
-          "By forcing colored communities into total isolation from all other groups.",
-          "By appointing colored leaders to high political office."
-        ],
-        answer: 0,
-        explanation: "The government gave colored people slightly better rights than Black people, sowing jealousy, mistrust, and division so they would not unite against white supremacy."
-      },
-      {
-        id: 2,
-        chapter: "Chapter 9",
-        question: "Which test was famously used by the government to decide if someone was white or colored?",
-        options: [
-          "The pencil test inserted into the hair.",
-          "The skin-tone color wheel test.",
-          "The ancestral handwriting test.",
-          "The native dialect pronunciation test."
-        ],
-        answer: 0,
-        explanation: "If a pencil inserted into hair stayed in place while shaking the head, the hair was considered textured enough to classify the person as colored or Black."
-      },
-      {
-        id: 3,
-        chapter: "Chapter 11",
-        question: "How did Trevor's ability as the 'fastest kid in school' benefit him socially and economically?",
-        options: [
-          "He ran food orders from the cafeteria line for other students in exchange for a fee.",
-          "He won prize money competing in regional track meets.",
-          "He was hired by local shops to deliver goods after school.",
-          "He used his speed to evade security guards when selling stolen goods."
-        ],
-        answer: 0,
-        explanation: "Trevor acted as a food dealer, using his speed to beat the long canteen lines and buy food for other kids, making him popular and providing him a steady income."
-      },
-      {
-        id: 4,
-        chapter: "Chapter 13",
-        question: "Why didn't security guards recognize Trevor from the security footage during the mall theft incident?",
-        options: [
-          "The black-and-white video footage made Trevor's light skin look white.",
-          "Trevor was wearing a heavy disguise during the incident.",
-          "The security guard on duty was Trevor's personal friend.",
-          "Teddy destroyed the security tapes before they could be inspected."
-        ],
-        answer: 0,
-        explanation: "Because the camera footage was grainy black-and-white, Trevor's colored skin appeared white on screen, leading police to look for a white accomplice instead of him."
-      },
-      {
-        id: 5,
-        chapter: "Chapter 15",
-        question: "What flaw does Trevor identify in the proverb 'Teach a man to fish, and he eats for a lifetime'?",
-        options: [
-          "It fails to account for providing the person with a fishing rod.",
-          "Not everyone enjoys eating fish.",
-          "Fishing takes too long to learn compared to farming.",
-          "The lake is usually owned by private corporations."
-        ],
-        answer: 0,
-        explanation: "Trevor points out that teaching someone to fish is useless if they don't have access to capital or equipment (the fishing rod) to actually fish."
-      },
-      {
-        id: 6,
-        chapter: "Chapter 15",
-        question: "Why did the name 'Hitler' lack negative historical associations for many Black South Africans?",
-        options: [
-          "They viewed historical European figures primarily through the lens of anti-colonial resistance.",
-          "Apartheid schools completely banned teaching World War II history.",
-          "They believed Hitler was a local African freedom fighter.",
-          "Translators mispronounced the name in local indigenous languages."
-        ],
-        answer: 0,
-        explanation: "For Black South Africans, Western powers (like Britain) were the oppressors; thus, anyone who fought the oppressors was often seen neutrally or as a symbol of power."
-      },
-      {
-        id: 7,
-        chapter: "Chapter 16",
-        question: "What does the term 'cheese boy' describe in South African township slang?",
-        options: [
-          "A middle-class kid who could afford luxury food items like cheese.",
-          "A street vendor selling fast food at taxi ranks.",
-          "An informant who worked for local police forces.",
-          "A kid who worked on dairy farms outside the city."
-        ],
-        answer: 0,
-        explanation: "A 'cheese boy' refers to someone who grew up with enough money to afford modest luxuries like cheese on their bread, unlike most township kids."
-      },
-      {
-        id: 8,
-        chapter: "Chapter 16",
-        question: "Why does Trevor write that 'crime cares' when describing life in the hood?",
-        options: [
-          "Crime provides economic opportunity and support when government institutions fail people.",
-          "Criminal gang leaders were religious community leaders.",
-          "Larceny laws were exceptionally lenient under South African courts.",
-          "Criminals redistributed all stolen money back to local charities."
-        ],
-        answer: 0,
-        explanation: "In neglected townships, criminal hustling was often the only system that provided youth with income, purpose, and community support."
-      },
-      {
-        id: 9,
-        chapter: "Chapter 17",
-        question: "How does language help Trevor survive and de-escalate danger while in jail?",
-        options: [
-          "He speaks Zulu to connect with a intimidating inmate and build rapport.",
-          "He speaks Afrikaans to convince the guards to release him early.",
-          "He speaks English to pretend he is an American tourist.",
-          "He pretends to be mute so inmates leave him alone."
-        ],
-        answer: 0,
-        explanation: "By speaking fluent Zulu to a large, intimidating prisoner, Trevor broke the tension and bridged the barrier between them."
-      },
-      {
-        id: 10,
-        chapter: "Chapter 18",
-        question: "Why did Trevor object to his mother marrying Abel?",
-        options: [
-          "He recognized Abel's traditional patriarchal mindset and dangerous temper early on.",
-          "Abel refused to let Trevor attend school.",
-          "Abel was secretly working as an undercover police officer.",
-          "Trevor wanted his mother to move back in with his biological father."
-        ],
-        answer: 0,
-        explanation: "Trevor saw Abel's controlling behavior and volatility, warning his mother before Abel's abuse escalated."
-      }
-    ];
-
-    let activeQuestions = [...questionsData];
-    let userAnswers = {};
-    let isFilteredMissed = false;
-
-    function renderQuestions() {
-      const container = document.getElementById('questionsContainer');
-      container.innerHTML = '';
-
-      activeQuestions.forEach((q, index) => {
-        const selected = userAnswers[q.id];
-        const card = document.createElement('div');
-        card.className = 'card p-4';
-        card.id = `q-card-${q.id}`;
-
-        let optionsHtml = '';
-        q.options.forEach((opt, optIdx) => {
-          const checked = selected === optIdx ? 'checked' : '';
-          optionsHtml += `
-            <div class="form-check mb-2">
-              <input class="form-check-input" type="radio" name="q_${q.id}" id="q_${q.id}_${optIdx}" value="${optIdx}" ${checked} onchange="recordAnswer(${q.id}, ${optIdx})">
-              <label class="form-check-label" for="q_${q.id}_${optIdx}">${opt}</label>
-            </div>
-          `;
-        });
-
-        card.innerHTML = `
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <span class="badge badge-chapter px-3 py-2 rounded-pill">${q.chapter}</span>
-            <span class="text-muted small">Question ${index + 1} of ${activeQuestions.length}</span>
-          </div>
-          <h5 class="fw-bold mb-3">${q.question}</h5>
-          <div>${optionsHtml}</div>
-          <div id="feedback-${q.id}" class="mt-3 p-3 rounded-3 d-none"></div>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    function recordAnswer(qId, optionIdx) {
-      userAnswers[qId] = optionIdx;
-    }
-
-    function gradeQuiz() {
-      let score = 0;
-      let missedCount = 0;
-
-      activeQuestions.forEach((q) => {
-        const card = document.getElementById(`q-card-${q.id}`);
-        const feedback = document.getElementById(`feedback-${q.id}`);
-        const selected = userAnswers[q.id];
-        const inputs = card.querySelectorAll('input');
-
-        inputs.forEach(input => input.disabled = true);
-        feedback.classList.remove('d-none');
-
-        if (selected === q.answer) {
-          score++;
-          card.classList.add('correct-card');
-          feedback.className = 'mt-3 p-3 rounded-3 bg-success bg-opacity-10 text-success';
-          feedback.innerHTML = `<strong>Correct!</strong> ${q.explanation}`;
-        } else {
-          missedCount++;
-          card.classList.add('incorrect-card');
-          feedback.className = 'mt-3 p-3 rounded-3 bg-danger bg-opacity-10 text-danger';
-          feedback.innerHTML = `<strong>Incorrect.</strong> Correct answer: <em>${q.options[q.answer]}</em>.<br><small class="mt-1 d-block text-dark">${q.explanation}</small>`;
-        }
-      });
-
-      document.getElementById('scoreContainer').classList.remove('d-none');
-      document.getElementById('scoreDisplay').innerText = `${score} / ${activeQuestions.length}`;
-      document.getElementById('percentageDisplay').innerText = `${Math.round((score / activeQuestions.length) * 100)}%`;
-      document.getElementById('submitBtn').classList.add('d-none');
-      document.getElementById('redoMissedBtn').style.display = missedCount > 0 ? 'inline-block' : 'none';
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function toggleFilterMissed() {
-      isFilteredMissed = !isFilteredMissed;
-      const btn = document.getElementById('filterMissedBtn');
-
-      activeQuestions.forEach(q => {
-        const card = document.getElementById(`q-card-${q.id}`);
-        const isCorrect = userAnswers[q.id] === q.answer;
-        if (isFilteredMissed && isCorrect) {
-          card.classList.add('d-none');
-        } else {
-          card.classList.remove('d-none');
-        }
-      });
-
-      btn.innerText = isFilteredMissed ? "Show All Questions" : "Show Only Missed";
-    }
-
-    function startRedoMode() {
-      activeQuestions = activeQuestions.filter(q => userAnswers[q.id] !== q.answer);
-      userAnswers = {};
-      isFilteredMissed = false;
-
-      document.getElementById('scoreContainer').classList.add('d-none');
-      document.getElementById('submitBtn').classList.remove('d-none');
-      renderQuestions();
-    }
-
-    function resetQuiz() {
-      activeQuestions = [...questionsData];
-      userAnswers = {};
-      isFilteredMissed = false;
-
-      document.getElementById('scoreContainer').classList.add('d-none');
-      document.getElementById('submitBtn').classList.remove('d-none');
-      renderQuestions();
-    }
-
-    renderQuestions();
-  </script>
 </body>
 </html>
