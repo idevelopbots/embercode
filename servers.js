@@ -121,6 +121,32 @@ const SERVERS = [
 
 /* ---------- Rendering (no need to edit below) ---------- */
 (function () {
+  if (!document.getElementById("rainbow-btn-style")) {
+    const st = document.createElement("style");
+    st.id = "rainbow-btn-style";
+    st.textContent = `
+      .rainbow-btn {
+        background: linear-gradient(270deg, #ff9a9e, #fecfef, #e0c3fc, #a1c4fd, #84fab0, #ff9a9e);
+        background-size: 300% 300%;
+        animation: softRainbow 6s ease infinite;
+        border: none !important;
+        color: #1a1a22 !important;
+        font-weight: 600;
+        transition: transform 0.2s ease, filter 0.2s ease;
+      }
+      .rainbow-btn:hover {
+        filter: brightness(1.05);
+        transform: translateY(-1px);
+      }
+      @keyframes softRainbow {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+    `;
+    document.head.appendChild(st);
+  }
+
   const grid = document.getElementById("g");
   const loader = document.getElementById("ld");
   const BATCH = 8;
@@ -151,7 +177,7 @@ const SERVERS = [
       `<div class="sb">${avatar}` +
       `<h3>${esc(s.name)}</h3><small>${meta}</small>` +
       `<p>${esc(s.description)}</p><div class="tg">${tags}</div>` +
-      `<a class="btn p" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 25%, #e0c3fc 50%, #a1c4fd 75%, #84fab0 100%); border: none; color: #1a1a22; font-weight: 600;" href="${esc(safeUrl(s.invite))}" target="_blank" rel="noopener">Join Server</a></div>`;
+      `<a class="btn p rainbow-btn" href="${esc(safeUrl(s.invite))}" target="_blank" rel="noopener">Join Server</a></div>`;
     return el;
   }
 
