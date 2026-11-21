@@ -151,7 +151,7 @@ const SERVERS = [
       `<div class="sb">${avatar}` +
       `<h3>${esc(s.name)}</h3><small>${meta}</small>` +
       `<p>${esc(s.description)}</p><div class="tg">${tags}</div>` +
-      `<a class="btn p" href="${esc(safeUrl(s.invite))}" target="_blank" rel="noopener">Join Server</a></div>`;
+      `<a class="btn p" style="background-color: #5865F2; border-color: #5865F2; color: #ffffff;" href="${esc(safeUrl(s.invite))}" target="_blank" rel="noopener">Join Server</a></div>`;
     return el;
   }
 
