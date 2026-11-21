@@ -107,6 +107,16 @@ const SERVERS = [
     iconUrl: "https://i.ibb.co/xq54ypNV/file-00000000216c81fba0ca561a9a00bfc3.webp",
     banner: "https://i.ibb.co/4RPyGT40/file-00000000ec7881f69a63799404fd2dc0.webp"
   },
+  {
+    name: "Greenville Season",
+    invite: "https://discord.gg/QjEuck84BQ",
+    description: "Roleplay with other members in Greenville.",
+    category: "Roleplay",
+    icon: "https://i.ibb.co/ycRBmWQM/e959807bcc91765d32a6814d2d09a058.webp",
+    tags: ["Greenville", "Wisconsin", "Roblox"],
+    iconUrl: "https://i.ibb.co/xq54ypNV/file-00000000216c81fba0ca561a9a00bfc3.webp",
+    banner: "https://i.ibb.co/67MQ1MHJ/29fbe102877d4d2fcfde24f9374f2218.webp"
+  },
 ];
 
 /* ---------- Rendering (no need to edit below) ---------- */
