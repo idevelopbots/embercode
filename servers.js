@@ -18,16 +18,14 @@
    =========================================================== */
 const SERVERS = [
   {
-    name: "Pixel Harbor",
-    invite: "https://discord.gg/GQ58Nk2hKD",
-    description: "Casual and ranked game nights, LFG channels and weekly tournaments.",
+    name: "Los Angeles Roleplay",
+    invite: "https://discord.gg/JCDAk8wMZh",
+    description: "Welcome to Los Angeles Roleplay! Established in 2026, we are an Emergency Response: Liberty County community based in Los Angeles.",
     category: "Gaming",
     icon: "🎮",
-    tags: ["Events", "LFG", "Voice"],
-    members: 12400,
-    online: 1800,
-    iconUrl: "",
-    banner: ""
+    tags: ["Roblox", "Roleplay", "ER:LC"],
+    iconUrl: "https://i.ibb.co/B5Dx6ypn/32bcc6e9ad21c8d844c808a916cd536a.webp",
+    banner: "https://i.ibb.co/hx8KHyTj/Screenshot-2026-10-06-205903.webp"
   },
   {
     name: "Lofi Lounge",
@@ -36,8 +34,6 @@ const SERVERS = [
     category: "Music",
     icon: "🎧",
     tags: ["Music", "Chill", "Feedback"],
-    members: 8200,
-    online: 950,
     iconUrl: "",
     banner: ""
   },
@@ -48,8 +44,6 @@ const SERVERS = [
     category: "Art",
     icon: "🖌️",
     tags: ["Art", "Challenges", "Commissions"],
-    members: 5600,
-    online: 620,
     iconUrl: "",
     banner: ""
   },
@@ -60,8 +54,6 @@ const SERVERS = [
     category: "Coding",
     icon: "💻",
     tags: ["Help", "Projects", "Jobs"],
-    members: 9300,
-    online: 1100,
     iconUrl: "",
     banner: ""
   }
