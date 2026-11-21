@@ -50,7 +50,7 @@ const SERVERS = [
   {
     name: "No Text To Speech",
     invite: "https://discord.gg/ntts",
-    description: "NTTS is a Discord YouTuber with over 100k subscribers.",
+    description: "NTTS is a Discord YouTuber with 1,000,000+ subscribers.",
     category: "Content Creator",
     icon: "📺",
     tags: ["Discord", "Deep Dives", "YouTube"],
