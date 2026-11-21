@@ -151,7 +151,7 @@ const SERVERS = [
       `<div class="sb">${avatar}` +
       `<h3>${esc(s.name)}</h3><small>${meta}</small>` +
       `<p>${esc(s.description)}</p><div class="tg">${tags}</div>` +
-      `<a class="btn p" style="background-color: #5865F2; border-color: #5865F2; color: #ffffff;" href="${esc(safeUrl(s.invite))}" target="_blank" rel="noopener">Join Server</a></div>`;
+      `<a class="btn p" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 25%, #e0c3fc 50%, #a1c4fd 75%, #84fab0 100%); border: none; color: #1a1a22; font-weight: 600;" href="${esc(safeUrl(s.invite))}" target="_blank" rel="noopener">Join Server</a></div>`;
     return el;
   }
 
