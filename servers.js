@@ -126,22 +126,31 @@ const SERVERS = [
     st.id = "rainbow-btn-style";
     st.textContent = `
       .rainbow-btn {
-        background: linear-gradient(270deg, #ff9a9e, #fecfef, #e0c3fc, #a1c4fd, #84fab0, #ff9a9e);
-        background-size: 300% 300%;
-        animation: softRainbow 6s ease infinite;
+        background: linear-gradient(
+          90deg,
+          #ffd1dc,
+          #ffe5b4,
+          #fff4bd,
+          #d4f8e8,
+          #d0e8ff,
+          #ebd4ff,
+          #ffd1dc
+        );
+        background-size: 400% 100%;
+        animation: softRainbowFlow 10s linear infinite;
         border: none !important;
-        color: #1a1a22 !important;
+        color: #1f2430 !important;
         font-weight: 600;
+        box-shadow: 0 2px 10px rgba(208, 232, 255, 0.25);
         transition: transform 0.2s ease, filter 0.2s ease;
       }
       .rainbow-btn:hover {
-        filter: brightness(1.05);
+        filter: brightness(1.04);
         transform: translateY(-1px);
       }
-      @keyframes softRainbow {
+      @keyframes softRainbowFlow {
         0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
+        100% { background-position: 400% 50%; }
       }
     `;
     document.head.appendChild(st);
