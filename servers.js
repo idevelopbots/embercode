@@ -51,7 +51,7 @@ const SERVERS = [
     name: "No Text To Speech",
     invite: "https://discord.gg/ntts",
     description: "NTTS is a Discord YouTuber with over 100k subscribers.",
-    category: "Coding",
+    category: "Content Creator",
     icon: "📺",
     tags: ["Discord", "Deep Dives", "YouTube"],
     iconUrl: "https://i.ibb.co/8SVqyyR/906a3a6c959901cb6b347a5ebafdb075.webp",
@@ -65,7 +65,17 @@ const SERVERS = [
     icon: "🎮",
     tags: ["Discord", "Official", "Friendly"],
     iconUrl: "https://i.ibb.co/PZqyYKF9/48c9848093efe29a9bc938ea7e532129.webp",
-    banner: "https://i.ibb.co/yBVnp7sC/f90a39b7a6f7a6717287b057b9dcbf67.webp"
+    banner: "https://i.ibb.co/yBVnp7sC/f90a39b7a6f7a6717287b057b9dcbf6.webp"
+  },
+  {
+    name: "Arizona State Roleplay",
+    invite: "https://discord.gg/asrp",
+    description: "This server is a professional, friendly, and open server, based on Arizona, USA!",
+    category: "Community",
+    icon: "🎮",
+    tags: ["Arizona", "ER:LC", "Roleplay"],
+    iconUrl: "https://i.ibb.co/v6qXDKWX/6c0a07c2c2629818beed8a38c060ab1c.webp",
+    banner: "https://i.ibb.co/mVh1pZMv/aa2560134f12b351229a139f97872a5a.webp"
   },
 ];
 
