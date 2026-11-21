@@ -114,7 +114,7 @@ const SERVERS = [
     category: "Roleplay",
     icon: "https://i.ibb.co/ycRBmWQM/e959807bcc91765d32a6814d2d09a058.webp",
     tags: ["Greenville", "Wisconsin", "Roblox"],
-    iconUrl: "https://i.ibb.co/xq54ypNV/file-00000000216c81fba0ca561a9a00bfc3.webp",
+    iconUrl: "https://i.ibb.co/ycRBmWQM/e959807bcc91765d32a6814d2d09a058.webp",
     banner: "https://i.ibb.co/67MQ1MHJ/29fbe102877d4d2fcfde24f9374f2218.webp"
   },
 ];
