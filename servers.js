@@ -66,6 +66,7 @@ const SERVERS = [
     tags: ["Discord", "Official", "Friendly"],
     iconUrl: "https://i.ibb.co/PZqyYKF9/48c9848093efe29a9bc938ea7e532129.webp",
     banner: "https://i.ibb.co/yBVnp7sC/f90a39b7a6f7a6717287b057b9dcbf67.webp"
+  },
 ];
 
 /* ---------- Rendering (no need to edit below) ---------- */
