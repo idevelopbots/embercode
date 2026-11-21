@@ -525,7 +525,7 @@
       </div>
 
       <div class="sg" id="g"></div>
-      <div class="ld" id="ld">Loading more servers...</div>
+      <div class="ld" id="ld" hidden></div>
     </div>
   </main>
 
@@ -549,68 +549,7 @@
     </div>
   </footer>
 
-  <script>
-    const INVITE = 'https://discord.gg/GQ58Nk2hKD'; /* replace per server with real invite links */
-
-    const base = [
-      ['Pixel Harbor', '🎮', 'Gaming', 'Casual and ranked game nights, LFG channels and weekly tournaments.', ['Events', 'LFG', 'Voice']],
-      ['Lofi Lounge', '🎧', 'Music', '24/7 chill music, listening parties and a friendly producer community.', ['Music', 'Chill', 'Feedback']],
-      ['Studio Nine', '🎨', 'Art', 'Share your art, join challenges and get constructive critiques.', ['Art', 'Challenges', 'Commissions']],
-      ['Dev Den', '💻', 'Coding', 'Help channels, code reviews and project showcases for all skill levels.', ['Help', 'Projects', 'Jobs']],
-      ['Study Hall', '📚', 'Education', 'Focus rooms, study groups and homework help around the clock.', ['Study', 'Groups', 'Voice']],
-      ['Anime Alley', '🌸', 'Anime', 'Seasonal watch parties, manga club and fan art galleries.', ['Anime', 'Manga', 'Events']],
-      ['Crypto Cafe', '📈', 'Finance', 'Market chat, learning resources and a no-spam community.', ['Learning', 'News', 'Chat']],
-      ['Creator Collective', '🎬', 'Creators', 'Collab finder, feedback threads and creator giveaways.', ['Collabs', 'Feedback', 'Giveaways']],
-      ['Cozy Corner', '☕', 'Social', 'A relaxed place to hang out, make friends and join game nights.', ['Chat', 'Friends', 'Games']],
-      ['Fit Club', '💪', 'Fitness', 'Workout plans, progress check-ins and accountability partners.', ['Fitness', 'Support', 'Goals']],
-      ['Role Play Realm', '🐉', 'Roleplay', 'Fantasy and sci-fi campaigns with active storytellers.', ['RP', 'Lore', 'Campaigns']],
-      ['Meme Factory', '😂', 'Memes', 'Fresh memes daily, caption contests and community polls.', ['Memes', 'Polls', 'Events']]
-    ];
-
-    const adj = ['Neon', 'Velvet', 'Arctic', 'Solar', 'Midnight', 'Crimson', 'Golden', 'Cosmic'];
-    const noun = ['Guild', 'Hub', 'Nest', 'Society', 'Outpost', 'Club', 'Arena', 'Haven'];
-
-    let n = 0;
-    const g = document.getElementById('g');
-    const ld = document.getElementById('ld');
-
-    function card(i) {
-      const b = base[i % base.length];
-      const r = Math.floor(i / base.length);
-      const name = r ? adj[(i * 3) % 8] + ' ' + b[0].split(' ').pop() + ' ' + noun[(i * 5) % 8] : b[0];
-      const h = (i * 47 + 210) % 360;
-      const mem = (1200 + ((i * 7919) % 48000)).toLocaleString();
-      const on = Math.floor(120 + ((i * 613) % 3800)).toLocaleString();
-
-      const d = document.createElement('article');
-      d.className = 'sc';
-      d.innerHTML = `
-        <div class="bn" style="background: linear-gradient(135deg, hsl(${h} 70% 38%), hsl(${(h + 50) % 360} 70% 22%))">${b[1]}</div>
-        <div class="sb">
-          <div class="av" style="background: hsl(${h} 60% 45%)">${name[0]}</div>
-          <h3>${name}</h3>
-          <small>${mem} members &middot; ${on} online</small>
-          <p>${b[3]}</p>
-          <div class="tg">${b[4].map((t) => `<span class="badge">${t}</span>`).join('')}</div>
-          <a class="btn p" href="${INVITE}" target="_blank" rel="noopener">Join server</a>
-        </div>
-      `;
-      return d;
-    }
-
-    function more() {
-      for (let k = 0; k < 8; k++) {
-        g.appendChild(card(n++));
-      }
-    }
-
-    more();
-    more();
-
-    new IntersectionObserver((e) => {
-      if (e[0].isIntersecting) more();
-    }, { rootMargin: '600px' }).observe(ld);
-  </script>
+  <script src="servers.js"></script>
 
 </body>
 </html>
