@@ -29,7 +29,7 @@ const SERVERS = [
   },
   {
     name: "FlaviBot",
-    invite: "https://discord.gg/GQ58Nk2hKD",
+    invite: "https://discord.gg/flavibot",
     description: "Discord bot that produces quality music audio, premium as well.",
     category: "Music",
     icon: "🎧",
@@ -38,14 +38,14 @@ const SERVERS = [
     banner: "https://i.ibb.co/JFvynyk9/85ac36feb6235fe50a8f32579ae8197c.webp"
   },
   {
-    name: "Studio Nine",
-    invite: "https://discord.gg/GQ58Nk2hKD",
-    description: "Share your art, join challenges and get constructive critiques.",
+    name: "Orange County",
+    invite: "https://discord.gg/orgcounty",
+    description: "Roleplay with like-minded individuals, Orange County is highly realistic.",
     category: "Art",
-    icon: "🖌️",
-    tags: ["Art", "Challenges", "Commissions"],
-    iconUrl: "",
-    banner: ""
+    icon: "🌴",
+    tags: ["ER:LC", "Florida", "Roleplay"],
+    iconUrl: "https://i.ibb.co/23G12Z9K/da2dc8871392d01f5af7acebeb259d6a.webp",
+    banner: "https://i.ibb.co/0j4ncgyD/ca5deae156a8f97be63f2764952df757.webp"
   },
   {
     name: "Dev Den",
