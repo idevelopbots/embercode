@@ -330,6 +330,95 @@
       color: #8b8ba0;
     }
 
+    /* Server Catalog Styles */
+    .sg {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .sc {
+      border-radius: 20px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+      display: flex;
+      flex-direction: column;
+      transition: 0.2s;
+    }
+
+    .sc:hover {
+      border-color: rgba(139, 149, 255, 0.4);
+      transform: translateY(-3px);
+    }
+
+    .bn {
+      height: 96px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 38px;
+    }
+
+    .sb {
+      padding: 0 18px 18px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .av {
+      width: 52px;
+      height: 52px;
+      border-radius: 15px;
+      margin-top: -26px;
+      border: 3px solid #0d0d12;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 20px;
+      color: #fff;
+    }
+
+    .sb h3 {
+      font-size: 17px;
+      margin: 10px 0 2px;
+    }
+
+    .sb small {
+      color: #8b8ba0;
+      font-size: 13px;
+    }
+
+    .sb p {
+      color: #a8a8b8;
+      font-size: 14px;
+      margin: 10px 0 14px;
+      flex: 1;
+    }
+
+    .tg {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .sb .btn {
+      text-align: center;
+      padding: 10px;
+      font-size: 14px;
+    }
+
+    .ld {
+      text-align: center;
+      color: #8b8ba0;
+      padding: 40px 0;
+      font-size: 14px;
+    }
+
     /* Footer */
     footer {
       margin-top: 60px;
@@ -365,6 +454,18 @@
     }
 
     /* Responsive & Accessibility */
+    @media (max-width: 1000px) {
+      .sg {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .sg {
+        grid-template-columns: 1fr;
+      }
+    }
+
     @media (max-width: 760px) {
       .burger {
         display: block;
@@ -410,6 +511,7 @@
     <div class="links" id="l">
       <a href="index.html">Home</a>
       <a href="commands.html" class="on">Commands</a>
+      <a href="servers.html">Servers</a>
       <a href="terms.html">Terms of Service</a>
       <a href="privacy.html">Privacy Policy</a>
     </div>
@@ -435,13 +537,13 @@
           </thead>
           <tbody>
             <tr>
-              <td><code>/honeypot</code></td>
-              <td>Configure Canvas' honeypot.</td>
-              <td><span class="badge">Manage Server</span></td>
+              <td><code>/help</code></td>
+              <td>Shows all commands and links to support.</td>
+              <td><span class="badge">None</span></td>
             </tr>
             <tr>
-              <td><code>/invite</code></td>
-              <td>Get a link to Canvas and invite it.</td>
+              <td><code>/ping</code></td>
+              <td>Checks Canvas's latency and response time.</td>
               <td><span class="badge">None</span></td>
             </tr>
             <tr>
