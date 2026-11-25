@@ -41,7 +41,7 @@ nav.navbar,main{position:relative;z-index:2}
 .cmd{align-self:flex-start;font-family:'SFMono-Regular',Consolas,'Courier New',monospace;font-weight:700;font-size:1rem;padding:6px 14px;border-radius:10px;background:#2b2540;color:#e9e2ff}
 .card p{color:var(--muted);flex:1;font-size:.95rem}
 .perm{align-self:flex-start;font-size:.78rem;font-weight:700;padding:5px 12px;border-radius:9999px;background:rgba(124,92,255,.14);color:#5a3fd6}
-.perm::before{content:"🔒 ";font-size:.7rem}
+.perm::before{content:"⚠️ ";font-size:.7rem}
 .legal{max-width:800px;margin:0 auto;padding:48px;background:rgba(255,255,255,.8);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-radius:28px;border:1px solid #fff;box-shadow:0 20px 50px rgba(90,70,160,.16)}
 .badge{display:inline-block;font-size:.78rem;font-weight:700;padding:5px 14px;border-radius:9999px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;margin-bottom:14px}
 .legal h1{font-size:clamp(1.9rem,4.5vw,2.6rem);letter-spacing:-.03em;margin-bottom:6px}
