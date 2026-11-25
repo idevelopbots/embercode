@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Embed Creator – Canvas</title>
+<meta name="description" content="Design Discord embeds with buttons and separators.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="https://i.ibb.co/RGHkbz2y/GSRP.png">
+<link rel="apple-touch-icon" href="https://i.ibb.co/RGHkbz2y/GSRP.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<canvas id="paint" aria-hidden="true"></canvas>
+<nav class="navbar" aria-label="Main navigation">
+ <a class="logo" href="index.html" aria-label="Canvas home"><img class="logo-img" src="https://i.ibb.co/RGHkbz2y/GSRP.png" alt="" width="32" height="32">Canvas</a>
+ <ul><li><a href="index.html">Home</a></li><li><a href="commands.html">Commands</a></li><li><a href="embed.html" aria-current="page">Embed</a></li><li><a href="terms.html">Terms of Service</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul>
+</nav>
+<main class="page wide">
+<header class="page-title"><h1>Embed Creator</h1><p>Design a message, preview it live, then copy the JSON or send it.</p></header>
+<div class="studio"><div class="editor">
+<section class="panel"><h2>Image hosting</h2><label class="fld"><span>imgbb API key</span><input type="text" id="apiKey" placeholder="Paste your imgbb key"></label><label class="fld"><span>Image expiration</span><select id="exp"><option value="">Never</option><option value="600">10 minutes</option><option value="86400">1 day</option><option value="604800">1 week</option><option value="2592000">1 month</option></select></label><p class="hint">Your key is saved only in this browser. Upload buttons below send images to imgbb and fill in the URL for you.</p></section>
+<section class="panel"><h2>Message</h2><label class="fld"><span>Message text</span><textarea id="content" rows="4" placeholder="Plain text above the embed" maxlength="2000"></textarea></label></section>
+<section class="panel"><h2>Embed</h2><label class="fld"><span>Accent color</span><input type="color" id="color" value="#7c5cff"></label><label class="fld"><span>Author name</span><input type="text" id="aName" placeholder="Author" maxlength="256"></label><div class="two"><label class="fld"><span>Author icon</span><div class="img-row"><input type="text" id="aIcon" placeholder="https://…"><button type="button" class="mini solid up" data-for="aIcon">Upload</button></div></label><label class="fld"><span>Author link</span><input type="text" id="aUrl" placeholder="https://…"></label></div><label class="fld"><span>Title</span><input type="text" id="title" placeholder="Embed title" maxlength="256"></label><label class="fld"><span>Title link</span><input type="text" id="tUrl" placeholder="https://…"></label><label class="fld"><span>Description</span><textarea id="desc" rows="4" placeholder="Supports **bold**, *italic*, `code`, [links](https://…)" maxlength="4096"></textarea></label></section>
+<section class="panel"><h2>Images</h2><label class="fld"><span>Thumbnail</span><div class="img-row"><input type="text" id="thumb" placeholder="https://…"><button type="button" class="mini solid up" data-for="thumb">Upload</button></div></label><label class="fld"><span>Large image</span><div class="img-row"><input type="text" id="image" placeholder="https://…"><button type="button" class="mini solid up" data-for="image">Upload</button></div></label></section>
+<section class="panel"><h2>Fields &amp; separators</h2><div id="fieldList"></div><div class="acts"><button type="button" id="addField" class="mini solid">+ Field</button><button type="button" id="addSep" class="mini solid">+ Separator</button></div></section>
+<section class="panel"><h2>Buttons</h2><div id="btnList"></div><div class="acts"><button type="button" id="addBtn" class="mini solid">+ Button</button></div><p class="hint">Link buttons open a URL. Other styles need a bot to handle the custom_id.</p></section>
+<section class="panel"><h2>Footer</h2><label class="fld"><span>Footer text</span><input type="text" id="fText" placeholder="Footer" maxlength="2048"></label><label class="fld"><span>Footer icon</span><div class="img-row"><input type="text" id="fIcon" placeholder="https://…"><button type="button" class="mini solid up" data-for="fIcon">Upload</button></div></label><label class="chk"><input type="checkbox" id="ts"> Show timestamp</label></section>
+<section class="panel"><h2>Export</h2><textarea id="json" rows="10" spellcheck="false"></textarea><div class="acts"><button type="button" id="copy" class="mini solid">Copy JSON</button><button type="button" id="loadJson" class="mini">Load JSON</button><button type="button" id="reset" class="mini danger">Clear all</button></div><label class="fld"><span>Webhook URL (optional)</span><input type="text" id="hook" placeholder="https://discord.com/api/webhooks/…"></label><div class="acts"><button type="button" id="send" class="mini solid">Send to Discord</button></div><p class="hint">Webhooks can post embeds and link buttons. Other button styles need a bot.</p></section>
+</div><aside class="preview-col"><section class="panel"><h2>Live preview<span id="total" class="count">0 / 6000</span></h2><div class="dc"><div class="dc-msg"><img class="dc-av" src="https://i.ibb.co/RGHkbz2y/GSRP.png" alt=""><div class="dc-body"><div class="dc-name">Canvas<span class="dc-tag">APP</span></div><div id="pv"></div></div></div></div></section></aside></div>
+<input type="file" id="file" accept="image/*" hidden>
+<div id="toast" class="toast" role="status"></div>
+</main>
+<footer class="site">© 2026 Canvas. Not affiliated with Discord Inc.</footer>
+<script src="script.js"></script>
+<script src="embed.js"></script>
+</body>
+</html>
