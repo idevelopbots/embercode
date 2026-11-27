@@ -192,22 +192,6 @@ body {
   padding: 130px 1.5rem 4rem;
 }
 
-.page-header {
-  text-align: center;
-  margin-bottom: 2.75rem;
-}
-
-.page-header h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 0.4rem;
-}
-
-.page-header p {
-  color: rgba(255, 245, 245, 0.8);
-  font-size: 1.05rem;
-}
-
 .commands-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -253,15 +237,44 @@ body {
   flex-grow: 1;
 }
 
-.command-perms {
-  font-size: 0.84rem;
-  color: #FECACA;
-  background: rgba(255, 255, 255, 0.07);
-  padding: 0.55rem 0.85rem;
-  border-radius: 10px;
+.command-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
-  gap: 0.45rem;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.perm-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: rgba(255, 245, 245, 0.6);
+  font-weight: 600;
+}
+
+.perm-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.32rem 0.75rem;
+  border-radius: 999px;
+}
+
+.perm-badge.restricted {
+  background: rgba(251, 191, 36, 0.14);
+  color: #FDE68A;
+  border: 1px solid rgba(251, 191, 36, 0.35);
+}
+
+.perm-badge.public {
+  background: rgba(52, 211, 153, 0.14);
+  color: #A7F3D0;
+  border: 1px solid rgba(52, 211, 153, 0.35);
 }
 
 /* ===== Terms & Privacy Policy Cards ===== */
