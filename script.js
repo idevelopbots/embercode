@@ -1,51 +1,57 @@
 document.addEventListener('DOMContentLoaded', () => {
-  /* ---------- Active navbar link ---------- */
-  let current = window.location.pathname.split('/').pop();
-  if (!current) current = 'index.html';
-  document.querySelectorAll('.nav-link').forEach(link => {
-    if (link.getAttribute('href') === current) {
+  // 1. Highlight active navigation link based on current URL
+  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  navLinks.forEach((link) => {
+    const linkHref = link.getAttribute('href');
+    if (linkHref === currentPage) {
       link.classList.add('active');
-      link.setAttribute('aria-current', 'page');
     }
   });
 
-  /* ---------- Cursor-following bird ---------- */
-  const bird = document.getElementById('bird');
-  if (!bird || window.matchMedia('(pointer: coarse)').matches) return;
+  // 2. Smooth Cursor-Following Bird Animation (Homepage)
+  const bird = document.getElementById('cursor-bird');
+  if (!bird) return;
 
-  const OFFSET_X = 22; // half of the bird size so it centers on the cursor
-  const OFFSET_Y = 22;
-  const EASE = 0.08;   // lower = slower, floatier trail
+  const birdSvg = bird.querySelector('svg');
+  let targetX = window.innerWidth / 2;
+  let targetY = window.innerHeight / 2;
+  let currentX = targetX;
+  let currentY = targetY;
+  let facingDirection = 1; // 1 = right, -1 = left
 
-  let mouseX = window.innerWidth / 2;
-  let mouseY = window.innerHeight / 2;
-  let birdX = mouseX;
-  let birdY = mouseY;
-  let facing = 1; // 1 = facing right, -1 = facing left
-
-  window.addEventListener('mousemove', e => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
+  // Track pointer position with a slight offset so the bird doesn't block clicks
+  window.addEventListener('mousemove', (e) => {
+    targetX = e.clientX + 16;
+    targetY = e.clientY - 18;
   });
 
-  function lerp(start, end, amount) {
-    return start + (end - start) * amount;
+  function animateBird() {
+    const ease = 0.085;
+    const dx = targetX - currentX;
+    const dy = targetY - currentY;
+
+    currentX += dx * ease;
+    currentY += dy * ease;
+
+    // Flip horizontally based on horizontal movement direction
+    if (dx < -0.5) {
+      facingDirection = -1;
+    } else if (dx > 0.5) {
+      facingDirection = 1;
+    }
+
+    // Subtle pitch tilt based on vertical velocity
+    const tilt = Math.max(-22, Math.min(22, dy * 0.35)) * facingDirection;
+
+    bird.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+    if (birdSvg) {
+      birdSvg.style.transform = `scaleX(${facingDirection}) rotate(${tilt}deg)`;
+    }
+
+    requestAnimationFrame(animateBird);
   }
 
-  function animate() {
-    const prevX = birdX;
-    birdX = lerp(birdX, mouseX, EASE);
-    birdY = lerp(birdY, mouseY, EASE);
-
-    const dx = birdX - prevX;
-    if (dx > 0.15) facing = 1;
-    else if (dx < -0.15) facing = -1;
-
-    bird.style.transform =
-      `translate3d(${birdX - OFFSET_X}px, ${birdY - OFFSET_Y}px, 0) scaleX(${facing})`;
-
-    requestAnimationFrame(animate);
-  }
-
-  requestAnimationFrame(animate);
+  requestAnimationFrame(animateBird);
 });
