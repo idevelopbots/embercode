@@ -1,44 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Terms of Service / Canvas</title>
-<meta name="description" content="Canvas Terms of Service">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="icon" type="image/png" href="https://i.ibb.co/RGHkbz2y/GSRP.png">
-<link rel="apple-touch-icon" href="https://i.ibb.co/RGHkbz2y/GSRP.png">
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Service — Cardinal</title>
+  <link rel="icon" type="image/png" href="https://i.ibb.co/x8wcVxBW/GSRP-2.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<canvas id="paint" aria-hidden="true"></canvas>
-<nav class="navbar" aria-label="Main navigation">
- <a class="logo" href="index.html" aria-label="Canvas home"><img class="logo-img" src="https://i.ibb.co/RGHkbz2y/GSRP.png" alt="" width="32" height="32">Canvas</a>
- <ul><li><a href="index.html">Home</a></li><li><a href="commands.html">Commands</a></li><li><a href="terms.html" aria-current="page">Terms of Service</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul>
-</nav>
-<main class="page"><article class="legal">
-<span class="badge">Legal</span><h1>Terms of Service</h1><p class="updated">Last updated: November 25, 2026</p>
-<h2>1. Acceptance of Terms</h2>
-<p>By inviting or using Canvas (“the Bot”), you agree to these Terms. If you do not agree, please remove the Bot from your server.</p>
-<h2>2. Acceptable Use</h2>
-<p>You agree not to use Canvas to:</p>
-<ul><li>Harass, threaten, or harm others, or share illegal content.</li><li>Spam commands, abuse rate limits, or attempt to disrupt the service.</li><li>Reverse engineer, exploit, or attack the Bot or its infrastructure.</li></ul>
-<h2>3. Discord Compliance</h2>
-<p>You must follow the <a href="https://discord.com/terms" target="_blank" rel="noopener">Discord Terms of Service</a> and Community Guidelines at all times. Canvas may stop working in servers or for users that violate them.</p>
-<h2>4. Bot Availability</h2>
-<p>Canvas is provided on an “as is” and “as available” basis. We may update, pause, or discontinue features at any time, and we do not guarantee uninterrupted service.</p>
-<h2>5. User-Generated Content and Embeds</h2>
-<p>You are responsible for the images, text, and embeds you create with Canvas. You keep ownership of your content and grant us a limited license to process and display it as needed to operate the Bot. We may remove content that breaks these Terms.</p>
-<h2>6. Termination</h2>
-<p>We may restrict access to Canvas for any user or server that violates these Terms. You may stop using the Bot at any time by removing it from your server.</p>
-<h2>7. Limitation of Liability</h2>
-<p>To the fullest extent permitted by law, Canvas and its developers are not liable for indirect, incidental, or consequential damages, or for loss of data, arising from your use of the Bot.</p>
-<h2>8. Changes and Contact</h2>
-<p>We may update these Terms from time to time. Continued use means you accept the changes. Questions? Reach us in our support server.</p>
-</article></main>
-<footer class="site">© 2026 Canvas. Not affiliated with Discord Inc.</footer>
-<script src="script.js"></script>
+
+  <!-- Floating Navigation Bar -->
+  <nav class="floating-nav">
+    <a href="index.html" class="nav-brand">
+      <img src="https://i.ibb.co/x8wcVxBW/GSRP-2.png" alt="Cardinal Logo">
+      <span>Cardinal</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> <span>Home</span></a>
+      <a href="commands.html" class="nav-link"><i class="fa-solid fa-terminal"></i> <span>Commands</span></a>
+      <a href="terms.html" class="nav-link"><i class="fa-solid fa-scale-balanced"></i> <span>Terms</span></a>
+      <a href="privacy.html" class="nav-link"><i class="fa-solid fa-shield-halved"></i> <span>Privacy Policy</span></a>
+    </div>
+  </nav>
+
+  <!-- Terms Card -->
+  <main class="legal-container">
+    <article class="legal-card">
+      <h1>Terms of Service</h1>
+      <p class="last-updated">Last Updated: November 2026</p>
+
+      <section class="legal-section">
+        <h2>1. Acceptance of Terms</h2>
+        <p>By inviting Cardinal to your Discord server or interacting with any of its commands and services, you agree to be bound by these Terms of Service as well as Discord's official Terms of Service and Community Guidelines.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>2. Proper Usage</h2>
+        <p>You agree not to misuse Cardinal. Prohibited activities include, but are not limited to:</p>
+        <ul>
+          <li>Spamming commands or intentionally attempting to overload, crash, or exploit the bot's infrastructure.</li>
+          <li>Using Cardinal to harass users, raid servers, or automate actions that violate Discord's platform policies.</li>
+          <li>Reverse-engineering, scraping, or reselling access to Cardinal's features without explicit permission.</li>
+        </ul>
+      </section>
+
+      <section class="legal-section">
+        <h2>3. Availability & Modifications</h2>
+        <p>Cardinal is provided on an "as-is" and "as-available" basis. While we strive for consistent uptime, we do not guarantee uninterrupted service and reserve the right to update, modify, or discontinue any command or feature at any time without prior notice.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>4. Termination of Access</h2>
+        <p>We reserve the right to restrict, suspend, or permanently blacklist any user or Discord server from using Cardinal if we detect abuse, malicious behavior, or violations of these terms.</p>
+      </section>
+    </article>
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>
