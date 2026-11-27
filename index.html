@@ -3,58 +3,55 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cardinal | Discord Bot</title>
+  <title>Cardinal / Home</title>
   <link rel="icon" type="image/png" href="https://i.ibb.co/x8wcVxBW/GSRP-2.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <style>
-    /* Critical styles: keeps the red theme visible even if style.css fails to load */
-    html { scroll-behavior: smooth; }
-    html, body { margin: 0; min-height: 100vh; }
-    body {
-      font-family: 'Poppins', 'Inter', Arial, sans-serif;
-      color: #FFF5F5;
-      background: #7f1d1d linear-gradient(135deg, #2b0909 0%, #7f1d1d 50%, #b91c1c 100%) fixed;
-    }
-    a { color: inherit; }
-  </style>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="style.css"> <!-- works if your file is named styles.css instead -->
 </head>
 <body>
-  <nav class="navbar" aria-label="Main navigation">
-    <a href="index.html" class="brand">
-      <img src="https://i.ibb.co/x8wcVxBW/GSRP-2.png" alt="Cardinal logo" class="brand-logo">
+
+  <!-- Cursor-Following Bird -->
+  <div id="cursor-bird" aria-hidden="true">
+    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M56 22C49 20 43 22 38 26C33 17 22 12 10 14C16 20 19 26 19 31C14 31 9 33 6 36C12 37 17 38 22 37C19 43 13 48 6 51C18 52 30 47 37 38C42 38 48 35 52 30L60 27L56 22Z" fill="#FFF5F5"/>
+      <path d="M52 30L60 27L55 25L52 30Z" fill="#FCA5A5"/>
+    </svg>
+  </div>
+
+  <!-- Floating Navigation Bar -->
+  <nav class="floating-nav">
+    <a href="index.html" class="nav-brand">
+      <img src="https://i.ibb.co/x8wcVxBW/GSRP-2.png" alt="Cardinal Logo">
       <span>Cardinal</span>
     </a>
     <div class="nav-links">
-      <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i><span>Home</span></a>
-      <a href="commands.html" class="nav-link"><i class="fa-solid fa-terminal"></i><span>Commands</span></a>
-      <a href="terms.html" class="nav-link"><i class="fa-solid fa-file-contract"></i><span>Terms</span></a>
-      <a href="privacy.html" class="nav-link"><i class="fa-solid fa-shield-halved"></i><span>Privacy Policy</span></a>
+      <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> <span>Home</span></a>
+      <a href="commands.html" class="nav-link"><i class="fa-solid fa-terminal"></i> <span>Commands</span></a>
+      <a href="terms.html" class="nav-link"><i class="fa-solid fa-scale-balanced"></i> <span>Terms</span></a>
+      <a href="privacy.html" class="nav-link"><i class="fa-solid fa-shield-halved"></i> <span>Privacy Policy</span></a>
     </div>
   </nav>
+
+  <!-- Hero Section -->
   <main class="hero">
-    <h1>Give your server wings to take off.</h1>
-    <div class="hero-buttons">
-      <a href="#" class="btn btn-solid"><i class="fa-brands fa-discord"></i> Invite</a>
-      <a href="#" class="btn btn-glass"><i class="fa-solid fa-life-ring"></i> Support Server</a>
+    <div class="hero-content">
+      <h1 class="hero-title">Give your server wings to take off.</h1>
+      <div class="hero-buttons">
+        <!-- Paste your Invite link inside href="" below -->
+        <a href="#" class="btn btn-primary">
+          <i class="fa-brands fa-discord"></i> Invite
+        </a>
+        <!-- Paste your Support Server link inside href="" below -->
+        <a href="#" class="btn btn-secondary">
+          <i class="fa-solid fa-headset"></i> Support Server
+        </a>
+      </div>
     </div>
   </main>
 
-  <div id="bird" class="bird" aria-hidden="true">
-    <svg viewBox="0 0 64 64" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
-      <path d="M8 30 L0 24 L10 22 Z" fill="#7f1d1d"/>
-      <path d="M12 28 C12 14 24 8 36 10 C46 12 52 20 50 30 C48 42 38 52 22 52 L6 58 L14 46 C12 40 12 34 12 28 Z" fill="#dc2626"/>
-      <path d="M20 30 C26 24 38 26 42 34 C36 42 26 44 20 38 Z" fill="#991b1b"/>
-      <path d="M36 12 L44 2 L46 14 Z" fill="#dc2626"/>
-      <path d="M48 20 L62 26 L48 30 Z" fill="#f59e0b"/>
-      <circle cx="42" cy="20" r="2.4" fill="#fff"/><circle cx="42.6" cy="20" r="1.1" fill="#1f0707"/>
-      <path d="M38 17 L50 17 L52 24 L40 25 Z" fill="#1f0707" opacity=".55"/>
-    </svg>
-  </div>
   <script src="script.js"></script>
 </body>
 </html>
